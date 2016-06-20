@@ -1,24 +1,7 @@
-# Licenses
+# License
 
-## Common Javascript
+This version is available under GPL v3 (http://www.gnu.org/licenses/gpl.txt) or commercial license. Contact for commercial license: sales@litehelpers.net
 
-MIT or Apache 2.0
+This version is based on Cordova-sqlite-storage (https://github.com/litehelpers/Cordova-sqlite-storage), available under MIT license (all platforms) or Apache 2.0 license (Android and Windows).
 
-## Android version
-
-MIT or Apache 2.0
-
-## iOS version
-
-MIT only
-
-## Windows (8.1) version
-
-MIT or Apache 2.0
-
-### SQLite3-WinRT
-
-by @doo (doo GmbH)
-
-MIT License
-
+Android version includes JSMN (http://zserge.com/jsmn.html) with MIT license.

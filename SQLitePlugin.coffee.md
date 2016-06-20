@@ -1,8 +1,11 @@
 # SQLite plugin in Markdown (litcoffee)
 
-#### Use coffee compiler to compile this directly into Javascript
+    ###
+    License for this version: GPL v3 (http://www.gnu.org/licenses/gpl.txt) or commercial license.
+    Contact for commercial license: info@litehelpers.net
+    ###
 
-#### License for common script: MIT or Apache
+#### Use coffee compiler to compile this directly into Javascript
 
 # Top-level SQLite plugin objects
 
@@ -118,6 +121,9 @@
     # combined with txLocks.
     SQLitePlugin::openDBs = {}
 
+    SQLitePlugin::dbidmap = {}
+    SQLitePlugin::fjmap = {}
+
     SQLitePlugin::addTransaction = (t) ->
       if !txLocks[@dbname]
         txLocks[@dbname] = {
@@ -201,6 +207,8 @@
       if @dbname of @openDBs
         console.log 'database already open: ' + @dbname
 
+        @dbid = @dbidmap[@dbname]
+
         # for a re-open run the success cb async so that the openDatabase return value
         # can be used in the success handler as an alternative to the handler's
         # db argument
@@ -211,9 +219,13 @@
       else
         console.log 'OPEN database: ' + @dbname
 
-        opensuccesscb = =>
+        opensuccesscb = (fjinfo) =>
           # NOTE: the db state is NOT stored (in @openDBs) if the db was closed or deleted.
-          # console.log 'OPEN database: ' + @dbname + ' succeeded'
+          console.log 'OPEN database: ' + @dbname + ' OK'
+
+          if !!fjinfo and !!fjinfo.dbid
+            @dbidmap[@dbname] = @dbid = fjinfo.dbid
+            @fjmap[@dbname] = true
 
           #if !@openDBs[@dbname] then call open error cb, and abort pending tx if any
           if !@openDBs[@dbname]
@@ -237,11 +249,15 @@
           # XXX TODO: newSQLError missing the message part!
           if !!error then error newSQLError 'Could not open database'
           delete @openDBs[@dbname]
+          delete @dbidmap[@dbname]
+          delete @fjmap[@dbname]
           @abortAllPendingTransactions()
           return
 
         # store initial DB state:
         @openDBs[@dbname] = DB_STATE_INIT
+        @dbidmap[@dbname] = @dbid = null
+        @fjmap[@dbname] = false
 
         cordova.exec opensuccesscb, openerrorcb, "SQLitePlugin", "open", [ @openargs ]
 
@@ -351,12 +367,14 @@
       try
         @fn this
         @run()
+
       catch err
         # If "fn" throws, we must report the whole transaction as failed.
         txLocks[@db.dbname].inProgress = false
         @db.startNextTransaction()
         if @error
           @error newSQLError err
+
       return
 
     SQLitePluginTransaction::executeSql = (sql, values, success, error) ->
@@ -370,6 +388,7 @@
         return
 
       @addStatement(sql, values, success, error)
+
       return
 
     # This method adds the SQL statement to the transaction queue but does not check for
@@ -425,15 +444,16 @@
       return
 
     SQLitePluginTransaction::run = ->
+      # persist for handlerFor callbacks:
       txFailure = null
-
-      tropts = []
+      # sql statements from queue:
       batchExecutes = @executes
       # NOTE: If this is zero it will not work. Workaround is applied in the constructor.
       # FUTURE TBD: It would be better to fix the problem here.
       waiting = batchExecutes.length
       @executes = []
-      tx = this
+      # my tx object [this]
+      tx = @
 
       handlerFor = (index, didSucceed) ->
         (response) ->
@@ -448,20 +468,139 @@
 
           if --waiting == 0
             if txFailure
-              tx.abort txFailure
+              tx.$abort txFailure
             else if tx.executes.length > 0
               # new requests have been issued by the callback
               # handlers, so run another batch.
               tx.run()
             else
-              tx.finish()
+              tx.$finish()
 
           return
 
-      i = 0
+      if @db.fjmap[@db.dbname]
+        @run_batch_flatjson batchExecutes, handlerFor
+      else
+        @run_batch batchExecutes, handlerFor
+      return
 
+    # version for Android-sqlite-evcore-native-driver-free (with flat JSON interface)
+    SQLitePluginTransaction::run_batch_flatjson = (batchExecutes, handlerFor) ->
+      flatlist = []
       mycbmap = {}
 
+      # XXX not always set in SQLitePlugin::open
+      # FUTURE TBD find a more efficient way?
+      @db.dbid = @db.dbidmap[@db.dbname]
+
+      flatlist.push @db.dbid
+      flatlist.push batchExecutes.length
+
+      i = 0
+      while i < batchExecutes.length
+        request = batchExecutes[i]
+
+        mycbmap[i] =
+          success: handlerFor(i, true)
+          error: handlerFor(i, false)
+
+        flatlist.push request.sql
+        flatlist.push request.params.length
+        for p in request.params
+          flatlist.push p
+
+        i++
+
+      flatlist.push 'extra'
+
+      # keep for batch error handling:
+      bl = batchExecutes.length
+
+      mycb = (result) ->
+        i = 0
+        ri = 0
+        rl = result.length
+
+        if rl > 0 and result[0] is 'batcherror'
+          while i < bl
+            # TODO use correct code values
+            mycbmap[i].error
+              result:
+                code: -1
+                sqliteCode: -1
+                message: 'internal batch error'
+            ++i
+
+          return
+
+        while ri < rl
+          r = result[ri++]
+          q = mycbmap[i]
+
+          if r == 'ok'
+            q.success { rows: [] }
+
+          else if r is "ch2"
+            changes = result[ri++]
+            insert_id = result[ri++]
+            q.success
+              rowsAffected: changes
+              insertId: insert_id
+
+          else if r == 'okrows'
+            rows = []
+            changes = 0
+            insert_id = undefined
+
+            if result[ri] == 'changes'
+              ++ri
+              changes = result[ri++]
+
+            if result[ri] == 'insert_id'
+              ++ri
+              insert_id = result[ri++]
+
+            while result[ri] != 'endrows'
+              c = result[ri++]
+              j = 0
+              row = {}
+
+              while j < c
+                k = result[ri++]
+                v = result[ri++]
+                row[k] = v
+                ++j
+
+              rows.push row
+
+            q.success { rows: rows, rowsAffected: changes, insertId: insert_id }
+            ++ri
+
+          else if r == 'error'
+            code = result[ri++]
+            sqliteCode = result[ri++]
+            errormessage = result[ri++]
+            q.error
+              result:
+                code: code
+                sqliteCode: sqliteCode
+                message: errormessage
+
+          ++i
+
+        return
+
+      # NOTE: flatlist.length is needed internally for the JSON decoding.
+      cordova.exec mycb, null, "SQLitePlugin", "fj:#{flatlist.length};extra", flatlist
+
+      return
+
+    # version for other platforms
+    SQLitePluginTransaction::run_batch = (batchExecutes, handlerFor) ->
+      tropts = []
+      mycbmap = {}
+
+      i = 0
       while i < batchExecutes.length
         request = batchExecutes[i]
 
@@ -477,13 +616,12 @@
         i++
 
       mycb = (result) ->
-        #console.log "mycb result #{JSON.stringify result}"
-
-        last = result.length-1
-        for i in [0..last]
+        i = 0
+        reslength = result.length
+        while i < reslength
           r = result[i]
           type = r.type
-          # NOTE: r.qid can be ignored
+          # NOTE: r.qid ignored (if present)
           res = r.result
 
           q = mycbmap[i]
@@ -492,13 +630,15 @@
             if q[type]
               q[type] res
 
+          ++i
+
         return
 
       cordova.exec mycb, null, "SQLitePlugin", "backgroundExecuteSqlBatch", [{dbargs: {dbname: @db.dbname}, executes: tropts}]
 
       return
 
-    SQLitePluginTransaction::abort = (txFailure) ->
+    SQLitePluginTransaction::$abort = (txFailure) ->
       if @finalized then return
       tx = @
 
@@ -524,7 +664,7 @@
 
       return
 
-    SQLitePluginTransaction::finish = ->
+    SQLitePluginTransaction::$finish = ->
       if @finalized then return
       tx = @
 
@@ -612,7 +752,7 @@
           throw newSQLError 'Database location or iosDatabaseLocation value is now mandatory in openDatabase call'
 
         if !!openargs.location and !!openargs.iosDatabaseLocation
-          throw newSQLError 'Abiguous: both location or iosDatabaseLocation values are present in openDatabase call'
+          throw newSQLError 'Ambiguous: both location or iosDatabaseLocation values are present in openDatabase call'
 
         dblocation =
           if !!openargs.location and openargs.location is 'default'
@@ -651,6 +791,7 @@
           #console.log "delete db name: #{first}"
           #args.path = first
           #args.dblocation = dblocations[0]
+          #args.dblocation = dblocations[2]
           throw newSQLError 'Sorry first deleteDatabase argument must be an object'
 
         else
@@ -664,12 +805,13 @@
           args.path = dbname
           #dblocation = if !!first.location then dblocations[first.location] else null
           #args.dblocation = dblocation || dblocations[0]
+          #args.dblocation = dblocation || dblocations[2]
 
         if !first.iosDatabaseLocation and !first.location and first.location isnt 0
           throw newSQLError 'Database location or iosDatabaseLocation value is now mandatory in deleteDatabase call'
 
         if !!first.location and !!first.iosDatabaseLocation
-          throw newSQLError 'Abiguous: both location or iosDatabaseLocation values are present in deleteDatabase call'
+          throw newSQLError 'Ambiguous: both location or iosDatabaseLocation values are present in deleteDatabase call'
 
         dblocation =
           if !!first.location and first.location is 'default'
@@ -686,6 +828,9 @@
 
         # XXX [BUG #210] TODO: when closing or deleting a db, abort any pending transactions (with error callback)
         delete SQLitePlugin::openDBs[args.path]
+        delete SQLitePlugin::dbidmap[args.path]
+        delete SQLitePlugin::fjmap[args.path]
+
         cordova.exec success, error, "SQLitePlugin", "delete", [ args ]
 
 ## Self test:

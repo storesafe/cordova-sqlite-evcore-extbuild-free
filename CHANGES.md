@@ -1,5 +1,9 @@
 # Changes
 
+## cordova-sqlite-evcore-free 0.7.0-pre1
+
+- Use Android-sqlite-evcore-native-driver-free for high performance and memory improvements on Android
+
 ### cordova-sqlite-storage 1.4.3
 
 - Handle executeSql with object sql value (solves another possible crash on iOS)

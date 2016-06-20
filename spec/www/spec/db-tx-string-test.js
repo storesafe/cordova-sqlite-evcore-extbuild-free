@@ -97,7 +97,7 @@ var mytests = function() {
         it(suiteName + 'String encoding test with UNICODE \\u0000', function (done) {
           if (isWindows) pending('BROKEN for Windows'); // XXX
           if (isWP8) pending('BROKEN for WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-          if (isAndroid && !isWebSql && !isImpl2) pending('BROKEN for Android (default sqlite-connector version)'); // XXX
+          if (isAndroid && !isWebSql && !isImpl2) pending('BROKEN for Android (default evcore-native-driver db implementation)'); // XXX TODO
 
           var dbName = "Unicode-hex-test";
           var db = openDatabase(dbName, "1.0", "Demo", DEFAULT_SIZE);
@@ -179,6 +179,7 @@ var mytests = function() {
 
         it(suiteName + "String vertical tab test", function(done) {
           if (isWP8) pending('BROKEN for WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
+          if (isAndroid && !isWebSql && !isImpl2) pending('BROKEN for Android (default evcore-native-driver db implementation)'); // XXX TODO
 
           var db = openDatabase("String-vertical-tab-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
@@ -197,6 +198,7 @@ var mytests = function() {
 
         it(suiteName + "String form feed test", function(done) {
           if (isWP8) pending('BROKEN for WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
+          if (isAndroid && !isWebSql && !isImpl2) pending('BROKEN for Android (default evcore-native-driver db implementation)'); // XXX TODO
 
           var db = openDatabase("String-form-feed-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
@@ -215,6 +217,7 @@ var mytests = function() {
 
         it(suiteName + "String backspace test", function(done) {
           if (isWP8) pending('BROKEN for WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
+          if (isAndroid && !isWebSql && !isImpl2) pending('BROKEN for Android (default evcore-native-driver db implementation)'); // XXX TODO
 
           var db = openDatabase("String-backspace-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();

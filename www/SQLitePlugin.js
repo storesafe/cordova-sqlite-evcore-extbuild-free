@@ -1,3 +1,9 @@
+
+/*
+License for this version: GPL v3 (http://www.gnu.org/licenses/gpl.txt) or commercial license.
+Contact for commercial license: info@litehelpers.net
+ */
+
 (function() {
   var DB_STATE_INIT, DB_STATE_OPEN, READ_ONLY_REGEX, SQLiteFactory, SQLitePlugin, SQLitePluginTransaction, SelfTest, argsArray, dblocations, iosLocationMap, newSQLError, nextTick, root, txLocks;
 
@@ -90,6 +96,10 @@
 
   SQLitePlugin.prototype.openDBs = {};
 
+  SQLitePlugin.prototype.dbidmap = {};
+
+  SQLitePlugin.prototype.fjmap = {};
+
   SQLitePlugin.prototype.addTransaction = function(t) {
     if (!txLocks[this.dbname]) {
       txLocks[this.dbname] = {
@@ -148,12 +158,12 @@
   };
 
   SQLitePlugin.prototype.abortAllPendingTransactions = function() {
-    var j, len1, ref, tx, txLock;
+    var l, len1, ref, tx, txLock;
     txLock = txLocks[this.dbname];
     if (!!txLock && txLock.queue.length > 0) {
       ref = txLock.queue;
-      for (j = 0, len1 = ref.length; j < len1; j++) {
-        tx = ref[j];
+      for (l = 0, len1 = ref.length; l < len1; l++) {
+        tx = ref[l];
         tx.abortFromQ(newSQLError('Invalid database handle'));
       }
       txLock.queue = [];
@@ -165,6 +175,7 @@
     var openerrorcb, opensuccesscb;
     if (this.dbname in this.openDBs) {
       console.log('database already open: ' + this.dbname);
+      this.dbid = this.dbidmap[this.dbname];
       nextTick((function(_this) {
         return function() {
           success(_this);
@@ -173,8 +184,13 @@
     } else {
       console.log('OPEN database: ' + this.dbname);
       opensuccesscb = (function(_this) {
-        return function() {
+        return function(fjinfo) {
           var txLock;
+          console.log('OPEN database: ' + _this.dbname + ' OK');
+          if (!!fjinfo && !!fjinfo.dbid) {
+            _this.dbidmap[_this.dbname] = _this.dbid = fjinfo.dbid;
+            _this.fjmap[_this.dbname] = true;
+          }
           if (!_this.openDBs[_this.dbname]) {
             console.log('database was closed during open operation');
           }
@@ -197,10 +213,14 @@
             error(newSQLError('Could not open database'));
           }
           delete _this.openDBs[_this.dbname];
+          delete _this.dbidmap[_this.dbname];
+          delete _this.fjmap[_this.dbname];
           _this.abortAllPendingTransactions();
         };
       })(this);
       this.openDBs[this.dbname] = DB_STATE_INIT;
+      this.dbidmap[this.dbname] = this.dbid = null;
+      this.fjmap[this.dbname] = false;
       cordova.exec(opensuccesscb, openerrorcb, "SQLitePlugin", "open", [this.openargs]);
     }
   };
@@ -253,13 +273,13 @@
   };
 
   SQLitePlugin.prototype.sqlBatch = function(sqlStatements, success, error) {
-    var batchList, j, len1, myfn, st;
+    var batchList, l, len1, myfn, st;
     if (!sqlStatements || sqlStatements.constructor !== Array) {
       throw newSQLError('sqlBatch expects an array');
     }
     batchList = [];
-    for (j = 0, len1 = sqlStatements.length; j < len1; j++) {
-      st = sqlStatements[j];
+    for (l = 0, len1 = sqlStatements.length; l < len1; l++) {
+      st = sqlStatements[l];
       if (st.constructor === Array) {
         if (st.length === 0) {
           throw newSQLError('sqlBatch array element of zero (0) length');
@@ -276,10 +296,10 @@
       }
     }
     myfn = function(tx) {
-      var elem, k, len2, results;
+      var elem, len2, m, results;
       results = [];
-      for (k = 0, len2 = batchList.length; k < len2; k++) {
-        elem = batchList[k];
+      for (m = 0, len2 = batchList.length; m < len2; m++) {
+        elem = batchList[m];
         results.push(tx.addStatement(elem.sql, elem.params, null, null));
       }
       return results;
@@ -347,12 +367,12 @@
   };
 
   SQLitePluginTransaction.prototype.addStatement = function(sql, values, success, error) {
-    var j, len1, params, sqlStatement, t, v;
+    var l, len1, params, sqlStatement, t, v;
     sqlStatement = typeof sql === 'string' ? sql : sql.toString();
     params = [];
     if (!!values && values.constructor === Array) {
-      for (j = 0, len1 = values.length; j < len1; j++) {
-        v = values[j];
+      for (l = 0, len1 = values.length; l < len1; l++) {
+        v = values[l];
         t = typeof v;
         params.push((v === null || v === void 0 || t === 'number' || t === 'string' ? v : v.toString()));
       }
@@ -394,9 +414,8 @@
   };
 
   SQLitePluginTransaction.prototype.run = function() {
-    var batchExecutes, handlerFor, i, mycb, mycbmap, request, tropts, tx, txFailure, waiting;
+    var batchExecutes, handlerFor, tx, txFailure, waiting;
     txFailure = null;
-    tropts = [];
     batchExecutes = this.executes;
     waiting = batchExecutes.length;
     this.executes = [];
@@ -418,17 +437,132 @@
         }
         if (--waiting === 0) {
           if (txFailure) {
-            tx.abort(txFailure);
+            tx.$abort(txFailure);
           } else if (tx.executes.length > 0) {
             tx.run();
           } else {
-            tx.finish();
+            tx.$finish();
           }
         }
       };
     };
-    i = 0;
+    if (this.db.fjmap[this.db.dbname]) {
+      this.run_batch_flatjson(batchExecutes, handlerFor);
+    } else {
+      this.run_batch(batchExecutes, handlerFor);
+    }
+  };
+
+  SQLitePluginTransaction.prototype.run_batch_flatjson = function(batchExecutes, handlerFor) {
+    var bl, flatlist, i, l, len1, mycb, mycbmap, p, ref, request;
+    flatlist = [];
     mycbmap = {};
+    this.db.dbid = this.db.dbidmap[this.db.dbname];
+    flatlist.push(this.db.dbid);
+    flatlist.push(batchExecutes.length);
+    i = 0;
+    while (i < batchExecutes.length) {
+      request = batchExecutes[i];
+      mycbmap[i] = {
+        success: handlerFor(i, true),
+        error: handlerFor(i, false)
+      };
+      flatlist.push(request.sql);
+      flatlist.push(request.params.length);
+      ref = request.params;
+      for (l = 0, len1 = ref.length; l < len1; l++) {
+        p = ref[l];
+        flatlist.push(p);
+      }
+      i++;
+    }
+    flatlist.push('extra');
+    bl = batchExecutes.length;
+    mycb = function(result) {
+      var c, changes, code, errormessage, insert_id, j, k, q, r, ri, rl, row, rows, sqliteCode, v;
+      i = 0;
+      ri = 0;
+      rl = result.length;
+      if (rl > 0 && result[0] === 'batcherror') {
+        while (i < bl) {
+          mycbmap[i].error({
+            result: {
+              code: -1,
+              sqliteCode: -1,
+              message: 'internal batch error'
+            }
+          });
+          ++i;
+        }
+        return;
+      }
+      while (ri < rl) {
+        r = result[ri++];
+        q = mycbmap[i];
+        if (r === 'ok') {
+          q.success({
+            rows: []
+          });
+        } else if (r === "ch2") {
+          changes = result[ri++];
+          insert_id = result[ri++];
+          q.success({
+            rowsAffected: changes,
+            insertId: insert_id
+          });
+        } else if (r === 'okrows') {
+          rows = [];
+          changes = 0;
+          insert_id = void 0;
+          if (result[ri] === 'changes') {
+            ++ri;
+            changes = result[ri++];
+          }
+          if (result[ri] === 'insert_id') {
+            ++ri;
+            insert_id = result[ri++];
+          }
+          while (result[ri] !== 'endrows') {
+            c = result[ri++];
+            j = 0;
+            row = {};
+            while (j < c) {
+              k = result[ri++];
+              v = result[ri++];
+              row[k] = v;
+              ++j;
+            }
+            rows.push(row);
+          }
+          q.success({
+            rows: rows,
+            rowsAffected: changes,
+            insertId: insert_id
+          });
+          ++ri;
+        } else if (r === 'error') {
+          code = result[ri++];
+          sqliteCode = result[ri++];
+          errormessage = result[ri++];
+          q.error({
+            result: {
+              code: code,
+              sqliteCode: sqliteCode,
+              message: errormessage
+            }
+          });
+        }
+        ++i;
+      }
+    };
+    cordova.exec(mycb, null, "SQLitePlugin", "fj:" + flatlist.length + ";extra", flatlist);
+  };
+
+  SQLitePluginTransaction.prototype.run_batch = function(batchExecutes, handlerFor) {
+    var i, mycb, mycbmap, request, tropts;
+    tropts = [];
+    mycbmap = {};
+    i = 0;
     while (i < batchExecutes.length) {
       request = batchExecutes[i];
       mycbmap[i] = {
@@ -443,9 +577,10 @@
       i++;
     }
     mycb = function(result) {
-      var j, last, q, r, ref, res, type;
-      last = result.length - 1;
-      for (i = j = 0, ref = last; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
+      var q, r, res, reslength, type;
+      i = 0;
+      reslength = result.length;
+      while (i < reslength) {
         r = result[i];
         type = r.type;
         res = r.result;
@@ -455,6 +590,7 @@
             q[type](res);
           }
         }
+        ++i;
       }
     };
     cordova.exec(mycb, null, "SQLitePlugin", "backgroundExecuteSqlBatch", [
@@ -467,7 +603,7 @@
     ]);
   };
 
-  SQLitePluginTransaction.prototype.abort = function(txFailure) {
+  SQLitePluginTransaction.prototype.$abort = function(txFailure) {
     var failed, succeeded, tx;
     if (this.finalized) {
       return;
@@ -496,7 +632,7 @@
     }
   };
 
-  SQLitePluginTransaction.prototype.finish = function() {
+  SQLitePluginTransaction.prototype.$finish = function() {
     var failed, succeeded, tx;
     if (this.finalized) {
       return;
@@ -563,7 +699,7 @@
         throw newSQLError('Database location or iosDatabaseLocation value is now mandatory in openDatabase call');
       }
       if (!!openargs.location && !!openargs.iosDatabaseLocation) {
-        throw newSQLError('Abiguous: both location or iosDatabaseLocation values are present in openDatabase call');
+        throw newSQLError('Ambiguous: both location or iosDatabaseLocation values are present in openDatabase call');
       }
       dblocation = !!openargs.location && openargs.location === 'default' ? iosLocationMap['default'] : !!openargs.iosDatabaseLocation ? iosLocationMap[openargs.iosDatabaseLocation] : dblocations[openargs.location];
       if (!dblocation) {
@@ -608,7 +744,7 @@
         throw newSQLError('Database location or iosDatabaseLocation value is now mandatory in deleteDatabase call');
       }
       if (!!first.location && !!first.iosDatabaseLocation) {
-        throw newSQLError('Abiguous: both location or iosDatabaseLocation values are present in deleteDatabase call');
+        throw newSQLError('Ambiguous: both location or iosDatabaseLocation values are present in deleteDatabase call');
       }
       dblocation = !!first.location && first.location === 'default' ? iosLocationMap['default'] : !!first.iosDatabaseLocation ? iosLocationMap[first.iosDatabaseLocation] : dblocations[first.location];
       if (!dblocation) {
@@ -616,6 +752,8 @@
       }
       args.dblocation = dblocation;
       delete SQLitePlugin.prototype.openDBs[args.path];
+      delete SQLitePlugin.prototype.dbidmap[args.path];
+      delete SQLitePlugin.prototype.fjmap[args.path];
       return cordova.exec(success, error, "SQLitePlugin", "delete", [args]);
     }
   };
