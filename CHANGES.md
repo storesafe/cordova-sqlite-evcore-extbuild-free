@@ -1,6 +1,6 @@
 # Changes
 
-## cordova-sqlite-evcore-free 0.7.0-pre1
+## cordova-sqlite-evcore-free 0.7.0
 
 - Use Android-sqlite-evcore-native-driver-free for high performance and memory improvements on Android
 

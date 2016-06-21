@@ -6,7 +6,7 @@ This version uses a special native C library to provide significantly better per
 
 This version is available under GPL v3 (http://www.gnu.org/licenses/gpl.txt) or commercial license and includes components available under the MIT and Apache 2.0 licenses. Contact for commercial license: sales@litehelpers.net
 
-NOTE: Commercial licenses for [litehelpers / Cordova-sqlite-enterprise-free](https://github.com/litehelpers/Cordova-sqlite-enterprise-free) apply to this version as well.
+NOTE: Commercial licenses for [litehelpers / Cordova-sqlite-enterprise-free](https://github.com/litehelpers/Cordova-sqlite-enterprise-free) apply for this version as well.
 
 TBD: no Circle CI or Travis CI working in this version branch.
 
@@ -62,10 +62,9 @@ Some other projects by [@brodybits](https://github.com/brodybits):
 - The iOS database location is now mandatory, as documented below.
 - SQLite version `3.12.2` (without FTS5 or JSON1 functionality) is used for Android. SQLite `3.8.10.2` is used for iOS and Windows.
 - This version supports the use of two (2) possible Android sqlite database implementations:
-  - default: high-performance and lightweight [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) NDK library written in C
+  - default: high-performance, lightweight [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) NDK library written in C
   - optional: built-in Android database classes (usage described below)
-- WP8 support is available in: [litehelpers / Cordova-sqlite-legacy](https://github.com/litehelpers/Cordova-sqlite-legacy) (along with Windows 8.1/Windows Phone 8.1/Windows 10)
-- The following features are available in [litehelpers / cordova-sqlite-ext](https://github.com/litehelpers/cordova-sqlite-ext):
+- The following features are available in [litehelpers / cordova-sqlite-ext](https://github.com/litehelpers/cordova-sqlite-ext) (FUTURE TBD will be in Cordova-sqlite-evcore-extbuild-free along with the Android performance enhancements):
   - REGEXP support (Android/iOS)
   - Pre-populated database (Android/iOS/Windows)
 - Windows version using the performant C++ [doo / SQLite3-WinRT](https://github.com/doo/SQLite3-WinRT) component is in an alpha state:
@@ -79,7 +78,7 @@ Some other projects by [@brodybits](https://github.com/brodybits):
 
 ## Announcements
 
-- The Android version is using the high-performance and lightweight [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) C library by default configuration (may be changed as described below)
+- The Android version uses the high-performance and lightweight [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) C library and handles large batches in less than half the time compared to [litehelpers / Cordova-sqlite-storage](https://github.com/litehelpers/Cordova-sqlite-storage).
 - Self-test functions to verify proper installation and operation of this plugin
 - More explicit `openDatabase` and `deleteDatabase` `iosDatabaseLocation` option
 - Added simple sql batch query function
@@ -88,7 +87,6 @@ Some other projects by [@brodybits](https://github.com/brodybits):
 - ~~PhoneGap Build is now supported through the npm package: http://phonegap.com/blog/2015/05/26/npm-plugins-available/~~ (no longer supported due to reported issues)
 - [MetaMemoryT / websql-promise](https://github.com/MetaMemoryT/websql-promise) now provides a Promises-based interface to both Web SQL and this plugin
 - iOS version is now fixed to override the correct pluginInitialize method and should work with recent versions of iOS
-- [SQLCipher](https://www.zetetic.net/sqlcipher/) for Android/iOS/Windows is supported by [litehelpers / Cordova-sqlcipher-adapter](https://github.com/litehelpers/Cordova-sqlcipher-adapter)
 
 ## Highlights
 
@@ -121,12 +119,12 @@ TBD *your app here*
 - Possible crash on Android when using Unicode emoji characters due to [Android bug 81341](https://code.google.com/p/android/issues/detail?id=81341), which *should* be fixed in Android 6.x
 - Close/delete database bugs described below.
 - When a database is opened and deleted without closing, the iOS version is known to leak resources.
-- Lawnchair adapter is *not* expected to work as described below.
+- ~~Lawnchair adapter is *not* expected to work as described below.~~
 - It is NOT possible to open multiple databases with the same name but in different locations (iOS version).
 - Incorrect or missing insertId/rowsAffected in results for INSERT/UPDATE/DELETE SQL statements with extra semicolon(s) in the beginning for Android in case the `androidDatabaseImplementation: 2` (built-in android.database implementation) option is used.
 - readTransaction does *not* reject modification SQL statements with extra semicolon(s) in the beginning
 - Unlike the HTML5/[Web SQL API](http://www.w3.org/TR/webdatabase/) this plugin handles executeSql calls with too few parameters without error reporting and the iOS version handles executeSql calls with too many parameters without error reporting.
-- The default Android database implementation currently does not handle vertical tab, form feed, or backspace characters properly.
+- The default Android implementation does not currently handle vertical tab, form feed, or backspace characters properly.
 - Problems reported with PhoneGap Build in the past:
   - PhoneGap Build Hydration.
   - Apparently FIXED: ~~PhoneGap Build may fail to build the iOS version unless the name of the app starts with an uppercase and contains no spaces (see [litehelpers/Cordova-sqlite-storage#243](https://github.com/litehelpers/Cordova-sqlite-storage/issues/243); [Wizcorp/phonegap-facebook-plugin#830](https://github.com/Wizcorp/phonegap-facebook-plugin/issues/830); [phonegap/build#431](https://github.com/phonegap/build/issues/431)).~~
@@ -144,7 +142,7 @@ TBD *your app here*
 - UNICODE `\u0000` (same as `\0`) character not working in Android (default Android-sqlite-evcore-native-driver-free implentation) or Windows
 - Case-insensitive matching and other string manipulations on Unicode characters, which is provided by optional ICU integration in the sqlite source and working with recent versions of Android, is not supported for any target platforms.
 - iOS version uses a thread pool but with only one thread working at a time due to "synchronized" database access
-- Large query result can be slow, also due to JSON implementation
+- Large query result can be slow for iOS due to JSON implementation
 - ATTACH to another database file is not supported by this version. Attach/detach is supported (along with the memory and iOS UNICODE `\u2028` line separator / `\u2029` paragraph separator fixes) in: [litehelpers / Cordova-sqlite-evfree-ext](https://github.com/litehelpers/Cordova-sqlite-evfree-ext) (available with GPL or commercial licenses)
 - UPDATE/DELETE with LIMIT or ORDER BY is not supported.
 - WITH clause is not supported by older Android versions in case the `androidDatabaseImplementation: 2` (built-in android.database implementation) option is used.
@@ -337,7 +335,7 @@ window.openDatabase = function(dbname, ignored1, ignored2, ignored3) {
 
 ### Android sqlite implementation
 
-By default, this plugin uses [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) which with performance and memory usage enhancements. To use the built-in Android database classes instead:
+By default, this plugin uses [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) with the performance and memory usage enhancements. To use the built-in Android database classes instead:
 
 ```js
 var db = window.sqlitePlugin.openDatabase({name: "my.db", androidDatabaseImplementation: 2});
@@ -351,7 +349,7 @@ var db = window.sqlitePlugin.openDatabase({name: "my.db", androidDatabaseImpleme
 
 This issue is suspected to be caused by [this Android sqlite commit](https://github.com/android/platform_external_sqlite/commit/d4f30d0d1544f8967ee5763c4a1680cb0553039f), which references and includes the sqlite commit at: http://www.sqlite.org/src/info/6c4c2b7dba
 
-This is *not* an issue when default [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) database implementation.
+This is *not* an issue with the default [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) database implementation.
 
 There is an optional workaround that simply closes and reopens the database file at the end of every transaction that is committed. The workaround is enabled by opening the database with options as follows:
 
@@ -717,7 +715,7 @@ You can find some more details in a nice writeup (though with old links and pack
    - `android` - Java plugin code for Android
    - `ios` - Objective-C plugin code for iOS
    - `windows` - Javascript proxy code and SQLite3-WinRT project for Windows
-- `spec`: test suite using Jasmine (2.2.0)
+- `spec`: test suite using Jasmine (~~2.2.0~~ 2.4.1)
 - `tests`: very simple Jasmine test suite that is run on Circle CI (Android version) and Travis CI (iOS version) (used as a placeholder)
 - `Lawnchair-adapter`: Lawnchair adaptor, based on the version from the Lawnchair repository, with the basic Lawnchair test suite in `test-www` subdirectory
 
@@ -835,7 +833,7 @@ To run from a windows powershell (here is a sample for android target):
 
 ## Lawnchair Adapter
 
-**BROKEN:** The Lawnchair adapter does not support the `openDatabase` options such as `location` or `iosDatabaseLocation` options and is therefore *not* expected to work with this plugin.
+~~**BROKEN:** The Lawnchair adapter does not support the `openDatabase` options such as `location` or `iosDatabaseLocation` options and is therefore *not* expected to work with this plugin.~~
 
 ### Common adapter
 
@@ -1061,7 +1059,7 @@ function closeDB() {
 - Testimonials of apps that are using this plugin would be especially helpful.
 - Reporting issues can help improve the quality of this plugin.
 
-**NOTE:** As stated above, patches will *NOT* be accepted on this project due to potential licensing issues. Issues with reproduction scenarios will help maintain and improve the quality of this plugin for future users. (It is also helpful if you have a pointer to the code that is causing the issue.)
+**NOTE:** As stated above, patches will *NOT* be accepted on this project due to potential licensing issues. Issues with reproduction scenarios will help maintain and improve the quality of this plugin for future users. (It is also helpful if you have a pointer to what code may be causing the issue.)
 
 ## Contact
 
