@@ -1,6 +1,9 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.8.0-pre1
+# cordova-sqlite-evcore-extbuild-free 0.8.0
+
+- SQLite and Android-sqlite-evcore-native-driver-free dependencies included to support PhoneGap Build
+- Cordova engines specification dropped from package.json
 
 ## cordova-sqlite-evcore-free 0.7.0
 

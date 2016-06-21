@@ -2,9 +2,9 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-sqlite-evcore-extbuild-free"
-    version="0.8.0-pre1">
+    version="0.8.0">
 
-    <name>Cordova sqlite storage - free enterprise version with memory improvements and extras (Android and iOS)</name>
+    <name>Cordova sqlite storage - free enterprise version with Android performance/memory improvements for PhoneGap Build</name>
 
     <license>GPL</license>
 

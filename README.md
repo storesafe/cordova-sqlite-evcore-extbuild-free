@@ -6,7 +6,7 @@ This version uses a special native C library to provide significantly better per
 
 This version is available under GPL v3 (http://www.gnu.org/licenses/gpl.txt) or commercial license and includes components available under the MIT and Apache 2.0 licenses. Contact for commercial license: sales@litehelpers.net
 
-NOTE: Commercial licenses for [litehelpers / Cordova-sqlite-enterprise-free](https://github.com/litehelpers/Cordova-sqlite-enterprise-free) apply for this version as well.
+NOTE: Commercial licenses for [litehelpers / Cordova-sqlite-enterprise-free](https://github.com/litehelpers/Cordova-sqlite-enterprise-free) are valid for this version as well.
 
 TBD: no Circle CI or Travis CI working in this version branch.
 
@@ -688,7 +688,7 @@ Documentation at: http://ngcordova.com/docs/plugins/sqlite/
 
     npm install -g cordova # (in case you don't have cordova)
     cordova create MyProjectFolder com.my.project MyProject && cd MyProjectFolder # if you are just starting
-    cordova plugin add https://github.com/litehelpers/Cordova-sqlite-evcore-free
+    cordova plugin add https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free
 
 **CLI NOTES:**
 
@@ -704,8 +704,8 @@ You can find some more details in a nice writeup (though with old links and pack
 
 ## Plugin installation sources
 
-- TBD not published: ~~`cordova-sqlite-evcore-free` - stable npm package version~~
-- https://github.com/litehelpers/Cordova-sqlite-evcore-free - latest version
+- TBD not published: ~~`cordova-sqlite-evcore-extbuild-free` - stable npm package version~~
+- https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free - latest version
 
 ## Source tree
 
@@ -803,7 +803,7 @@ Please include the following:
 ## Where to ask for help
 
 Once you have followed the directions above, you may request free support in the following location(s):
-- [litehelpers / Cordova-sqlite-evcore-free / issues](https://github.com/litehelpers/Cordova-sqlite-evcore-free/issues)
+- [litehelpers / Cordova-sqlite-evcore-extbuild-free / issues](https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/issues)
 - [litehelpers / Cordova-sqlite-help](https://github.com/litehelpers/Cordova-sqlite-help)
 
 Please include the information described above otherwise.
