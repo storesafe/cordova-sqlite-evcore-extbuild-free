@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    id="cordova-sqlite-evcore-free"
-    version="0.7.0">
+    id="cordova-sqlite-evcore-extbuild-free"
+    version="0.8.0-pre1">
 
     <name>Cordova sqlite storage - free enterprise version with memory improvements and extras (Android and iOS)</name>
 
@@ -22,8 +22,7 @@
     </engines>
      -->
 
-    <!-- THANKS to AllJoyn-Cordova / cordova-plugin-alljoyn: -->
-    <hook type="before_plugin_install" src="scripts/beforePluginInstall.js" />
+    <!-- no before_plugin_install hook in this version branch -->
 
     <js-module src="www/SQLitePlugin.js" name="SQLitePlugin">
         <clobbers target="SQLitePlugin" />
@@ -44,11 +43,11 @@
         <source-file src="src/android/io/sqlc/EVCoreNativeDriver.java" target-dir="src/io/sqlc"/>
 
         <!-- Android-sqlite-evcore-native-driver libs: -->
-        <source-file src="node_modules/cordova-sqlite-evcore-free-dependencies/libs/armeabi/libsqlc-evcore-native-driver.so" target-dir="libs/armeabi"/>
-        <source-file src="node_modules/cordova-sqlite-evcore-free-dependencies/libs/armeabi-v7a/libsqlc-evcore-native-driver.so" target-dir="libs/armeabi-v7a"/>
-        <source-file src="node_modules/cordova-sqlite-evcore-free-dependencies/libs/arm64-v8a/libsqlc-evcore-native-driver.so" target-dir="libs/arm64-v8a"/>
-        <source-file src="node_modules/cordova-sqlite-evcore-free-dependencies/libs/x86/libsqlc-evcore-native-driver.so" target-dir="libs/x86"/>
-        <source-file src="node_modules/cordova-sqlite-evcore-free-dependencies/libs/x86_64/libsqlc-evcore-native-driver.so" target-dir="libs/x86_64"/>
+        <source-file src="src/deps/android/libs/armeabi/libsqlc-evcore-native-driver.so" target-dir="libs/armeabi"/>
+        <source-file src="src/deps/android/libs/armeabi-v7a/libsqlc-evcore-native-driver.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/deps/android/libs/arm64-v8a/libsqlc-evcore-native-driver.so" target-dir="libs/arm64-v8a"/>
+        <source-file src="src/deps/android/libs/x86/libsqlc-evcore-native-driver.so" target-dir="libs/x86"/>
+        <source-file src="src/deps/android/libs/x86_64/libsqlc-evcore-native-driver.so" target-dir="libs/x86_64"/>
 
     </platform>
 
@@ -64,8 +63,8 @@
         <header-file src="src/ios/SQLitePlugin.h" />
         <source-file src="src/ios/SQLitePlugin.m" />
 
-        <header-file src="node_modules/cordova-sqlite-evcore-free-dependencies/sqlite3.h" />
-        <source-file src="node_modules/cordova-sqlite-evcore-free-dependencies/sqlite3.c"
+        <header-file src="src/deps/common/sqlite3.h" />
+        <source-file src="src/deps/common/sqlite3.c"
                      compiler-flags="-DSQLITE_TEMP_STORE=2 -DSQLITE_THREADSAFE=2 -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_COLUMN_METADATA -DSQLITE_ENABLE_RTREE -DSQLITE_LOCKING_STYLE=1 -DSQLITE_OMIT_BUILTIN_TEST -DSQLITE_OMIT_LOAD_EXTENSION" />
 
     </platform>
