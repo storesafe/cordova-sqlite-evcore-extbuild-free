@@ -73,7 +73,6 @@ Some other projects by [@brodybits](https://github.com/brodybits):
 - FTS3, FTS4, and R-Tree support is tested working OK in this version (for all target platforms in this version branch Android/iOS/Windows)
 - Android is supported back to SDK 10 (a.k.a. Gingerbread, Android 2.3.3); support for older versions is available upon request.
 - iOS versions supported: 7.x/8.x/9.x
-- ~~Lawnchair adapter has *not* been validated with this version *and is not expected to work (see below)*.~~ (fixed)
 - Patches will *NOT* be accepted on this project due to potential licensing issues.
 
 ## Announcements
@@ -106,7 +105,7 @@ Some other projects by [@brodybits](https://github.com/brodybits):
 
 ## Some apps using this plugin
 
-TBD *your app here*
+- [ExplorOz Traveller App](http://www.exploroz.com/Traveller/Default.aspx) for Android and iOS
 
 ## Known issues
 
@@ -688,7 +687,7 @@ Documentation at: http://ngcordova.com/docs/plugins/sqlite/
 
     npm install -g cordova # (in case you don't have cordova)
     cordova create MyProjectFolder com.my.project MyProject && cd MyProjectFolder # if you are just starting
-    cordova plugin add https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free
+    cordova plugin add cordova-sqlite-evcore-extbuild-free
 
 **CLI NOTES:**
 
@@ -704,8 +703,8 @@ You can find some more details in a nice writeup (though with old links and pack
 
 ## Plugin installation sources
 
-- TBD not published: ~~`cordova-sqlite-evcore-extbuild-free` - stable npm package version~~
 - https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free - latest version
+- `cordova-sqlite-evcore-extbuild-free` - stable npm package version
 
 ## Source tree
 
@@ -833,8 +832,6 @@ To run from a windows powershell (here is a sample for android target):
 # Adapters
 
 ## Lawnchair Adapter
-
-~~**BROKEN:** The Lawnchair adapter does not support the `openDatabase` options such as `location` or `iosDatabaseLocation` options and is therefore *not* expected to work with this plugin.~~
 
 ### Common adapter
 
