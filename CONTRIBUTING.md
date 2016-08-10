@@ -8,14 +8,7 @@ Please see README.md for more details.
 
 ## Contributing patches
 
-_Patches will *NOT* be accepted on this project due to potential licensing issues._
-
-- ~~Patches with bug fixes are helpful, especially when submitted with test code.~~
-- ~~Other enhancements are welcome for consideration, when submitted with test code and are working for all supported platforms. Increase of complexity should be avoided.~~
-- ~~All contributions may be reused by [@brodybits](https://github.com/brodybits) under another license in the future. Efforts will be taken to give credit for major contributions but it will not be guaranteed.~~
-- ~~Project restructuring, i.e. moving files and/or directories around, should be avoided if possible.~~
-
-~~Please see README.md for more details.~~
+Patches will NOT be accepted on this version due to possible licensing issues.
 
 ## Other
 

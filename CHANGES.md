@@ -1,6 +1,8 @@
 # Changes
 
-## cordova-sqlite-evcore-xxx-free 0.7.1-merge1
+## cordova-sqlite-evcore-common-free 0.7.1
+
+- Use SQLite 3.14 (without FTS5 or JSON1 enabled) for iOS and Windows
 
 ### cordova-sqlite-storage 1.4.6
 

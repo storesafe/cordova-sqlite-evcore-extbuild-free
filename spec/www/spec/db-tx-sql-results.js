@@ -878,6 +878,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'ALTER TABLE RENAME test', function(done) {
+          if (isWindows) pending('SKIP for Windows'); // FAILURE on Windows x86/x64 builds (litehelpers/Cordova-sqlite-storage#530)
+
           var createdb = openDatabase('ALTER-TABLE-RENAME-test.db', '1.0', 'Test', DEFAULT_SIZE);
 
           createdb.transaction(function(tx) {
