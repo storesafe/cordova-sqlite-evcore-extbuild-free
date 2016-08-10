@@ -39,13 +39,13 @@ var mytests = function() {
             name: 'i2-'+name,
             androidDatabaseImplementation: 2,
             androidLockWorkaround: 1,
-            location: 1
+            iosDatabaseLocation: 'Documents'
           });
         }
         if (isWebSql) {
           return window.openDatabase(name, "1.0", "Demo", DEFAULT_SIZE);
         } else {
-          return window.sqlitePlugin.openDatabase({name: name, location: 0});
+          return window.sqlitePlugin.openDatabase({name: name, location: 'default'});
         }
       }
 
@@ -337,6 +337,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'UTF-8 string test', function(done) {
+          if (isWP8) pending('SKIP for WP(8)');
+
           var db = openDatabase("UTF8-string-test.db", "1.0", "Demo", DEFAULT_SIZE);
 
           db.transaction(function(tx) {
@@ -352,6 +354,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'UTF-8 string binding test', function(done) {
+          if (isWP8) pending('SKIP for WP(8)');
+
           var db = openDatabase("UTF8-string-binding-test.db", "1.0", "Demo", DEFAULT_SIZE);
 
           db.transaction(function(tx) {
@@ -496,6 +500,23 @@ var mytests = function() {
               (isWebSql) ? done() : db.close(done, done);
             });
 
+          });
+        }, MYTIMEOUT);
+
+        it(suiteName + "SELECT HEX(X'010203') [BLOB value test]", function(done) {
+          var db = openDatabase("SELECT-HEX-BLOB-test.db", "1.0", "Demo", DEFAULT_SIZE);
+
+          db.transaction(function(tx) {
+
+            tx.executeSql("SELECT HEX(X'010203') AS hex_value", [], function(ignored, rs) {
+              expect(rs).toBeDefined();
+              expect(rs.rows).toBeDefined();
+              expect(rs.rows.length).toBe(1);
+              expect(rs.rows.item(0).hex_value).toBe('010203');
+
+              // Close (plugin only) & finish:
+              (isWebSql) ? done() : db.close(done, done);
+            });
           });
         }, MYTIMEOUT);
 
