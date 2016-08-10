@@ -1,6 +1,6 @@
 {
-  "name": "cordova-sqlite-evcore-free",
-  "version": "0.7.0",
+  "name": "cordova-sqlite-evcore-xxx-free",
+  "version": "0.7.1-merge1",
   "description": "Cordova/PhoneGap sqlite storage - free enterprise version with performance improvements for Android",
   "cordova": {
     "id": "cordova-sqlite-evcore-free",
@@ -20,12 +20,6 @@
     "cordova-android",
     "cordova-ios",
     "cordova-windows"
-  ],
-  "engines": [
-    {
-      "name": "cordova",
-      "version": ">=6.0.0"
-    }
   ],
   "author": "various",
   "license": "GPL",

@@ -389,9 +389,7 @@ var mytests = function() {
       describe(scenarioList[i] + ': basic tx error semantics test(s)', function() {
 
         /* found due to investigation of litehelpers/Cordova-sqlite-storage#226: */
-        it(suiteName + 'Skip callbacks after syntax error with no handler', function(done) {
-          if (!isWebSql) pending('Plugin BROKEN'); // XXX TODO
-
+        it(suiteName + 'SKIP SQL CALLBACKS after syntax error with no handler', function(done) {
           var db = openDatabase('first-syntax-error-with-no-handler.db', '1.0', 'Test', DEFAULT_SIZE);
           expect(db).toBeDefined();
 
@@ -403,47 +401,45 @@ var mytests = function() {
             // This insertion has a sql syntax error-which is not handled:
             tx.executeSql('insert into tt (data) VALUES ', [123]);
 
-            // second insertion with syntax error in transaction ["skipped" by Web SQL]:
+            // SKIPPED by Web SQL and this plugin:
+            // SECOND insertion with syntax error in transaction
             tx.executeSql('insert into tt (data) VALUES ', [456], function(tx, res) {
-              // not expected:
+              // NOT EXPECTED:
               expect(false).toBe(true);
             }, function(err) {
-              // expected, but then it shows the handling this sql statement is NOT skipped (by the plugin):
+              // NOT EXPECTED:
               expect(false).toBe(true);
+              // TRY to RECOVER:
               return false;
             });
 
           }, function(err) {
-            // transaction expected to fail:
+            // EXPECTED RESULT:
             expect(true).toBe(true);
             // Close (plugin only) & finish:
             (isWebSql) ? done() : db.close(done, done);
 
           }, function() {
-            // not expected [ignored for now]:
-            //expect(false).toBe(true);
-            expect(true).toBe(true);
+            // NOT EXPECTED:
+            expect(false).toBe(true);
             // Close (plugin only) & finish:
             (isWebSql) ? done() : db.close(done, done);
           });
         }, MYTIMEOUT);
 
         /* found due to investigation of litehelpers/Cordova-sqlite-storage#226: */
-        it(suiteName + 'Skip callbacks after syntax error handler returns true', function(done) {
-          if (!isWebSql) pending('Plugin BROKEN'); // XXX TODO
-
+        it(suiteName + 'SKIP SQL CALLBACKS after syntax error handler returns true', function(done) {
           var db = openDatabase('first-syntax-error-handler-returns-true.db', '1.0', 'Test', DEFAULT_SIZE);
           expect(db).toBeDefined();
 
           var isFirstErrorHandlerCalled = false; // poor man's spy
-          var isSecondErrorHandlerCalled = false;
 
           db.transaction(function(tx) {
             expect(tx).toBeDefined();
             tx.executeSql('DROP TABLE IF EXISTS tt');
             tx.executeSql('CREATE TABLE IF NOT EXISTS tt (data unique)');
 
-            // FIRST SQL syntax error with handler that returns undefined [nothing]:
+            // FIRST SQL syntax error with handler that returns true (should completely stop transaction):
             tx.executeSql('insert into tt (data) VALUES ', [456], function(tx, res) {
               // NOT EXPECTED:
               expect(false).toBe(true);
@@ -455,34 +451,29 @@ var mytests = function() {
               return true;
             });
 
-            // SECOND insertion with syntax error with handler that signals explicit recovery [SKIPPED by Web SQL]:
+            // SKIPPED by Web SQL and this plugin:
+            // SECOND insertion with syntax error with handler that signals explicit recovery
             tx.executeSql('insert into tt (data) VALUES ', [456], function(tx, res) {
               // NOT EXPECTED:
               expect(false).toBe(true);
             }, function(err) {
-              // expected, but then it shows the handling this sql statement is NOT skipped (by the plugin):
+              // NOT EXPECTED:
               expect(false).toBe(true);
-              isSecondErrorHandlerCalled = true;
               // explicit recovery:
               return false;
             });
 
           }, function(err) {
-            // transaction expected to fail:
+            // EXPECTED RESULT:
             expect(true).toBe(true);
             expect(isFirstErrorHandlerCalled).toBe(true);
-            // [ignored for now]:
-            //expect(isSecondErrorHandlerCalled).toBe(false);
             // Close (plugin only) & finish:
             (isWebSql) ? done() : db.close(done, done);
 
           }, function() {
-            // not expected [ignored for now]:
-            //expect(false).toBe(true);
-            expect(true).toBe(true);
+            // NOT EXPECTED:
+            expect(false).toBe(true);
             expect(isFirstErrorHandlerCalled).toBe(true);
-            // [ignored for now]:
-            //expect(isSecondErrorHandlerCalled).toBe(false);
             // Close (plugin only) & finish:
             (isWebSql) ? done() : db.close(done, done);
           });
@@ -548,7 +539,7 @@ var mytests = function() {
 
         // NOTE: as discussed in litehelpers/Cordova-sqlite-storage#232 this plugin is correct
         // according to the spec at http://www.w3.org/TR/webdatabase/
-        it(suiteName + 'syntax error handler returns undefined', function(done) {
+        it(suiteName + 'syntax error handler returns undefined (deviation in WebKit Web SQL implementation)', function(done) {
           var db = openDatabase('syntax-error-handler-returns-undefined.db', '1.0', 'Test', DEFAULT_SIZE);
           expect(db).toBeDefined();
 
@@ -567,8 +558,7 @@ var mytests = function() {
               // expected ok:
               expect(true).toBe(true);
               isFirstErrorHandlerCalled = true;
-              // [should] recover this transaction:
-              //return false;
+              // (should) recover this transaction according to Web SQL spec:
               return undefined;
             });
 
@@ -582,11 +572,81 @@ var mytests = function() {
             (isWebSql) ? done() : db.close(done, done);
 
           }, function() {
-            // EXPECTED OK for Web SQL ONLY:
+            // EXPECTED OK for WebKit Web SQL implementation ONLY:
             if (isWebSql)
               expect(true).toBe(true);
             else
               expect(false).toBe(true);
+            expect(isFirstErrorHandlerCalled).toBe(true);
+            // Close (plugin only) & finish:
+            (isWebSql) ? done() : db.close(done, done);
+          });
+        }, MYTIMEOUT);
+
+        it(suiteName + 'STOP nested transaction if syntax error handler returns true', function(done) {
+          var db = openDatabase('stop-nested-tx-if-syntax-error-handler-returns-true.db', '1.0', 'Test', DEFAULT_SIZE);
+          expect(db).toBeDefined();
+
+          // poor man's spy:
+          var isFirstSuccessHandlerCalled = false;
+          var isFirstErrorHandlerCalled = false;
+          var isFirstNestedErrorHandlerCalled = false;
+
+          db.transaction(function(tx) {
+            tx.executeSql('SELECT 1', [], function(tx, res) {
+              // EXPECTED RESULT:
+              expect(true).toBe(true);
+              isFirstSuccessHandlerCalled = true;
+
+              // NESTED:
+              tx.executeSql('SELCT 1', [], function(tx, res) {
+                // NOT EXPECTED:
+                expect(false).toBe(true);
+              }, function(err) {
+                // NOT EXPECTED:
+                expect(false).toBe(true);
+                // TRY to RECOVER in NESTED:
+                return true;
+              });
+
+            }, function(err) {
+              // NOT EXPECTED:
+              expect(false).toBe(true);
+              return true;
+            });
+
+            // FIRST SQL syntax error with handler that returns true (STOP the transaction):
+            tx.executeSql('SELCT 1', [], function(tx, res) {
+              // NOT EXPECTED:
+              expect(false).toBe(true);
+            }, function(err) {
+              // EXPECTED RESULT:
+              expect(true).toBe(true);
+              isFirstErrorHandlerCalled = true;
+              // STOP the transaction:
+              return true;
+            });
+
+            // SKIPPED by Web SQL and this plugin:
+            tx.executeSql('SELECT 1', [], function(tx, res) {
+              // NOT EXPECTED:
+              expect(false).toBe(true);
+            }, function(err) {
+              // NOT EXPECTED:
+              expect(false).toBe(true);
+              return true;
+            });
+
+          }, function(err) {
+            // EXPECTED RESULT:
+            expect(true).toBe(true);
+            expect(isFirstErrorHandlerCalled).toBe(true);
+            // Close (plugin only) & finish:
+            (isWebSql) ? done() : db.close(done, done);
+
+          }, function() {
+            // NOT EXPECTED:
+            expect(false).toBe(true);
             expect(isFirstErrorHandlerCalled).toBe(true);
             // Close (plugin only) & finish:
             (isWebSql) ? done() : db.close(done, done);
