@@ -60,7 +60,7 @@ Some other projects by [@brodybits](https://github.com/brodybits):
 - This version includes the SQLite and Android-sqlite-evcore-native-driver-free dependencies to work with PhoneGap Build and other some other build systems such as Intel XDK.
 - A recent version of the Cordova CLI (such as `6.1.1`) is recommended. Cordova versions older than `6.0.0` are missing the `cordova-ios@4.0.0` security fixes. Use of other systems such as PhoneGap CLI, PhoneGap Build, or plugman is not tested and no longer supported.
 - The iOS database location is now mandatory, as documented below.
-- SQLite version `3.12.2` (without FTS5 or JSON1 functionality) is used for Android. SQLite `3.8.10.2` is used for iOS and Windows.
+- SQLite version `3.12.2` (without FTS5 or JSON1 functionality) is used for Android. SQLite `3.14.0` (without FTS5 or JSON1 enabled) is used for iOS and Windows.
 - This version supports the use of two (2) possible Android sqlite database implementations:
   - default: high-performance, lightweight [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) NDK library written in C
   - optional: built-in Android database classes (usage described below)

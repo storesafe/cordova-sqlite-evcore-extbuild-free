@@ -1,5 +1,9 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.8.1-pre1
+
+- Include SQLite 3.14 for iOS and Windows (without FTS5 or JSON1 enabled)
+
 # cordova-sqlite-evcore-extbuild-free 0.8.0
 
 - SQLite and Android-sqlite-evcore-native-driver-free dependencies included to support PhoneGap Build
