@@ -129,6 +129,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 
 ## Announcements
 
+- Custom Android database location (supports external storage directory)
 - The Android version uses the high-performance and lightweight [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) C library for JSON and SQL statement handling and processes large batches in less than half the time compared to [litehelpers / Cordova-sqlite-storage](https://github.com/litehelpers/Cordova-sqlite-storage), as measured by: [brodybits / Cordova-sql-test-app](https://github.com/brodybits/Cordova-sql-test-app)
 - The [brodybits / Cordova-sqlite-bootstrap-test](https://github.com/brodybits/Cordova-sqlite-bootstrap-test) project is a CC0 (public domain) starting point to reproduce issues with this plugin and may be used as a quick way to start developing a new app.
 - Published [brodybits / Cordova-quick-start-checklist](https://github.com/brodybits/Cordova-quick-start-checklist) and [brodybits / Avoiding-some-Cordova-pitfalls](https://github.com/brodybits/Avoiding-some-Cordova-pitfalls).
@@ -487,6 +488,32 @@ where the `iosDatabaseLocation` option may be set to one of the following choice
 - `default`: `Library/LocalDatabase` subdirectory - *NOT* visible to iTunes and *NOT* backed up by iCloud
 - `Library`: `Library` subdirectory - backed up by iCloud, *NOT* visible to iTunes
 - `Documents`: `Documents` subdirectory - visible to iTunes and backed up by iCloud
+
+To specify a external or another custom Android database location, with help from cordova-plugin-file:
+
+```js
+window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory, function(externalDataDirectoryEntry) {
+  var db = window.sqlitePlugin.openDatabase({name: 'external.db', androidDatabaseLocation: externalDataDirectoryEntry.toURL()});
+
+  db.transaction(function(tx) {
+    tx.executeSql('CREATE TABLE IF NOT EXISTS MyTable (data)');
+    tx.executeSql('INSERT INTO MyTable VALUES (?)', ['test-value']);
+  }, function(error) {
+    console.log('Populate database error: ' + error.message);
+
+  }, function() {
+    db.transaction(function(tx) {
+      tx.executeSql('SELECT data from MyTable', [], function(tx_ignored, resultSet) {
+        console.log('Record count: ' + resultSet.rows.length);
+        for (var i=0; i<resultSet.rows.length; ++i)
+          console.log('index: ' + i + ' value: ' + resultSet.rows.item(i).data);
+      });
+    }, function(error) {
+      console.log('Populate database error: ' + error.message);
+    });
+  });
+});
+```
 
 **WARNING:** Again, the new "default" iosDatabaseLocation value is *NOT* the same as the old default location and would break an upgrade for an app using the old default value (0) on iOS.
 

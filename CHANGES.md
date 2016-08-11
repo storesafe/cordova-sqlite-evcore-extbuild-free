@@ -1,7 +1,8 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.8.1-pre2
+# cordova-sqlite-evcore-extbuild-free 0.8.1-pre3
 
+- Custom Android database file location
 - Include SQLite 3.14 for iOS and Windows (without FTS5 or JSON1 enabled)
 
 ## cordova-sqlite-evcore-common-free 0.7.1
