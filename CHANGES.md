@@ -1,5 +1,9 @@
 # Changes
 
+## cordova-sqlite-evcore-feature-android-db-location 0.7.2-dev1
+
+- Custom Android database file location
+
 ## cordova-sqlite-evcore-common-free 0.7.1
 
 - Use SQLite 3.14 (without FTS5 or JSON1 enabled) for iOS and Windows

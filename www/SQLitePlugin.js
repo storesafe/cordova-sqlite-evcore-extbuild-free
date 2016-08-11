@@ -695,13 +695,16 @@ Contact for commercial license: info@litehelpers.net
       if (!openargs.name) {
         throw newSQLError('Database name value is missing in openDatabase call');
       }
-      if (!openargs.iosDatabaseLocation && !openargs.location && openargs.location !== 0) {
-        throw newSQLError('Database location or iosDatabaseLocation value is now mandatory in openDatabase call');
+      if (!openargs.iosDatabaseLocation && !openargs.location && openargs.location !== 0 && !openargs.androidDatabaseLocation) {
+        throw newSQLError('Database location (or iosDatabaseLocation or androidDatabaseLocation) value is now mandatory in openDatabase call');
       }
       if (!!openargs.location && !!openargs.iosDatabaseLocation) {
         throw newSQLError('AMBIGUOUS: both location or iosDatabaseLocation values are present in openDatabase call');
       }
-      dblocation = !!openargs.location && openargs.location === 'default' ? iosLocationMap['default'] : !!openargs.iosDatabaseLocation ? iosLocationMap[openargs.iosDatabaseLocation] : dblocations[openargs.location];
+      if (!!openargs.location && !!openargs.androidDatabaseLocation) {
+        throw newSQLError('AMBIGUOUS: both location or androidDatabaseLocation values are present in openDatabase call');
+      }
+      dblocation = !!openargs.location && openargs.location === 'default' ? iosLocationMap['default'] : !!openargs.iosDatabaseLocation ? iosLocationMap[openargs.iosDatabaseLocation] : !openargs.location && openargs.location !== 0 ? iosLocationMap['default'] : dblocations[openargs.location];
       if (!dblocation) {
         throw newSQLError('Valid iOS database location could not be determined in openDatabase call');
       }
@@ -740,17 +743,23 @@ Contact for commercial license: info@litehelpers.net
         }
         args.path = dbname;
       }
-      if (!first.iosDatabaseLocation && !first.location && first.location !== 0) {
-        throw newSQLError('Database location or iosDatabaseLocation value is now mandatory in deleteDatabase call');
+      if (!first.iosDatabaseLocation && !first.location && first.location !== 0 && !first.androidDatabaseLocation) {
+        throw newSQLError('Database location (or iosDatabaseLocation or androidDatabaseLocation) value is now mandatory in deleteDatabase call');
       }
       if (!!first.location && !!first.iosDatabaseLocation) {
         throw newSQLError('AMBIGUOUS: both location or iosDatabaseLocation values are present in deleteDatabase call');
       }
-      dblocation = !!first.location && first.location === 'default' ? iosLocationMap['default'] : !!first.iosDatabaseLocation ? iosLocationMap[first.iosDatabaseLocation] : dblocations[first.location];
+      if (!!first.location && !!first.androidDatabaseLocation) {
+        throw newSQLError('AMBIGUOUS: both location or androidDatabaseLocation values are present in deleteDatabase call');
+      }
+      dblocation = !!first.location && first.location === 'default' ? iosLocationMap['default'] : !!first.iosDatabaseLocation ? iosLocationMap[first.iosDatabaseLocation] : !first.location && first.location !== 0 ? iosLocationMap['default'] : dblocations[first.location];
       if (!dblocation) {
         throw newSQLError('Valid iOS database location could not be determined in deleteDatabase call');
       }
       args.dblocation = dblocation;
+      if (!!first.androidDatabaseLocation) {
+        args.androidDatabaseLocation = first.androidDatabaseLocation;
+      }
       delete SQLitePlugin.prototype.openDBs[args.path];
       delete SQLitePlugin.prototype.dbidmap[args.path];
       delete SQLitePlugin.prototype.fjmap[args.path];

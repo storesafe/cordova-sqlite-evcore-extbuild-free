@@ -751,17 +751,22 @@
         if !openargs.name
           throw newSQLError 'Database name value is missing in openDatabase call'
 
-        if !openargs.iosDatabaseLocation and !openargs.location and openargs.location isnt 0
-          throw newSQLError 'Database location or iosDatabaseLocation value is now mandatory in openDatabase call'
+        if !openargs.iosDatabaseLocation and !openargs.location and openargs.location isnt 0 and !openargs.androidDatabaseLocation
+          throw newSQLError 'Database location (or iosDatabaseLocation or androidDatabaseLocation) value is now mandatory in openDatabase call'
 
         if !!openargs.location and !!openargs.iosDatabaseLocation
           throw newSQLError 'AMBIGUOUS: both location or iosDatabaseLocation values are present in openDatabase call'
+
+        if !!openargs.location and !!openargs.androidDatabaseLocation
+          throw newSQLError 'AMBIGUOUS: both location or androidDatabaseLocation values are present in openDatabase call'
 
         dblocation =
           if !!openargs.location and openargs.location is 'default'
             iosLocationMap['default']
           else if !!openargs.iosDatabaseLocation
             iosLocationMap[openargs.iosDatabaseLocation]
+          else if !openargs.location and openargs.location isnt 0
+            iosLocationMap['default']
           else
             dblocations[openargs.location]
 
@@ -810,17 +815,22 @@
           #args.dblocation = dblocation || dblocations[0]
           #args.dblocation = dblocation || dblocations[2]
 
-        if !first.iosDatabaseLocation and !first.location and first.location isnt 0
-          throw newSQLError 'Database location or iosDatabaseLocation value is now mandatory in deleteDatabase call'
+        if !first.iosDatabaseLocation and !first.location and first.location isnt 0 and !first.androidDatabaseLocation
+          throw newSQLError 'Database location (or iosDatabaseLocation or androidDatabaseLocation) value is now mandatory in deleteDatabase call'
 
         if !!first.location and !!first.iosDatabaseLocation
           throw newSQLError 'AMBIGUOUS: both location or iosDatabaseLocation values are present in deleteDatabase call'
+
+        if !!first.location and !!first.androidDatabaseLocation
+          throw newSQLError 'AMBIGUOUS: both location or androidDatabaseLocation values are present in deleteDatabase call'
 
         dblocation =
           if !!first.location and first.location is 'default'
             iosLocationMap['default']
           else if !!first.iosDatabaseLocation
             iosLocationMap[first.iosDatabaseLocation]
+          else if !first.location and first.location isnt 0
+            iosLocationMap['default']
           else
             dblocations[first.location]
 
@@ -828,6 +838,8 @@
           throw newSQLError 'Valid iOS database location could not be determined in deleteDatabase call'
 
         args.dblocation = dblocation
+        if !!first.androidDatabaseLocation
+          args.androidDatabaseLocation = first.androidDatabaseLocation
 
         # XXX [BUG #210] TODO: when closing or deleting a db, abort any pending transactions (with error callback)
         delete SQLitePlugin::openDBs[args.path]

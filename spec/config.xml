@@ -10,4 +10,5 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <plugin name="cordova-plugin-file" spec="~4.2.0" />
 </widget>

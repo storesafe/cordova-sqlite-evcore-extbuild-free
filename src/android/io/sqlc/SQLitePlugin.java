@@ -12,7 +12,11 @@ import android.util.Log;
 
 import java.io.File;
 import java.lang.IllegalArgumentException;
-import java.lang.Number;
+//import java.lang.Number;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -24,10 +28,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.IOException;
+//import java.io.FileOutputStream;
+//import java.io.InputStream;
+//import java.io.OutputStream;
+//import java.io.IOException;
 
 import java.sql.SQLException;
 
@@ -148,8 +152,11 @@ public class SQLitePlugin extends CordovaPlugin {
             case delete:
                 o = args.getJSONObject(0);
                 dbname = o.getString("path");
+                String dblocation = null;
+                if (o.has("androidDatabaseLocation"))
+                    dblocation = o.getString("androidDatabaseLocation");
 
-                deleteDatabase(dbname, cbc);
+                deleteDatabase(dbname, dblocation, cbc);
 
                 break;
 
@@ -238,22 +245,37 @@ public class SQLitePlugin extends CordovaPlugin {
             this.cordova.getThreadPool().execute(r);
         }
     }
+
     /**
-     * Open a database.
+     * Get a database file.
      *
      * @param dbName   The name of the database file
      */
-    private SQLiteNativeDatabase openDatabase(String dbname, boolean ignored, CallbackContext cbc, boolean old_impl, int dbid) throws Exception {
-        try {
-            // ASSUMPTION: no db (connection/handle) is already stored in the map
-            // [should be true according to the code in DBRunner.run()]
-
+    private File getDatabaseFile(String dbname, String dblocation) throws URISyntaxException {
+        if (dblocation == null) {
             File dbfile = this.cordova.getActivity().getDatabasePath(dbname);
 
             if (!dbfile.exists()) {
                 dbfile.getParentFile().mkdirs();
             }
 
+            return dbfile;
+        }
+
+        return new File(new File(new URI(dblocation)), dbname);
+    }
+
+    /**
+     * Open a database.
+     *
+     * @param dbName   The name of the database file
+     */
+    private SQLiteNativeDatabase openDatabase(String dbname, String dblocation, CallbackContext cbc, boolean old_impl, int dbid) throws Exception {
+        try {
+            // ASSUMPTION: no db (connection/handle) is already stored in the map
+            // [should be true according to the code in DBRunner.run()]
+
+            File dbfile = getDatabaseFile(dbname, dblocation);
             Log.v("info", "Open sqlite db: " + dbfile.getAbsolutePath());
 
             SQLiteNativeDatabase mydb = new SQLiteNativeDatabase();
@@ -273,17 +295,12 @@ public class SQLitePlugin extends CordovaPlugin {
         }
     }
 
-    private SQLiteAndroidDatabase openDatabase2(String dbname, boolean ignored, CallbackContext cbc, boolean old_impl) throws Exception {
+    private SQLiteAndroidDatabase openDatabase2(String dbname, String dblocation, CallbackContext cbc, boolean old_impl) throws Exception {
         try {
             // ASSUMPTION: no db (connection/handle) is already stored in the map
             // [should be true according to the code in DBRunner.run()]
 
-            File dbfile = this.cordova.getActivity().getDatabasePath(dbname);
-
-            if (!dbfile.exists()) {
-                dbfile.getParentFile().mkdirs();
-            }
-
+            File dbfile = getDatabaseFile(dbname, dblocation);
             Log.v("info", "Open sqlite db: " + dbfile.getAbsolutePath());
 
             SQLiteAndroidDatabase mydb = new SQLiteAndroidDatabase();
@@ -339,7 +356,7 @@ public class SQLitePlugin extends CordovaPlugin {
         }
     }
 
-    private void deleteDatabase(String dbname, CallbackContext cbc) {
+    private void deleteDatabase(String dbname, String dblocation, CallbackContext cbc) {
         DBRunner r = dbrmap.get(dbname);
         if (r != null) {
             try {
@@ -351,7 +368,7 @@ public class SQLitePlugin extends CordovaPlugin {
                 Log.e(SQLitePlugin.class.getSimpleName(), "couldn't close database", e);
             }
         } else {
-            boolean deleteResult = this.deleteDatabaseNow(dbname);
+            boolean deleteResult = this.deleteDatabaseNow(dbname, dblocation);
             if (deleteResult) {
                 cbc.success();
             } else {
@@ -367,10 +384,10 @@ public class SQLitePlugin extends CordovaPlugin {
      *
      * @return true if successful or false if an exception was encountered
      */
-    private boolean deleteDatabaseNow(String dbname) {
-        File dbfile = this.cordova.getActivity().getDatabasePath(dbname);
-
+    private boolean deleteDatabaseNow(String dbname, String dblocation) {
         try {
+            File dbfile = getDatabaseFile(dbname, dblocation);
+
             return cordova.getActivity().deleteDatabase(dbfile.getAbsolutePath());
         } catch (Exception e) {
             Log.e(SQLitePlugin.class.getSimpleName(), "couldn't delete database", e);
@@ -431,6 +448,7 @@ public class SQLitePlugin extends CordovaPlugin {
     private class DBRunner implements Runnable {
         final int dbid;
         final String dbname;
+        final String dblocation;
         // expose oldImpl:
         boolean oldImpl;
         private boolean bugWorkaround;
@@ -445,8 +463,20 @@ public class SQLitePlugin extends CordovaPlugin {
             this.dbid = dbid;
             this.dbname = dbname;
             this.oldImpl = options.has("androidOldDatabaseImplementation");
-            Log.v(SQLitePlugin.class.getSimpleName(), "Android db implementation: built-in android.database.sqlite package");
+            //Log.v(SQLitePlugin.class.getSimpleName(), "Android db implementation: built-in android.database.sqlite package");
             this.bugWorkaround = this.oldImpl && options.has("androidBugWorkaround");
+
+            String mydblocation = null;
+            if (options.has("androidDatabaseLocation")) {
+                try {
+                    mydblocation = options.getString("androidDatabaseLocation");
+                } catch (Exception e) {
+                    // IGNORED
+                    Log.e(SQLitePlugin.class.getSimpleName(), "unexpected JSON exception, IGNORED", e);
+                }
+            }
+            this.dblocation = mydblocation;
+
             if (this.bugWorkaround)
                 Log.v(SQLitePlugin.class.getSimpleName(), "Android db closing/locking workaround applied");
 
@@ -457,9 +487,9 @@ public class SQLitePlugin extends CordovaPlugin {
         public void run() {
             try {
                 if (!oldImpl)
-                    this.mydb = this.mydb1 = openDatabase(dbname, false, this.openCbc, this.oldImpl, this.dbid);
+                    this.mydb = this.mydb1 = openDatabase(dbname, dblocation, this.openCbc, this.oldImpl, this.dbid);
                 else
-                    this.mydb = openDatabase2(dbname, false, this.openCbc, this.oldImpl);
+                    this.mydb = openDatabase2(dbname, dblocation, this.openCbc, this.oldImpl);
             } catch (Exception e) {
                 Log.e(SQLitePlugin.class.getSimpleName(), "unexpected error, stopping db thread", e);
                 dbrmap.remove(dbname);
@@ -499,7 +529,7 @@ public class SQLitePlugin extends CordovaPlugin {
                         dbq.cbc.success();
                     } else {
                         try {
-                            boolean deleteResult = deleteDatabaseNow(dbname);
+                            boolean deleteResult = deleteDatabaseNow(dbname, dblocation);
                             if (deleteResult) {
                                 dbq.cbc.success();
                             } else {
