@@ -107,7 +107,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 
 ## Status
 
-- This version includes the SQLite and Android-sqlite-evcore-native-driver-free dependencies to work with PhoneGap Build and other some other build systems such as _Cordova Plugman, PhoneGap CLI, and_ Intel XDK.
+- This version includes the SQLite and Android-sqlite-evcore-native-driver-free dependencies to work with PhoneGap Build and other some other build systems such as Cordova Plugman, PhoneGap CLI, and Intel XDK.
 - A recent version of the Cordova CLI (such as `6.3.0`) is recommended. Cordova versions older than `6.0.0` are missing the `cordova-ios@4.0.0` security fixes.
 - The iOS database location is now mandatory, as documented below.
 - SQLite version `3.12.2` (without FTS5 or JSON1 functionality) is used for Android. SQLite `3.14.0` (without FTS5 or JSON1 enabled) is used for iOS and Windows.
@@ -187,7 +187,7 @@ In addition, this guide assumes a basic knowledge of some key JavaScript concept
 
 ### Quick installation
 
-Use the _following command_ to install this plugin from the Cordova CLI:
+Use the following command to install this plugin from the Cordova CLI:
 
 ```shell
 cordova plugin add cordova-sqlite-evcore-extbuild-free --save
