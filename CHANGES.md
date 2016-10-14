@@ -1,7 +1,8 @@
 # Changes
 
-## cordova-sqlite-evcore-common-free 0.7.2-pre1
+## cordova-sqlite-evcore-common-free 0.7.2-pre2
 
+- Quick fix for error mapping in Android-sqlite-evcore-native-driver-free
 - Fix Android version to handle location reload/change properly
 
 ## cordova-sqlite-evcore-common-free 0.7.1
