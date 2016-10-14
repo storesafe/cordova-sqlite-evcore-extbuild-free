@@ -480,7 +480,7 @@ Contact for commercial license: info@litehelpers.net
     flatlist.push('extra');
     bl = batchExecutes.length;
     mycb = function(result) {
-      var c, changes, code, errormessage, insert_id, j, k, q, r, ri, rl, row, rows, sqliteCode, v;
+      var c, changes, code, errormessage, insert_id, j, k, q, r, ri, rl, row, rows, v;
       i = 0;
       ri = 0;
       rl = result.length;
@@ -543,14 +543,11 @@ Contact for commercial license: info@litehelpers.net
           ++ri;
         } else if (r === 'error') {
           code = result[ri++];
-          sqliteCode = result[ri++];
+          ++ri;
           errormessage = result[ri++];
           q.error({
-            result: {
-              code: code,
-              sqliteCode: sqliteCode,
-              message: errormessage
-            }
+            code: code,
+            message: errormessage
           });
         }
         ++i;

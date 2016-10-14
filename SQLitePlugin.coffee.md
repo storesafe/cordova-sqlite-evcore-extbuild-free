@@ -581,13 +581,11 @@
 
           else if r == 'error'
             code = result[ri++]
-            sqliteCode = result[ri++]
+            ++ri # [ignored]
             errormessage = result[ri++]
             q.error
-              result:
-                code: code
-                sqliteCode: sqliteCode
-                message: errormessage
+              code: code
+              message: errormessage
 
           ++i
 
@@ -1009,4 +1007,3 @@
 
 #### vim: set filetype=coffee :
 #### vim: set expandtab :
-
