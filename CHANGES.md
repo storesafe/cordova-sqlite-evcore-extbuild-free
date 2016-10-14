@@ -1,5 +1,9 @@
 # Changes
 
+## cordova-sqlite-evcore-common-free 0.7.2-pre1
+
+- Fix Android version to handle location reload/change properly
+
 ## cordova-sqlite-evcore-common-free 0.7.1
 
 - Use SQLite 3.14 (without FTS5 or JSON1 enabled) for iOS and Windows
