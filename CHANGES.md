@@ -1,8 +1,9 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.8.2-pre1
+# cordova-sqlite-evcore-extbuild-free 0.8.2-pre2
 
-TBD
+- Quick fix for Android error message reporting
+- Fix default Android implementation to reject SQL with too many parameters
 
 # cordova-sqlite-evcore-extbuild-free 0.8.1
 
