@@ -237,7 +237,20 @@ public class SQLitePlugin extends CordovaPlugin {
             // In the worst case it might be in the process of closing, but even that's less serious
             // than orphaning the old DBRunner.
 
-            cbc.success();
+            if (r.oldImpl) {
+              // Android version with 'normal' JSON interface:
+              cbc.success();
+            } else {
+              try {
+                // Android version with flat JSON interface:
+                JSONObject a1 = new JSONObject();
+                a1.put("dbid", r.dbid);
+                cbc.success(a1);
+              } catch(JSONException e) {
+                // NOT EXPECTED:
+                cbc.error("Internal error");
+              }
+            }
         } else {
             r = new DBRunner(dbname, options, cbc, ++lastdbid);
             dbrmap.put(dbname, r);
@@ -282,7 +295,6 @@ public class SQLitePlugin extends CordovaPlugin {
             mydb.open(dbfile);
 
             // Indicate Android version with flat JSON interface
-            //cbc.success("a1");
             JSONObject a1 = new JSONObject();
             a1.put("dbid", dbid);
             cbc.success(a1);
@@ -539,7 +551,7 @@ public class SQLitePlugin extends CordovaPlugin {
                             Log.e(SQLitePlugin.class.getSimpleName(), "couldn't delete database", e);
                             dbq.cbc.error("couldn't delete database: " + e);
                         }
-                    }                    
+                    }
                 } catch (Exception e) {
                     Log.e(SQLitePlugin.class.getSimpleName(), "couldn't close database", e);
                     if (dbq.cbc != null) {
