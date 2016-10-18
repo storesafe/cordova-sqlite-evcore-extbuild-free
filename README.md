@@ -1,4 +1,4 @@
-# Cordova/PhoneGap sqlite storage - free enterprise version with Android performance improvements for PhoneGap Build
+# Cordova/PhoneGap sqlite storage - free enterprise version with Android performance improvements and extras for PhoneGap Build
 
 Native interface to sqlite in a Cordova/PhoneGap plugin for Android, iOS, and Windows, with API similar to HTML5/[Web SQL API](http://www.w3.org/TR/webdatabase/).
 
@@ -8,11 +8,13 @@ This version is available under GPL v3 (http://www.gnu.org/licenses/gpl.txt) or 
 
 NOTE: Commercial licenses for [litehelpers / Cordova-sqlite-enterprise-free](https://github.com/litehelpers/Cordova-sqlite-enterprise-free) are valid for this version as well.
 
-TBD: no Circle CI or Travis CI working in this version branch.
+|Android Circle-CI (**full** suite)|iOS Travis-CI (missing open/close/delete tests)|
+|-----------------------|----------------------|
+|[![Circle CI](https://circleci.com/gh/litehelpers/Cordova-sqlite-evcore-extbuild-free.svg?style=svg)](https://circleci.com/gh/litehelpers/Cordova-sqlite-evcore-extbuild-free)|[![Build Status](https://travis-ci.org/litehelpers/Cordova-sqlite-evcore-extbuild-free.svg)](https://travis-ci.org/litehelpers/Cordova-sqlite-evcore-extbuild-free)|
 
 ## About this version
 
-This is the common version which supports the most widely used features and serves as the basis for the other versions.
+Free enterprise version with Android performance improvements and other features with sqlite3 dependencies, working with PhoneGap Build
 
 <!-- END About this version -->
 

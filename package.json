@@ -1,7 +1,7 @@
 {
   "name": "cordova-sqlite-evcore-extbuild-free",
-  "version": "0.8.1",
-  "description": "Cordova/PhoneGap sqlite storage - free enterprise version with performance improvements for Android",
+  "version": "0.8.2-pre1",
+  "description": "Cordova/PhoneGap sqlite storage - free enterprise version with Android performance/memory improvements and extra features for PhoneGap Build",
   "cordova": {
     "id": "cordova-sqlite-evcore-extbuild-free",
     "platforms": [

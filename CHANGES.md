@@ -1,5 +1,9 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.8.2-pre1
+
+TBD
+
 # cordova-sqlite-evcore-extbuild-free 0.8.1
 
 - Custom Android database file location
