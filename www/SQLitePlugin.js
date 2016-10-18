@@ -568,26 +568,24 @@ Contact for commercial license: info@litehelpers.net
         error: handlerFor(i, false)
       };
       tropts.push({
+        qid: null,
         sql: request.sql,
         params: request.params
       });
       i++;
     }
     mycb = function(result) {
-      var q, r, res, reslength, type;
-      i = 0;
-      reslength = result.length;
-      while (i < reslength) {
-        r = result[i];
+      var l, q, r, ref, res, resultIndex, type;
+      for (resultIndex = l = 0, ref = result.length - 1; 0 <= ref ? l <= ref : l >= ref; resultIndex = 0 <= ref ? ++l : --l) {
+        r = result[resultIndex];
         type = r.type;
         res = r.result;
-        q = mycbmap[i];
+        q = mycbmap[resultIndex];
         if (q) {
           if (q[type]) {
             q[type](res);
           }
         }
-        ++i;
       }
     };
     cordova.exec(mycb, null, "SQLitePlugin", "backgroundExecuteSqlBatch", [
@@ -758,7 +756,7 @@ Contact for commercial license: info@litehelpers.net
   SelfTest = {
     DBNAME: '___$$$___litehelpers___$$$___test___$$$___.db',
     start: function(successcb, errorcb) {
-      return SQLiteFactory.deleteDatabase({
+      SQLiteFactory.deleteDatabase({
         name: SelfTest.DBNAME,
         location: 'default'
       }, (function() {
@@ -768,7 +766,49 @@ Contact for commercial license: info@litehelpers.net
       }));
     },
     start2: function(successcb, errorcb) {
-      return SQLiteFactory.openDatabase({
+      SQLiteFactory.openDatabase({
+        name: SelfTest.DBNAME,
+        location: 'default'
+      }, function(db) {
+        var check1;
+        check1 = false;
+        return db.transaction(function(tx) {
+          return tx.executeSql('SELECT UPPER("Test") AS upperText', [], function(ignored, resutSet) {
+            if (!resutSet.rows) {
+              return SelfTest.finishWithError(errorcb, 'Missing resutSet.rows');
+            }
+            if (!resutSet.rows.length) {
+              return SelfTest.finishWithError(errorcb, 'Missing resutSet.rows.length');
+            }
+            if (resutSet.rows.length !== 1) {
+              return SelfTest.finishWithError(errorcb, "Incorrect resutSet.rows.length value: " + resutSet.rows.length + " (expected: 1)");
+            }
+            if (!resutSet.rows.item(0).upperText) {
+              return SelfTest.finishWithError(errorcb, 'Missing resutSet.rows.item(0).upperText');
+            }
+            if (resutSet.rows.item(0).upperText !== 'TEST') {
+              return SelfTest.finishWithError(errorcb, "Incorrect resutSet.rows.item(0).upperText value: " + (resutSet.rows.item(0).data) + " (expected: 'TEST')");
+            }
+            check1 = true;
+          }, function(sql_err) {
+            SelfTest.finishWithError(errorcb, "SQL error: " + sql_err);
+          });
+        }, function(tx_err) {
+          SelfTest.finishWithError(errorcb, "TRANSACTION error: " + tx_err);
+        }, function() {
+          if (!check1) {
+            return SelfTest.finishWithError(errorcb, 'Did not get expected upperText result data');
+          }
+          delete db.openDBs[SelfTest.DBNAME];
+          delete txLocks[SelfTest.DBNAME];
+          SelfTest.start3(successcb, errorcb);
+        });
+      }, function(open_err) {
+        return SelfTest.finishWithError(errorcb, "Open database error: " + open_err);
+      });
+    },
+    start3: function(successcb, errorcb) {
+      SQLiteFactory.openDatabase({
         name: SelfTest.DBNAME,
         location: 'default'
       }, function(db) {
@@ -905,7 +945,7 @@ Contact for commercial license: info@litehelpers.net
       });
     },
     finishWithError: function(errorcb, message) {
-      return SQLiteFactory.deleteDatabase({
+      SQLiteFactory.deleteDatabase({
         name: SelfTest.DBNAME,
         location: 'default'
       }, function() {
