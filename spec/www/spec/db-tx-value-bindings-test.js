@@ -847,7 +847,6 @@ var mytests = function() {
 
         it(suiteName + 'executeSql with too many parameters [extra TEXT string]', function(done) {
           if (isWP8) pending('SKIP for WP8'); // TBD BROKEN on WP8
-          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('TBD BROKEN for Android-sqlite-evcore-native-driver-free');
 
           var db = openDatabase("too-many-parameters-extra-text-string.db", "1.0", "Demo", DEFAULT_SIZE);
 
@@ -890,6 +889,8 @@ var mytests = function() {
                   expect(error.message).toMatch(/number of '\?'s in statement string does not match argument count/);
                 else if (isWindows)
                   expect(error.message).toMatch(/Error 25 when binding argument to SQL query/);
+                else if (isAndroid && !isImpl2)
+                  expect(error.message).toMatch(/a statement with no error handler failed: other error.*code 25/);
                 else
                   expect(error.message).toMatch(/index.*out of range/);
 
@@ -902,7 +903,6 @@ var mytests = function() {
 
         it(suiteName + 'executeSql with too many parameters [extra REAL value]', function(done) {
           if (isWP8) pending('SKIP for WP8'); // TBD BROKEN on WP8
-          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('TBD BROKEN for Android-sqlite-evcore-native-driver-free');
 
           var db = openDatabase("too-many-parameters-extra-real-value.db", "1.0", "Demo", DEFAULT_SIZE);
 
@@ -945,6 +945,8 @@ var mytests = function() {
                   expect(error.message).toMatch(/number of '\?'s in statement string does not match argument count/);
                 else if (isWindows)
                   expect(error.message).toMatch(/Error 25 when binding argument to SQL query/);
+                else if (isAndroid && !isImpl2)
+                  expect(error.message).toMatch(/a statement with no error handler failed: other error.*code 25/);
                 else
                   expect(error.message).toMatch(/index.*out of range/);
 
@@ -957,7 +959,6 @@ var mytests = function() {
 
         it(suiteName + 'executeSql with too many parameters [extra INTEGER value]', function(done) {
           if (isWP8) pending('SKIP for WP8'); // TBD BROKEN on WP8
-          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('TBD BROKEN for Android-sqlite-evcore-native-driver-free');
 
           var db = openDatabase("too-many-parameters-extra-integer-value.db", "1.0", "Demo", DEFAULT_SIZE);
 
@@ -1000,6 +1001,8 @@ var mytests = function() {
                   expect(error.message).toMatch(/number of '\?'s in statement string does not match argument count/);
                 else if (isWindows)
                   expect(error.message).toMatch(/Error 25 when binding argument to SQL query/);
+                else if (isAndroid && !isImpl2)
+                  expect(error.message).toMatch(/a statement with no error handler failed: other error.*code 25/);
                 else
                   expect(error.message).toMatch(/index.*out of range/);
 
@@ -1012,7 +1015,6 @@ var mytests = function() {
 
         it(suiteName + 'executeSql with too many parameters [extra NULL value]', function(done) {
           if (isWP8) pending('SKIP for WP8'); // TBD BROKEN on WP8
-          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('TBD BROKEN for Android-sqlite-evcore-native-driver-free');
 
           var db = openDatabase("too-many-parameters-extra-null-value.db", "1.0", "Demo", DEFAULT_SIZE);
 
@@ -1055,6 +1057,8 @@ var mytests = function() {
                   expect(error.message).toMatch(/number of '\?'s in statement string does not match argument count/);
                 else if (isWindows)
                   expect(error.message).toMatch(/Error 25 when binding argument to SQL query/);
+                else if (isAndroid && !isImpl2)
+                  expect(error.message).toMatch(/a statement with no error handler failed: other error.*code 25/);
                 else
                   expect(error.message).toMatch(/index.*out of range/);
 

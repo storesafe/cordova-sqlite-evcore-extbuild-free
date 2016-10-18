@@ -1,9 +1,10 @@
 # Changes
 
-## cordova-sqlite-evcore-common-free 0.7.2-pre4
+## cordova-sqlite-evcore-common-free 0.7.2-pre5
 
 - Quick fix for Android error mapping
 - Fix Android version to handle location reload/change properly
+- Fix Android-sqlite-evcore-native-driver-free (default Android implementation) to reject SQL with too many parameters
 
 ### cordova-sqlite-storage 1.4.8
 
