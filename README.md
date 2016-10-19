@@ -14,7 +14,7 @@ NOTE: Commercial licenses for [litehelpers / Cordova-sqlite-enterprise-free](htt
 
 ## About this version
 
-Free enterprise version with Android performance improvements and other features with sqlite3 dependencies, working with PhoneGap Build
+Free enterprise version with Android performance improvements and other features with sqlite3 dependencies included, working with PhoneGap Build.
 
 <!-- END About this version -->
 
@@ -161,7 +161,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
   - Keeps sqlite database in a user data location that is known; can be reconfigured (iOS version); and may be synchronized to iCloud (iOS version).
   - No extra size limit. SQLite limits described at: <http://www.sqlite.org/limits.html>
 - Also tested with multi-page applications
-- This project is self-contained though with sqlite3 dependencies auto-fetched by npm. No dependencies on other plugins such as cordova-plugin-file
+- This project is self-contained. No dependencies on other plugins such as cordova-plugin-file.
 - Windows 8.1/Windows Phone 8.1/Windows 10 version uses a customized version of the performant C++ [doo / SQLite3-WinRT](https://github.com/doo/SQLite3-WinRT) component.
 - [SQLCipher](https://www.zetetic.net/sqlcipher/) support for Android/iOS/Windows is available at: [litehelpers / Cordova-sqlcipher-adapter](https://github.com/litehelpers/Cordova-sqlcipher-adapter)
 - Intellectual property:
@@ -621,7 +621,7 @@ where the `iosDatabaseLocation` option may be set to one of the following choice
 - `Library`: `Library` subdirectory - backed up by iCloud, *NOT* visible to iTunes
 - `Documents`: `Documents` subdirectory - visible to iTunes and backed up by iCloud
 
-To specify a external or another custom Android database location, with help from cordova-plugin-file:
+To specify a external or another custom Android database location (with help from cordova-plugin-file):
 
 ```js
 window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory, function(externalDataDirectoryEntry) {
