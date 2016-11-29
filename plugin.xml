@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-sqlite-evcore-common-free"
-    version="0.7.3-pre1">
+    version="0.7.3-pre2">
 
     <name>Cordova sqlite storage - free enterprise version with performance improvements for Android (common version branch with external sqlite3 dependencies)</name>
 
@@ -12,15 +12,6 @@
 
     <description>Native interface to SQLite for PhoneGap/Cordova. Allows you to use more storage and provides more flexibility than the standard Web SQL database (window.openDatabase).</description>
     <author>Litehelpers/Various</author>
-
-    <!-- NOT ENFORCED in this version branch:
-    <engines>
-        <engine name="cordova" version=">=6.0.0" />
-        <engine name="cordova-android" version=">=5.0.0" />
-        <engine name="cordova-ios" version=">=4.0.0" />
-        <engine name="cordova-windows" version=">=4.0.0" />
-    </engines>
-     -->
 
     <!-- THANKS to AllJoyn-Cordova / cordova-plugin-alljoyn: -->
     <hook type="before_plugin_install" src="scripts/beforePluginInstall.js" />
@@ -43,13 +34,12 @@
 
         <source-file src="src/android/io/sqlc/EVCoreNativeDriver.java" target-dir="src/io/sqlc"/>
 
-        <!-- Android-sqlite-evcore-native-driver libs: -->
+        <!-- Android-sqlite-evcore-native-driver native libs: -->
         <source-file src="node_modules/cordova-sqlite-evcore-free-dependencies/libs/armeabi/libsqlc-evcore-native-driver.so" target-dir="libs/armeabi"/>
         <source-file src="node_modules/cordova-sqlite-evcore-free-dependencies/libs/armeabi-v7a/libsqlc-evcore-native-driver.so" target-dir="libs/armeabi-v7a"/>
         <source-file src="node_modules/cordova-sqlite-evcore-free-dependencies/libs/arm64-v8a/libsqlc-evcore-native-driver.so" target-dir="libs/arm64-v8a"/>
         <source-file src="node_modules/cordova-sqlite-evcore-free-dependencies/libs/x86/libsqlc-evcore-native-driver.so" target-dir="libs/x86"/>
         <source-file src="node_modules/cordova-sqlite-evcore-free-dependencies/libs/x86_64/libsqlc-evcore-native-driver.so" target-dir="libs/x86_64"/>
-
     </platform>
 
     <!-- iOS -->
@@ -67,7 +57,6 @@
         <header-file src="node_modules/cordova-sqlite-evcore-free-dependencies/sqlite3.h" />
         <source-file src="node_modules/cordova-sqlite-evcore-free-dependencies/sqlite3.c"
                      compiler-flags="-DSQLITE_TEMP_STORE=2 -DSQLITE_THREADSAFE=2 -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_COLUMN_METADATA -DSQLITE_ENABLE_RTREE -DSQLITE_LOCKING_STYLE=1 -DSQLITE_OMIT_BUILTIN_TEST -DSQLITE_OMIT_LOAD_EXTENSION" />
-
     </platform>
 
     <!-- macOS -->
@@ -86,7 +75,6 @@
         <header-file src="node_modules/cordova-sqlite-evcore-free-dependencies/sqlite3.h" />
         <source-file src="node_modules/cordova-sqlite-evcore-free-dependencies/sqlite3.c"
                      compiler-flags="-DSQLITE_TEMP_STORE=2 -DSQLITE_THREADSAFE=2 -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_COLUMN_METADATA -DSQLITE_ENABLE_RTREE -DSQLITE_LOCKING_STYLE=1 -DSQLITE_OMIT_BUILTIN_TEST -DSQLITE_OMIT_LOAD_EXTENSION" />
-
     </platform>
 
     <!-- windows -->
@@ -102,9 +90,10 @@
 
         <!-- Thanks to AllJoyn-Cordova / cordova-plugin-alljoyn for guidance: -->
         <framework src="src/windows/SQLite3-Win-RT/SQLite3/SQLite3.UWP/SQLite3.UWP.vcxproj" custom="true" type="projectReference" versions="10.*" />
+        <!-- Windows 8.1 / Windows Phone 8.1 not tested, not supported in this version branch:
         <framework src="src/windows/SQLite3-Win-RT/SQLite3/SQLite3.Windows/SQLite3.Windows.vcxproj" custom="true" type="projectReference" target="windows" versions="8.1" />
         <framework src="src/windows/SQLite3-Win-RT/SQLite3/SQLite3.WindowsPhone/SQLite3.WindowsPhone.vcxproj" custom="true" type="projectReference" target="phone" versions="8.1" />
-
+         -->
     </platform>
 
 </plugin>
