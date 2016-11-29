@@ -1,5 +1,9 @@
 # Changes
 
+## cordova-sqlite-evcore-common-free 0.7.3-pre1
+
+- Use SQLite 3.15.2 for all platforms
+
 ## cordova-sqlite-evcore-common-free 0.7.2
 
 - Quick fix for Android error mapping

@@ -114,7 +114,14 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 - A recent version of the Cordova CLI (such as `6.3.1`) is recommended. Cordova versions older than `6.0.0` are missing the `cordova-ios@4.0.0` security fixes.
 - Use of other systems such as Cordova Plugman, PhoneGap CLI, PhoneGap Build, and Intel XDK is *not* supported since they do not honor the `before_plugin_install` hook. These are supported by: [litehelpers / Cordova-sqlite-evcore-extbuild-free](https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free)
 - The iOS database location is now mandatory, as documented below.
-- SQLite version `3.12.2` (without FTS5 or JSON1 functionality) is used for Android. SQLite `3.14.0` (without FTS5 or JSON1 enabled) is used for iOS/macOS/Windows.
+- SQLite version `3.15.2` included with the following defines:
+  - `SQLITE_TEMP_STORE=2`
+  - `SQLITE_THREADSAFE=2`
+  - `SQLITE_ENABLE_FTS3`
+  - `SQLITE_ENABLE_FTS3_PARENTHESIS`
+  - `SQLITE_ENABLE_FTS4`
+  - `SQLITE_ENABLE_RTREE`
+  - **NOTE:** No default page/cache size is defined, newer default values are described at <http://sqlite.org/pgszchng2016.html>.
 - This version supports the use of two (2) possible Android sqlite database implementations:
   - default: high-performance, lightweight [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) NDK library (C implementation)
   - optional: built-in Android database classes (usage described below)
