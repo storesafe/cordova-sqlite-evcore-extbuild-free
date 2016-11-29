@@ -113,7 +113,9 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 
 - NOT supported by PhoneGap Developer App or PhoneGap Desktop App
 - This version uses a `before_plugin_install` hook to install sqlite3 library dependencies from `cordova-sqlite-evcore-free-dependencies` via npm.
-- A recent version of the Cordova CLI (such as `6.4.0`) is recommended. _**PROBLEMS with older Cordova versions: Cordova CLI older than `6.4.0` include an old version of cordova-ios that requires an extra `cordova prepare` step;_ Cordova versions older than `6.0.0` are missing the `cordova-ios@4.0.0` security fixes.
+- A recent version of the Cordova CLI (such as `6.4.0`) is recommended. Possible issues with older Cordova versions include:
+  - Cordova CLI older than `6.4.0` include an old version of cordova-ios that requires an extra `cordova prepare` step;
+  - Cordova versions older than `6.0.0` are missing the `cordova-ios@4.0.0` security fixes.
 - Use of other systems such as Cordova Plugman, PhoneGap CLI, PhoneGap Build, and Intel XDK is *not* supported since they do not honor the `before_plugin_install` hook. These are supported by: [litehelpers / Cordova-sqlite-evcore-extbuild-free](https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free)
 - The iOS database location is now mandatory, as documented below.
 - SQLite version `3.15.2` included with the following defines:
@@ -123,9 +125,9 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
   - `SQLITE_ENABLE_FTS3_PARENTHESIS`
   - `SQLITE_ENABLE_FTS4`
   - `SQLITE_ENABLE_RTREE`
-  - _Not defined for Android: `SQLITE_ENABLE_COLUMN_METADATA`_
-  - _iOS/macOS ONLY: `SQLITE_LOCKING_STYLE=1` `SQLITE_OMIT_BUILTIN_TEST` `SQLITE_OMIT_LOAD_EXTENSION`_
-  - _Windows ONLY: `SQLITE_OS_WINRT`_
+  - Not defined for Android: `SQLITE_ENABLE_COLUMN_METADATA`
+  - iOS/macOS ONLY: `SQLITE_LOCKING_STYLE=1` `SQLITE_OMIT_BUILTIN_TEST` `SQLITE_OMIT_LOAD_EXTENSION`
+  - Windows ONLY: `SQLITE_OS_WINRT`
   - **NOTE:** No default page/cache size is defined, newer default values are described at <http://sqlite.org/pgszchng2016.html>.
 - This version supports the use of two (2) possible Android sqlite database implementations:
   - default: high-performance, lightweight [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) NDK library (C implementation)

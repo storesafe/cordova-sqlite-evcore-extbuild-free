@@ -1,6 +1,6 @@
 # Changes
 
-## cordova-sqlite-evcore-common-free 0.7.3-pre2
+## cordova-sqlite-evcore-common-free 0.7.3
 
 - Use SQLite 3.15.2 for all platforms (no SQLITE_DEFAULT_PAGE_SIZE or SQLITE_DEFAULT_CACHE_SIZE defined in this version branch)
 - empty engines rule in package.json in this version branch
@@ -15,6 +15,9 @@
   - SQLITE_TEMP_STORE=2
   - SQLITE_THREADSAFE=2
   - FTS3, FTS4, and R-Tree enabled
+  - Not defined for Android: SQLITE_ENABLE_COLUMN_METADATA
+  - iOS/macOS ONLY: SQLITE_LOCKING_STYLE=1 SQLITE_OMIT_BUILTIN_TEST SQLITE_OMIT_LOAD_EXTENSION
+  - Windows ONLY: SQLITE_OS_WINRT
 - Drop support for Windows 8.1 & Windows Phone 8.1
 
 ### cordova-sqlite-storage 1.4.9
