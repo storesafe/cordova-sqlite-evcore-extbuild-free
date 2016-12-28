@@ -1,6 +1,6 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.8.4-p1
+# cordova-sqlite-evcore-extbuild-free 0.8.4-p2
 
 TBD
 
