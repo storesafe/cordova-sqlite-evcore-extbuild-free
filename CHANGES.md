@@ -1,6 +1,6 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.8.4-p3
+# cordova-sqlite-evcore-extbuild-free 0.8.4
 
 ### cordova-sqlite-ext-common 0.1.0
 

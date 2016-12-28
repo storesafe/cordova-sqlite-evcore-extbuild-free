@@ -1,4 +1,4 @@
-# Cordova/PhoneGap sqlite storage - free enterprise version with Android performance improvements and extras for PhoneGap Build
+# Cordova/PhoneGap sqlite storage - free enterprise version with Android performance improvements and extra features for PhoneGap Build
 
 Native interface to sqlite in a Cordova/PhoneGap plugin for Android, iOS, macOS, and Windows 10 (UWP), with API similar to HTML5/[Web SQL API](http://www.w3.org/TR/webdatabase/).
 
