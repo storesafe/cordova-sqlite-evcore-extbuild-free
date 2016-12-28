@@ -7,3 +7,13 @@ This version is based on Cordova-sqlite-storage (https://github.com/litehelpers/
 Android version includes JSMN (http://zserge.com/jsmn.html) under MIT license.
 
 Windows version includes SQLite3-WinRT by @doo (doo GmbH) under MIT License.
+
+Other components:
+
+sqlite3-regexp-cached - adapted by @brodybits (Christopher J. Brody), based on sqlite3-pcre (http://git.altlinux.org/people/at/packages/?p=sqlite3-pcre.git) by Alexey Tourbin, public domain
+
+sqlite3-base64 by @brodybits (Christopher J. Brody), Unlicense (http://unlicense.org/ - public domain)
+
+libb64-encode - based on libb64 (http://libb64.sourceforge.net/) by Chris Venter, public domain
+
+SQLite3 (http://sqlite.org/), public domain
