@@ -1,8 +1,14 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.8.4-p2
+# cordova-sqlite-evcore-extbuild-free 0.8.4-p3
 
-TBD
+### cordova-sqlite-ext-common 0.1.0
+
+- BASE64 support
+
+### cordova-sqlite-ext-common 0.0.1
+
+- REGEXP for Android/iOS/macOS using sqlite3-regexp-cached
 
 # cordova-sqlite-evcore-extbuild-free 0.8.3
 

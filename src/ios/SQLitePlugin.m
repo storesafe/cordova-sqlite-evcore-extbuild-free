@@ -10,10 +10,15 @@
 
 #import "sqlite3.h"
 
+#import "sqlite3_regexp.h"
+
+#import "sqlite3_base64.h"
+
 // FUTURE TBD (in another version branch):
 //#define READ_BLOB_AS_BASE64
 
-// FUTURE TBD (in another version branch & TBD subjet to change):
+// XXX TODO GONE:
+//#define READ_BLOB_AS_BASE64
 //#define INCLUDE_SQL_BLOB_BINDING
 
 // Defines Macro to only log lines when in DEBUG mode
@@ -140,6 +145,12 @@
                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Unable to open DB"];
                 return;
             } else {
+                // TBD IGNORE result:
+                const char * err1;
+                sqlite3_regexp_init(db, &err1);
+
+                sqlite3_base64_init(db);
+
                 // for SQLCipher version:
                 // NSString *dbkey = [options objectForKey:@"key"];
                 // const char *key = NULL;

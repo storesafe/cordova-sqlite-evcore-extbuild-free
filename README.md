@@ -18,7 +18,7 @@ Free enterprise version with Android performance improvements and other features
 
 <!-- END About this version -->
 
-## Available for hire
+## Services available
 
 The primary author and maintainer [@brodybits (Christopher J. Brody aka Chris Brody)](https://github.com/brodybits) is available for part-time contract assignments. Services available for this project include:
 
@@ -117,6 +117,9 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
   - Cordova CLI older than `6.4.0` include an old version of cordova-ios that requires an extra `cordova prepare` step;
   - Cordova versions older than `6.0.0` are missing the `cordova-ios@4.0.0` security fixes.
 - The iOS database location is now mandatory, as documented below.
+- This version includes the following extra features:
+  - BASE64 integrated from [brodybits / sqlite3-base64](https://github.com/brodybits/sqlite3-base64), using [brodybits / libb64-encode](https://github.com/brodybits/libb64-encode) (based on <http://libb64.sourceforge.net/> by Chris Venter, public domain)
+  - REGEXP for Android (default Android-sqlite-connector database implementation), iOS, and macOS using [brodybits / sqlite3-regexp-cached](https://github.com/brodybits/sqlite3-regexp-cached) (based on <http://git.altlinux.org/people/at/packages/?p=sqlite3-pcre.git> by Alexey Tourbin, public domain)
 - SQLite version `3.15.2` included with the following defines:
   - `SQLITE_TEMP_STORE=2`
   - `SQLITE_THREADSAFE=2`
@@ -128,6 +131,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
   - iOS/macOS ONLY: `SQLITE_LOCKING_STYLE=1` `SQLITE_OMIT_BUILTIN_TEST` `SQLITE_OMIT_LOAD_EXTENSION`
   - Windows ONLY: `SQLITE_OS_WINRT`
   - **NOTE:** No default page/cache size is defined, newer default values are described at <http://sqlite.org/pgszchng2016.html>.
+- The iOS database location is now mandatory, as documented below.
 - This version supports the use of two (2) possible Android sqlite database implementations:
   - default: high-performance, lightweight [litehelpers / Android-sqlite-evcore-native-driver-free (ext-master version branch)](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free/tree/ext-master) NDK library build (C implementation)
   - optional: built-in Android database classes (usage described below)
@@ -155,6 +159,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 
 ## Announcements
 
+- This version includes the following extra features: BASE 64 (all platforms Android/iOS/macOS/Windows), REGEXP (Android/iOS/macOS)
 - [brodybits / sql-promise-helper](https://github.com/brodybits/sql-promise-helper) provides a Promise-based API wrapper.
 - [nolanlawson / pouchdb-adapter-cordova-sqlite](https://github.com/nolanlawson/pouchdb-adapter-cordova-sqlite) supports this plugin along with other implementations such as [nolanlawson / sqlite-plugin-2](https://github.com/nolanlawson/sqlite-plugin-2) and [Microsoft / cordova-plugin-websql](https://github.com/Microsoft/cordova-plugin-websql).
 - Custom Android database location (supports external storage directory)
@@ -954,6 +959,16 @@ db.readTransaction(function(tx) {
 **FUTURE TBD:** It should be possible to get a row result object using `resultSet.rows[rowNumber]`, also in case of a single-statement transaction. This is non-standard but is supported by the Chrome desktop browser.
 
 <!-- END Standard asynchronous transactions -->
+
+### SELECT BLOB data as BASE64
+
+```Javascript
+db.readTransaction(function(tx) {
+  tx.executeSql("SELECT BASE64(data) AS base64_data FROM MyTable", [], function(tx, resultSet) {
+    console.log('BLOB data (base64): ' + resultSet.rows.item(0).base64_data);
+  });
+});
+```
 
 ## Background processing
 

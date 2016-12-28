@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-sqlite-evcore-extbuild-free"
-    version="0.8.4-p2">
+    version="0.8.4-p3">
 
     <name>Cordova sqlite storage - free enterprise version with Android performance/memory improvements and extra features for PhoneGap Build</name>
 
@@ -53,6 +53,15 @@
         <header-file src="src/ios/SQLitePlugin.h" />
         <source-file src="src/ios/SQLitePlugin.m" />
 
+        <header-file src="src/deps/common/sqlite3-regexp-cached/sqlite3_regexp.h" />
+        <source-file src="src/deps/common/sqlite3-regexp-cached/sqlite3_regexp.c" />
+
+        <header-file src="src/deps/common/sqlite3-base64/sqlite3_base64.h" />
+        <source-file src="src/deps/common/sqlite3-base64/sqlite3_base64.c" />
+
+        <header-file src="src/deps/common/libb64-encode/cencode.h" />
+        <source-file src="src/deps/common/libb64-encode/cencode.c" />
+
         <header-file src="src/deps/common/sqlite3.h" />
         <source-file src="src/deps/common/sqlite3.c"
                      compiler-flags="-DSQLITE_TEMP_STORE=2 -DSQLITE_THREADSAFE=2 -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_COLUMN_METADATA -DSQLITE_ENABLE_RTREE -DSQLITE_LOCKING_STYLE=1 -DSQLITE_OMIT_BUILTIN_TEST -DSQLITE_OMIT_LOAD_EXTENSION" />
@@ -70,6 +79,15 @@
         <header-file src="src/ios/SQLitePlugin.h" />
         <source-file src="src/ios/SQLitePlugin.m" />
         <!-- FUTURE TBD: more common directory name for Apple macOS/iOS versions -->
+
+        <header-file src="src/deps/common/sqlite3-regexp-cached/sqlite3_regexp.h" />
+        <source-file src="src/deps/common/sqlite3-regexp-cached/sqlite3_regexp.c" />
+
+        <header-file src="src/deps/common/sqlite3-base64/sqlite3_base64.h" />
+        <source-file src="src/deps/common/sqlite3-base64/sqlite3_base64.c" />
+
+        <header-file src="src/deps/common/libb64-encode/cencode.h" />
+        <source-file src="src/deps/common/libb64-encode/cencode.c" />
 
         <header-file src="src/deps/common/sqlite3.h" />
         <source-file src="src/deps/common/sqlite3.c"
