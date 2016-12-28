@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-sqlite-evcore-extbuild-free"
-    version="0.8.3-pre1">
+    version="0.8.3-pre2">
 
     <name>Cordova sqlite storage - free enterprise version with Android performance/memory improvements and extra features for PhoneGap Build</name>
 
@@ -12,15 +12,6 @@
 
     <description>Native interface to SQLite for PhoneGap/Cordova. Allows you to use more storage and provides more flexibility than the standard Web SQL database (window.openDatabase).</description>
     <author>Litehelpers/Various</author>
-
-    <!-- NOT ENFORCED in this version branch:
-    <engines>
-        <engine name="cordova" version=">=6.0.0" />
-        <engine name="cordova-android" version=">=5.0.0" />
-        <engine name="cordova-ios" version=">=4.0.0" />
-        <engine name="cordova-windows" version=">=4.0.0" />
-    </engines>
-     -->
 
     <!-- no before_plugin_install hook in this version branch -->
 
@@ -48,7 +39,6 @@
         <source-file src="src/deps/android/libs/arm64-v8a/libsqlc-evcore-native-driver.so" target-dir="libs/arm64-v8a"/>
         <source-file src="src/deps/android/libs/x86/libsqlc-evcore-native-driver.so" target-dir="libs/x86"/>
         <source-file src="src/deps/android/libs/x86_64/libsqlc-evcore-native-driver.so" target-dir="libs/x86_64"/>
-
     </platform>
 
     <!-- iOS -->
@@ -66,7 +56,6 @@
         <header-file src="src/deps/common/sqlite3.h" />
         <source-file src="src/deps/common/sqlite3.c"
                      compiler-flags="-DSQLITE_TEMP_STORE=2 -DSQLITE_THREADSAFE=2 -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_COLUMN_METADATA -DSQLITE_ENABLE_RTREE -DSQLITE_LOCKING_STYLE=1 -DSQLITE_OMIT_BUILTIN_TEST -DSQLITE_OMIT_LOAD_EXTENSION" />
-
     </platform>
 
     <!-- macOS -->
@@ -85,7 +74,6 @@
         <header-file src="src/deps/common/sqlite3.h" />
         <source-file src="src/deps/common/sqlite3.c"
                      compiler-flags="-DSQLITE_TEMP_STORE=2 -DSQLITE_THREADSAFE=2 -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_COLUMN_METADATA -DSQLITE_ENABLE_RTREE -DSQLITE_LOCKING_STYLE=1 -DSQLITE_OMIT_BUILTIN_TEST -DSQLITE_OMIT_LOAD_EXTENSION" />
-
     </platform>
 
     <!-- windows -->
@@ -101,9 +89,10 @@
 
         <!-- Thanks to AllJoyn-Cordova / cordova-plugin-alljoyn for guidance: -->
         <framework src="src/windows/SQLite3-Win-RT/SQLite3/SQLite3.UWP/SQLite3.UWP.vcxproj" custom="true" type="projectReference" versions="10.*" />
+        <!-- Windows 8.1 / Windows Phone 8.1 not tested, not supported in this version branch:
         <framework src="src/windows/SQLite3-Win-RT/SQLite3/SQLite3.Windows/SQLite3.Windows.vcxproj" custom="true" type="projectReference" target="windows" versions="8.1" />
         <framework src="src/windows/SQLite3-Win-RT/SQLite3/SQLite3.WindowsPhone/SQLite3.WindowsPhone.vcxproj" custom="true" type="projectReference" target="phone" versions="8.1" />
-
+         -->
     </platform>
 
 </plugin>
