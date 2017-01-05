@@ -646,13 +646,15 @@
       succeeded = (tx) ->
         txLocks[tx.db.dbname].inProgress = false
         tx.db.startNextTransaction()
-        if tx.error then tx.error txFailure
+        if tx.error and typeof tx.error is 'function'
+          tx.error txFailure
         return
 
       failed = (tx, err) ->
         txLocks[tx.db.dbname].inProgress = false
         tx.db.startNextTransaction()
-        if tx.error then tx.error newSQLError("error while trying to roll back: " + err.message, err.code)
+        if tx.error and typeof tx.error is 'function'
+          tx.error newSQLError 'error while trying to roll back: ' + err.message, err.code
         return
 
       @finalized = true
@@ -672,13 +674,15 @@
       succeeded = (tx) ->
         txLocks[tx.db.dbname].inProgress = false
         tx.db.startNextTransaction()
-        if tx.success then tx.success()
+        if tx.success and typeof tx.success is 'function'
+          tx.success()
         return
 
       failed = (tx, err) ->
         txLocks[tx.db.dbname].inProgress = false
         tx.db.startNextTransaction()
-        if tx.error then tx.error newSQLError("error while trying to commit: " + err.message, err.code)
+        if tx.error and typeof tx.error is 'function'
+          tx.error newSQLError 'error while trying to commit: ' + err.message, err.code
         return
 
       @finalized = true
@@ -1061,7 +1065,7 @@
         error = (e) ->
           errorcb e
 
-        cordova.exec okcb, errorcb, "SQLitePlugin", "echoStringValue", [{value:'test-string'}]
+        cordova.exec ok, error, "SQLitePlugin", "echoStringValue", [{value:'test-string'}]
 
       selfTest: SelfTest.start
 
