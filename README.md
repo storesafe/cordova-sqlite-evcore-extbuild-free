@@ -122,15 +122,20 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
   - REGEXP for Android (default Android-sqlite-connector database implementation), iOS, and macOS using [brodybits / sqlite3-regexp-cached](https://github.com/brodybits/sqlite3-regexp-cached) (based on <http://git.altlinux.org/people/at/packages/?p=sqlite3-pcre.git> by Alexey Tourbin, public domain)
 - SQLite version `3.15.2` included with the following defines:
   - `SQLITE_TEMP_STORE=2`
-  - `SQLITE_THREADSAFE=2`
+  - `SQLITE_THREADSAFE=1`
   - `SQLITE_ENABLE_FTS3`
   - `SQLITE_ENABLE_FTS3_PARENTHESIS`
   - `SQLITE_ENABLE_FTS4`
+  - `SQLITE_ENABLE_FTS5`
   - `SQLITE_ENABLE_RTREE`
-  - Not defined for Android: `SQLITE_ENABLE_COLUMN_METADATA`
-  - iOS/macOS ONLY: `SQLITE_LOCKING_STYLE=1` `SQLITE_OMIT_BUILTIN_TEST` `SQLITE_OMIT_LOAD_EXTENSION`
-  - Windows ONLY: `SQLITE_OS_WINRT`
-  - **NOTE:** No default page/cache size is defined, newer default values are described at <http://sqlite.org/pgszchng2016.html>.
+  - `SQLITE_ENABLE_JSON1`
+  - `SQLITE_OMIT_BUILTIN_TEST`
+  - `SQLITE_OMIT_LOAD_EXTENSION`
+  - `SQLITE_DEFAULT_PAGE_SIZE=1024` and `SQLITE_DEFAULT_CACHE_SIZE=2000` to avoid "potentially distruptive change(s)" from SQLite 3.12.0 ref: <http://sqlite.org/pgszchng2016.html>
+  - `SQLITE_DEFAULT_PAGE_SIZE=4096` and `SQLITE_DEFAULT_CACHE_SIZE=-2000` - new stable page/cache sizes from 3.12.0 ref:
+    - <http://sqlite.org/pgszchng2016.html>
+    - <http://sqlite.org/releaselog/3_12_0.html>
+  - `SQLITE_OS_WINRT` for Windows only
 - The iOS database location is now mandatory, as documented below.
 - This version supports the use of two (2) possible Android sqlite database implementations:
   - default: high-performance, lightweight [litehelpers / Android-sqlite-evcore-native-driver-free (ext-master version branch)](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free/tree/ext-master) NDK library build (C implementation)
@@ -150,7 +155,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
   - Windows version may crash in certain cases when invalid (bogus) function parameters are given, for example: `db.readTransaction('bogus');`
   - Hard coded dependency on platform toolset libraries included by Visual Studio 2015 ref: [litehelpers/Cordova-sqlite-storage#580](https://github.com/litehelpers/Cordova-sqlite-storage/issues/580)
 - macOS version ("osx" platform) has not been tested in a release build and should be considered pre-alpha.
-- FTS3, FTS4, and R-Tree support is tested working OK in this version (for all target platforms in this version branch Android/iOS/macOS/Windows)
+- FTS3, FTS4, FTS5, JSON1, and R-Tree support is tested working OK in this version (for all target platforms in this version branch Android/iOS/macOS/Windows)
 - Android is supported back to SDK 10 (a.k.a. Gingerbread, Android 2.3.3); support for older versions is available upon request.
 - iOS versions supported: 8.x/9.x/10.x (see [deviations section](#deviations) below for differences in case of WKWebView)
 - Patches will NOT be accepted on this version due to possible licensing issues.

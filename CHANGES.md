@@ -1,5 +1,24 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.8.5-pre1
+
+- Build (with SQLite 3.15.2) with the following defines:
+  - SQLITE_TEMP_STORE=2
+  - SQLITE_THREADSAFE=1
+  - SQLITE_ENABLE_FTS3
+  - SQLITE_ENABLE_FTS3_PARENTHESIS
+  - SQLITE_ENABLE_FTS4
+  - SQLITE_ENABLE_FTS5
+  - SQLITE_ENABLE_RTREE
+  - SQLITE_ENABLE_JSON1
+  - SQLITE_OMIT_BUILTIN_TEST
+  - SQLITE_OMIT_LOAD_EXTENSION
+  - SQLITE_DEFAULT_PAGE_SIZE=4096 and SQLITE_DEFAULT_CACHE_SIZE=-2000 - new stable page/cache sizes from 3.12.0 ref:
+    - <http://sqlite.org/pgszchng2016.html>
+    - <http://sqlite.org/releaselog/3_12_0.html>
+  - SQLITE_OS_WINRT for Windows only
+- Android version with JSMN (http://zserge.com/jsmn.html) dependency removed.
+
 # cordova-sqlite-evcore-extbuild-free 0.8.4
 
 ### cordova-sqlite-ext-common 0.1.0
