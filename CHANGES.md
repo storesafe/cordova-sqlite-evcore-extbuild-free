@@ -1,7 +1,8 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.8.5-pre1
+# cordova-sqlite-evcore-extbuild-free 0.8.5-pre2
 
+- Fix openDatabase/deleteDatabase exception messages in this version branch
 - Build (with SQLite 3.15.2) with the following defines:
   - SQLITE_TEMP_STORE=2
   - SQLITE_THREADSAFE=1
