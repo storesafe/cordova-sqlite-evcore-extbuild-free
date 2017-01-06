@@ -1,6 +1,6 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.8.5-pre3
+# cordova-sqlite-evcore-extbuild-free 0.8.5
 
 - Fix openDatabase/deleteDatabase exception messages in this version branch
 - Build (with SQLite 3.15.2) with the following defines:
@@ -19,6 +19,7 @@
     - <http://sqlite.org/releaselog/3_12_0.html>
   - SQLITE_OS_WINRT for Windows only
 - Android version with JSMN (http://zserge.com/jsmn.html) dependency removed.
+- Doc updates
 
 ### cordova-sqlite-storage 1.5.2
 

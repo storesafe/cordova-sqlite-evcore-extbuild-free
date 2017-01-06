@@ -16,6 +16,10 @@ NOTE: Commercial licenses for [litehelpers / Cordova-sqlite-enterprise-free](htt
 
 Free enterprise version with Android performance improvements and other features with sqlite3 dependencies included, working with PhoneGap Build.
 
+## Commercial license giveaway
+
+**Limited time offer:** free commercial license available - see [litehelpers/Cordova-sqlite-evcore-extbuild-free#17](https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/issues/17) for details.
+
 <!-- END About this version -->
 
 ## Services available
@@ -138,10 +142,6 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 - This version supports the use of two (2) possible Android sqlite database implementations:
   - default: high-performance, lightweight [litehelpers / Android-sqlite-evcore-native-driver-free (ext-master version branch)](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free/tree/ext-master) NDK library build (C implementation)
   - optional: built-in Android database classes (usage described below)
-- Windows 8.1 and Windows Phone 8.1 are no longer supported by this version. WP8, Windows 8.1, and Windows Phone 8.1 support is available in: [litehelpers / Cordova-sqlite-legacy-build-support](https://github.com/litehelpers/Cordova-sqlite-legacy-build-support)
-- The following features are available in [litehelpers / cordova-sqlite-ext](https://github.com/litehelpers/cordova-sqlite-ext) (TODO will be added to this version):
-  - ~~REGEXP support (Android/iOS)~~ _(already included here)_
-  - Pre-populated database (Android/iOS/Windows)
 - Windows version (using a customized version of the performant [doo / SQLite3-WinRT](https://github.com/doo/SQLite3-WinRT) C++ component) has the following known limitations:
   - Issue with UNICODE `\u0000` character (same as `\0`)
   - No background processing
@@ -161,8 +161,8 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 
 ## Announcements
 
-- This version includes the following extra features: BASE 64 (all platforms Android/iOS/macOS/Windows), REGEXP (Android/iOS/macOS)
-- [brodybits / cordova-sqlite-test-app](https://github.com/brodybits/cordova-sqlite-test-app) _is a CC0 (public domain) starting point to reproduce issues with this plugin and may be used as a quick way to start developing a new app_.
+- This version includes the following extra features: BASE64 (all platforms Android/iOS/macOS/Windows), REGEXP (Android/iOS/macOS)
+- [brodybits / cordova-sqlite-test-app](https://github.com/brodybits/cordova-sqlite-test-app) is a CC0 (public domain) starting point to reproduce issues with this plugin and may be used as a quick way to start developing a new app.
 - The Lawnchair adapter is now moved to [litehelpers / cordova-sqlite-lawnchair-adapter](https://github.com/litehelpers/cordova-sqlite-lawnchair-adapter).
 - [brodybits / sql-promise-helper](https://github.com/brodybits/sql-promise-helper) provides a Promise-based API wrapper.
 - [nolanlawson / pouchdb-adapter-cordova-sqlite](https://github.com/nolanlawson/pouchdb-adapter-cordova-sqlite) supports this plugin along with other implementations such as [nolanlawson / sqlite-plugin-2](https://github.com/nolanlawson/sqlite-plugin-2) and [Microsoft / cordova-plugin-websql](https://github.com/Microsoft/cordova-plugin-websql).
@@ -329,12 +329,14 @@ In case you get stuck with something please read through the [support](#support)
 
 ### Plugin usage examples
 
-- [brodybits / cordova-sqlite-storage-starter-app](https://github.com/brodybits/cordova-sqlite-storage-starter-app)
+- [brodybits / cordova-sqlite-storage-starter-app](https://github.com/brodybits/cordova-sqlite-storage-starter-app) (using `cordova-sqlite-storage` version)
 - <http://stackoverflow.com/questions/26604952/a-simple-cordova-android-example-including-sqlite-read-write-and-search>
 
 ### Plugin tutorials
 
-- <https://phonegappro.com/tutorials/phonegap-sqlite-tutorial-with-example-apache-cordova/>
+- <https://phonegappro.com/tutorials/phonegap-sqlite-tutorial-with-example-apache-cordova/> (using `cordova-sqlite-storage` version)
+
+**NOTICE:** The above tutorial shows `cordova plugin add cordova-sqlite-storage` with the `--save` flag missing. Please add each desired plugin using the `--save` flag to keep the plugins in `config.xml`.
 
 Other plugin tutorials wanted ref: [litehelpers/Cordova-sqlite-storage#609](https://github.com/litehelpers/Cordova-sqlite-storage/issues/609)
 
@@ -576,14 +578,13 @@ FUTURE TBD: Proper date/time handling will be further tested and documented at s
 
 ### Other versions
 
-- ~~[litehelpers / Cordova-sqlite-evcore-extbuild-free](https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free) - Enhancements from this version with all dependencies included and support for arbitrary Android database location, support for PhoneGap CLI/PhoneGap Build/plugman/Intel XDK. (GPL or commercial license options)~~
-- [litehelpers / Cordova-sqlite-evplus-legacy-workers-free](https://github.com/litehelpers/Cordova-sqlite-evplus-legacy-workers-free) - version with support for web workers _(Android/iOS)_, includes internal memory improvements to support larger transactions (Android/iOS) and fix to support all Unicode characters (iOS) (GPL or premium commercial license options)
-- [litehelpers / Cordova-sqlite-evplus-legacy-free](https://github.com/litehelpers/Cordova-sqlite-evplus-legacy-free) - internal memory improvements to support larger transactions (Android/iOS) and fix to support all Unicode characters (iOS) (GPL or special commercial license options)
-- [litehelpers / Cordova-sqlite-evplus-legacy-attach-detach-free](https://github.com/litehelpers/Cordova-sqlite-evplus-legacy-attach-detach-free) - version with support for ATTACH, includes internal memory improvements to support larger transactions (Android/iOS) and fix to support all Unicode characters (GPL or special commercial license options)
-- [litehelpers / Cordova-sqlite-storage](https://github.com/litehelpers/Cordova-sqlite-storage) - Cordova sqlite storage plugin _for Android/iOS/macOS/Windows 10_ with permissive licensing terms
-- [litehelpers / cordova-sqlite-ext](https://github.com/litehelpers/cordova-sqlite-ext) - version with REGEXP (Android/iOS/macOS), SELECT BLOB in Base64 format (all platforms Android/iOS/macOS/Windows), and pre-populated databases for all platforms Android/iOS/macOS/Windows (permissive licensing terms)
+- [litehelpers / Cordova-sqlite-evplus-legacy-workers-free](https://github.com/litehelpers/Cordova-sqlite-evplus-legacy-workers-free) - version with support for web workers (Android/iOS/macOS), includes internal memory improvements to support large transactions (Android/iOS/macOS) and fix to support all Unicode characters (iOS/macOS) (GPL or premium commercial license options)
+- [litehelpers / Cordova-sqlite-evplus-legacy-free](https://github.com/litehelpers/Cordova-sqlite-evplus-legacy-free) - internal memory improvements to support large transactions (Android/iOS/macOS) and fix to support all Unicode characters (iOS/macOS) (GPL or special commercial license options)
+- [litehelpers / Cordova-sqlite-evplus-legacy-attach-detach-free](https://github.com/litehelpers/Cordova-sqlite-evplus-legacy-attach-detach-free) - version with support for ATTACH, includes internal memory improvements to support large transactions (Android/iOS/macOS) and fix to support all Unicode characters (GPL or special commercial license options)
+- [litehelpers / Cordova-sqlite-storage](https://github.com/litehelpers/Cordova-sqlite-storage) - Cordova sqlite storage plugin for Android/iOS/macOS/Windows 10 with permissive licensing terms
+- [litehelpers / cordova-sqlite-ext](https://github.com/litehelpers/cordova-sqlite-ext) - version with REGEXP (Android/iOS/macOS), SELECT BLOB in Base64 format, and pre-populated databases (permissive licensing terms)
 - [litehelpers / Cordova-sqlcipher-adapter](https://github.com/litehelpers/Cordova-sqlcipher-adapter) - supports [SQLCipher](https://www.zetetic.net/sqlcipher/) for Android/iOS/macOS/Windows (permissive licensing terms)
-- [litehelpers / Cordova-sqlite-legacy-build-support](https://github.com/litehelpers/Cordova-sqlite-legacy-build-support) - maintenance of WP8 version along with the other supported platforms Android/iOS/_macOS/Windows 8.1/Windows Phone 8.1/Windows 10_; limited support for PhoneGap CLI/PhoneGap Build/plugman/Intel XDK; limited testing; limited updates (permissive licensing terms)
+- [litehelpers / Cordova-sqlite-legacy-build-support](https://github.com/litehelpers/Cordova-sqlite-legacy-build-support) - maintenance of WP8 version along with Windows 8.1/Windows Phone 8.1 and the other supported platforms Android/iOS/macOS/Windows 10; limited support for PhoneGap CLI/PhoneGap Build/plugman/Intel XDK; limited testing; limited updates (permissive licensing terms)
 - Adaptation for React Native Android and iOS: [andpor / react-native-sqlite-storage](https://github.com/andpor/react-native-sqlite-storage) (permissive licensing terms)
 - Original version for iOS (with a slightly different transaction API): [davibe / Phonegap-SQLitePlugin](https://github.com/davibe/Phonegap-SQLitePlugin) (permissive licensing terms)
 
