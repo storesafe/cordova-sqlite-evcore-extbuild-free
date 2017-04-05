@@ -1,5 +1,28 @@
 # Changes
 
+## cordova-sqlite-evcore-common-free 0.7.4-pre1
+
+### cordova-sqlite-storage 1.5.4
+
+- Fix iOS/macOS version to report undefined insertId in case INSERT OR IGNORE is ignored
+- Fix FIRST_WORD check for android.sqlite.database implementation
+- Doc updates
+
+### cordova-sqlite-storage 1.5.3
+
+- Fix merges to prevent possible conflicts with other plugins (Windows)
+- Fix handling of undefined SQL argument values (Windows)
+- Signal error in case of a failure opening the database file (iOS/macOS)
+- Doc fixes and updates
+
+### cordova-sqlite-storage 1.5.2
+
+- Check transaction callback functions to avoid crash on Windows
+- Fix echoTest callback handling
+- Fix openDatabase/deleteDatabase exception messages
+- Move Lawnchair adapter to a separate project
+- Doc updates
+
 ## cordova-sqlite-evcore-common-free 0.7.3
 
 - Use SQLite 3.15.2 for all platforms (no SQLITE_DEFAULT_PAGE_SIZE or SQLITE_DEFAULT_CACHE_SIZE defined in this version branch)

@@ -7,3 +7,9 @@ This version is based on Cordova-sqlite-storage (https://github.com/litehelpers/
 Android version includes JSMN (http://zserge.com/jsmn.html) under MIT license.
 
 Windows version includes SQLite3-WinRT by @doo (doo GmbH) under MIT License.
+
+iOS/macOS version based on Phonegap-SQLitePlugin by @davibe (Davide Bertola <dade@dadeb.it>) and @joenoon (Joe Noon <joenoon@gmail.com>)
+
+Windows version includes SQLite3-WinRT by @doo (doo GmbH) under MIT License
+
+SQLite3 included for all platforms under public domain license

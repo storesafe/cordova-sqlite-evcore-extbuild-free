@@ -374,7 +374,7 @@ Contact for commercial license: info@litehelpers.net
       for (l = 0, len1 = values.length; l < len1; l++) {
         v = values[l];
         t = typeof v;
-        params.push((v === null || v === void 0 || t === 'number' || t === 'string' ? v : v.toString()));
+        params.push((v === null || v === void 0 ? null : t === 'number' || t === 'string' ? v : v.toString()));
       }
     }
     this.executes.push({
@@ -607,15 +607,15 @@ Contact for commercial license: info@litehelpers.net
     succeeded = function(tx) {
       txLocks[tx.db.dbname].inProgress = false;
       tx.db.startNextTransaction();
-      if (tx.error) {
+      if (tx.error && typeof tx.error === 'function') {
         tx.error(txFailure);
       }
     };
     failed = function(tx, err) {
       txLocks[tx.db.dbname].inProgress = false;
       tx.db.startNextTransaction();
-      if (tx.error) {
-        tx.error(newSQLError("error while trying to roll back: " + err.message, err.code));
+      if (tx.error && typeof tx.error === 'function') {
+        tx.error(newSQLError('error while trying to roll back: ' + err.message, err.code));
       }
     };
     this.finalized = true;
@@ -636,15 +636,15 @@ Contact for commercial license: info@litehelpers.net
     succeeded = function(tx) {
       txLocks[tx.db.dbname].inProgress = false;
       tx.db.startNextTransaction();
-      if (tx.success) {
+      if (tx.success && typeof tx.success === 'function') {
         tx.success();
       }
     };
     failed = function(tx, err) {
       txLocks[tx.db.dbname].inProgress = false;
       tx.db.startNextTransaction();
-      if (tx.error) {
-        tx.error(newSQLError("error while trying to commit: " + err.message, err.code));
+      if (tx.error && typeof tx.error === 'function') {
+        tx.error(newSQLError('error while trying to commit: ' + err.message, err.code));
       }
     };
     this.finalized = true;
@@ -691,10 +691,10 @@ Contact for commercial license: info@litehelpers.net
         throw newSQLError('Database name value is missing in openDatabase call');
       }
       if (!openargs.iosDatabaseLocation && !openargs.location && openargs.location !== 0) {
-        throw newSQLError('Database location or iosDatabaseLocation value is now mandatory in openDatabase call');
+        throw newSQLError('Database location or iosDatabaseLocation setting is now mandatory in openDatabase call.');
       }
       if (!!openargs.location && !!openargs.iosDatabaseLocation) {
-        throw newSQLError('AMBIGUOUS: both location or iosDatabaseLocation values are present in openDatabase call');
+        throw newSQLError('AMBIGUOUS: both location and iosDatabaseLocation settings are present in openDatabase call. Please use either setting, not both.');
       }
       dblocation = !!openargs.location && openargs.location === 'default' ? iosLocationMap['default'] : !!openargs.iosDatabaseLocation ? iosLocationMap[openargs.iosDatabaseLocation] : dblocations[openargs.location];
       if (!dblocation) {
@@ -736,10 +736,10 @@ Contact for commercial license: info@litehelpers.net
         args.path = dbname;
       }
       if (!first.iosDatabaseLocation && !first.location && first.location !== 0) {
-        throw newSQLError('Database location or iosDatabaseLocation value is now mandatory in deleteDatabase call');
+        throw newSQLError('Database location or iosDatabaseLocation setting is now mandatory in deleteDatabase call.');
       }
       if (!!first.location && !!first.iosDatabaseLocation) {
-        throw newSQLError('AMBIGUOUS: both location or iosDatabaseLocation values are present in deleteDatabase call');
+        throw newSQLError('AMBIGUOUS: both location and iosDatabaseLocation settings are present in deleteDatabase call. Please use either setting value, not both.');
       }
       dblocation = !!first.location && first.location === 'default' ? iosLocationMap['default'] : !!first.iosDatabaseLocation ? iosLocationMap[first.iosDatabaseLocation] : dblocations[first.location];
       if (!dblocation) {
@@ -972,7 +972,7 @@ Contact for commercial license: info@litehelpers.net
       error = function(e) {
         return errorcb(e);
       };
-      return cordova.exec(okcb, errorcb, "SQLitePlugin", "echoStringValue", [
+      return cordova.exec(ok, error, "SQLitePlugin", "echoStringValue", [
         {
           value: 'test-string'
         }
