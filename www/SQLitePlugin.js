@@ -374,7 +374,7 @@ Contact for commercial license: info@litehelpers.net
       for (l = 0, len1 = values.length; l < len1; l++) {
         v = values[l];
         t = typeof v;
-        params.push((v === null || v === void 0 || t === 'number' || t === 'string' ? v : v.toString()));
+        params.push((v === null || v === void 0 ? null : t === 'number' || t === 'string' ? v : v.toString()));
       }
     }
     this.executes.push({

@@ -1,5 +1,24 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.8.6
+
+## cordova-sqlite-evcore-common-free 0.7.4
+
+- Minor doc fixes
+
+### cordova-sqlite-storage 1.5.4
+
+- Fix iOS/macOS version to report undefined insertId in case INSERT OR IGNORE is ignored
+- Fix FIRST_WORD check for android.sqlite.database implementation
+- Doc updates
+
+### cordova-sqlite-storage 1.5.3
+
+- Fix merges to prevent possible conflicts with other plugins (Windows)
+- Fix handling of undefined SQL argument values (Windows)
+- Signal error in case of a failure opening the database file (iOS/macOS)
+- Doc fixes and updates
+
 # cordova-sqlite-evcore-extbuild-free 0.8.5
 
 - Fix openDatabase/deleteDatabase exception messages in this version branch
