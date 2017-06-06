@@ -10,10 +10,10 @@ var isAndroid = !isWindows && /Android/.test(navigator.userAgent);
 var isMac = /Macintosh/.test(navigator.userAgent);
 var isWKWebView = !isWindows && !isAndroid && !isWP8 && !isMac && !!window.webkit && !!window.webkit.messageHandlers;
 
-// The following openDatabase settings are used for Plugin-implementation-2
-// on Android:
-// - androidDatabaseImplementation: 2
-// - androidLockWorkaround: 1
+// NOTE: While in certain version branches there is no difference between
+// the default Android implementation and implementation #2,
+// this test script will also apply the androidLockWorkaround: 1 option
+// in case of implementation #2.
 var scenarioList = [
   isAndroid ? 'Plugin-implementation-default' : 'Plugin',
   'HTML5',
@@ -38,15 +38,17 @@ var mytests = function() {
           return window.sqlitePlugin.openDatabase({
             // prevent reuse of database from default db implementation:
             name: 'i2-'+name,
+            // explicit database location:
+            location: 'default',
             androidDatabaseImplementation: 2,
-            androidLockWorkaround: 1,
-            location: 'default'
+            androidLockWorkaround: 1
           });
         }
         if (isWebSql) {
-          return window.openDatabase(name, "1.0", "Demo", DEFAULT_SIZE);
+          return window.openDatabase(name, '1.0', 'Test', DEFAULT_SIZE);
         } else {
-          return window.sqlitePlugin.openDatabase({name: name, location: 0});
+          // explicit database location:
+          return window.sqlitePlugin.openDatabase({name: name, location: 'default'});
         }
       }
 
@@ -647,8 +649,8 @@ var mytests = function() {
                   expect(row.test_num).toBe(1424174959894);
                   expect(row.test_date).toBe(1424174959894);
 
-                  // NOTE: big number apparently stored in field with TEXT affinity with slightly
-                  // different conversion in plugin vs. WebKit Web SQL!
+                  // NOTE: big number stored in field with TEXT affinity with different conversion
+                  // in case of plugin (certain platforms) vs. Android/iOS WebKit Web SQL
                   if (isWebSql || isMac || isWKWebView)
                     expect(row.test_text).toBe("1424174959894.0"); // ([Big] number inserted as string ok)
                   else
@@ -1361,8 +1363,8 @@ var mytests = function() {
         it(suiteName +
             ' handles UNICODE \\u2028 line separator correctly in database', function (done) {
           if (isWP8) pending('BROKEN for WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-          if (!isWebSql && !isWindows && isAndroid) pending('SKIP for Android plugin (cordova-android 6.x BUG)'); // see cordova/cordova-discuss#57
-          if (!isWebSql && !isAndroid && !isWindows && !isWP8) pending('SKIP for iOS/macOS plugin (Cordova BUG: CB-9435)');
+          if (!isWebSql && !isWindows && isAndroid) pending('SKIP for Android plugin (cordova-android 6.x BUG: cordova/cordova-discuss#57)');
+          if (!isWebSql && !isWindows && !isAndroid && !isWP8) pending('SKIP for iOS/macOS plugin (Cordova BUG: CB-9435)');
 
           var db = openDatabase('UNICODE-line-separator-INSERT-test.db');
 
