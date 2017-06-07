@@ -16,4 +16,6 @@ sqlite3-base64 by @brodybits (Christopher J. Brody), Unlicense (http://unlicense
 
 libb64-encode - based on libb64 (http://libb64.sourceforge.net/) by Chris Venter, public domain
 
+## Windows version
+
 SQLite3 (http://sqlite.org/), public domain

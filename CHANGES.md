@@ -1,5 +1,22 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.9.0
+
+## cordova-sqlite-storage 2.0.4
+
+## cordova-sqlite-storage 2.0.3
+
+- Drop engines rule from package.json
+- Doc fixes
+
+## cordova-sqlite-storage 2.0.2
+
+- Fix Windows target platform version
+
+### cordova-sqlite-storage 2.0.0
+
+- Reference Windows platform toolset v141 to support Visual Studio 2017 (RC)
+
 # cordova-sqlite-evcore-extbuild-free 0.8.7
 
 ## cordova-sqlite-evcore-common-free 0.7.5
@@ -9,8 +26,6 @@
 - Workaround solution to BUG litehelpers/Cordova-sqlite-storage#666 (hanging transaction in case of location reload/change)
 - selfTest simulate scenario & test solution to BUG litehelpers/Cordova-sqlite-storage#666 (also includes string test and test of effects of location reload/change in this version branch, along with another internal check)
 - Drop engine constraints in package.json & plugin.xml (in this version branch)
-- Remove Lawnchair adapter from this version branch
-- Support macOS platform with builtin libsqlite3.dylib framework in this version branch
 
 # cordova-sqlite-evcore-extbuild-free 0.8.6
 

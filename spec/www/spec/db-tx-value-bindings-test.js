@@ -5,7 +5,7 @@ var MYTIMEOUT = 12000;
 var DEFAULT_SIZE = 5000000; // max to avoid popup in safari/ios
 
 var isWP8 = /IEMobile/.test(navigator.userAgent); // Matches WP(7/8/8.1)
-var isWindows = /Windows /.test(navigator.userAgent); // Windows (8.1)
+var isWindows = /Windows /.test(navigator.userAgent); // Windows 8.1/Windows Phone 8.1/Windows 10
 var isAndroid = !isWindows && /Android/.test(navigator.userAgent);
 var isMac = /Macintosh/.test(navigator.userAgent);
 var isWKWebView = !isWindows && !isAndroid && !isWP8 && !isMac && !!window.webkit && !!window.webkit.messageHandlers;
@@ -14,6 +14,10 @@ var isWKWebView = !isWindows && !isAndroid && !isWP8 && !isMac && !!window.webki
 // the default Android implementation and implementation #2,
 // this test script will also apply the androidLockWorkaround: 1 option
 // in case of implementation #2.
+// The following openDatabase settings are used for Plugin-implementation-2
+// on Android:
+// - androidDatabaseImplementation: 2
+// - androidLockWorkaround: 1
 var scenarioList = [
   isAndroid ? 'Plugin-implementation-default' : 'Plugin',
   'HTML5',
@@ -1250,10 +1254,10 @@ var mytests = function() {
 
       describe(scenarioList[i] + ': special UNICODE column value binding test(s)', function() {
 
-        it(suiteName + ' stores [Unicode] string with \\u0000 (same as \\0) correctly [HEX encoding check BROKEN for Android (default [evcore-native-driver] version)]', function (done) {
-          if (isWP8) pending('BROKEN for WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-          if (isWindows) pending('SKIP: BROKEN on Windows'); // [FUTURE TBD, already documented]
-          if (!isWebSql && isAndroid && !isImpl2) pending('BROKEN for Android (default [evcore-native-driver] version)'); // [FUTURE TBD (documented)]
+        it(suiteName + ' stores [Unicode] string with \\u0000 (same as \\0) correctly [HEX encoding check BROKEN for Android-sqlite-connector]', function (done) {
+          if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
+          if (isWindows) pending('BROKEN on Windows'); // TBD (truncates on Windows)
+          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('BROKEN on Android (default evcore-native-driver implementation)'); // [FUTURE TBD (documented)]
 
           var db = openDatabase('UNICODE-store-u0000-test.db');
 
@@ -1307,8 +1311,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + ' returns [Unicode] string with \\u0000 (same as \\0) correctly [BROKEN: TRUNCATES on Windows]', function (done) {
-          if (isWP8) pending('BROKEN for WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-          if (isAndroid && !isWebSql && !isImpl2) pending('BROKEN for Android (default evcore-native-driver db implementation)'); // XXX TODO
+          if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
+          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('BROKEN on Android (default evcore-native-driver implementation)'); // [FUTURE TBD (documented)]
 
           var db = openDatabase('UNICODE-retrieve-u0000-test.db');
 
@@ -1362,7 +1366,7 @@ var mytests = function() {
         // - cordova/cordova-discuss#57 (issue with cordova-android)
         it(suiteName +
             ' handles UNICODE \\u2028 line separator correctly in database', function (done) {
-          if (isWP8) pending('BROKEN for WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
+          if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
           if (!isWebSql && !isWindows && isAndroid) pending('SKIP for Android plugin (cordova-android 6.x BUG: cordova/cordova-discuss#57)');
           if (!isWebSql && !isWindows && !isAndroid && !isWP8) pending('SKIP for iOS/macOS plugin (Cordova BUG: CB-9435)');
 

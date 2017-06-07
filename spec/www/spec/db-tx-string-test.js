@@ -441,8 +441,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + "INLINE string vertical tab test", function(done) {
-          if (isWP8) pending('BROKEN for WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-          if (isAndroid && !isWebSql && !isImpl2) pending('BROKEN for Android (default evcore-native-driver db implementation)'); // XXX TODO
+          if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
+          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('BROKEN on Android (default evcore-native-driver implementation)'); // [FUTURE TBD (documented)]
 
           var db = openDatabase("String-vertical-tab-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
@@ -482,8 +482,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + "INLINE string form feed test", function(done) {
-          if (isWP8) pending('BROKEN for WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-          if (isAndroid && !isWebSql && !isImpl2) pending('BROKEN for Android (default evcore-native-driver db implementation)'); // XXX TODO
+          if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
+          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('BROKEN on Android (default evcore-native-driver implementation)'); // [FUTURE TBD (documented)]
 
           var db = openDatabase("String-form-feed-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
@@ -523,8 +523,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + "INLINE string backspace test", function(done) {
-          if (isWP8) pending('BROKEN for WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-          if (isAndroid && !isWebSql && !isImpl2) pending('BROKEN for Android (default evcore-native-driver db implementation)'); // XXX TODO
+          if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
+          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('BROKEN on Android (default evcore-native-driver implementation)'); // [FUTURE TBD (documented)]
 
           var db = openDatabase("String-backspace-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
@@ -904,7 +904,7 @@ var mytests = function() {
         // - cordova/cordova-discuss#57 (issue with cordova-android)
 
         it(suiteName + "UNICODE \\u2029 paragraph separator string length", function(done) {
-          if (isWP8) pending('BROKEN for WP(8)'); // [BUG #202] Certain UNICODE characters not working with WP(8)
+          if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] Certain UNICODE characters not working with WP(8)
 
           // NOTE: this test verifies that the UNICODE paragraph separator (\u2029)
           // is seen by the sqlite implementation OK:
