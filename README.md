@@ -109,6 +109,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 
 ## Status
 
+- _XXX TODO MULTIPLE DATA LOSS BUG FIXES NEEDED for iOS/macOS, WILL BE ROLLED INTO THIS PLUGIN VERSION in the next merge_
 - NOT supported by PhoneGap Developer App or PhoneGap Desktop App
 - This version includes the SQLite and Android-sqlite-evcore-native-driver-free dependencies to work with PhoneGap Build and other some other build systems such as Cordova Plugman, PhoneGap CLI, and Intel XDK.
 - A recent version of the Cordova CLI (such as `6.5.0` _or `7.0.1`_) is recommended. Possible issues with older Cordova versions include:
@@ -120,15 +121,15 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
   - REGEXP for Android (default Android-sqlite-connector database implementation), iOS, and macOS using [brodybits / sqlite3-regexp-cached](https://github.com/brodybits/sqlite3-regexp-cached) (based on <http://git.altlinux.org/people/at/packages/?p=sqlite3-pcre.git> by Alexey Tourbin, public domain)
 - SQLite version `3.15.2` included with the following build settings:
   - `SQLITE_TEMP_STORE=2`
-  - `SQLITE_THREADSAFE=1`
+  - `SQLITE_THREADSAFE=1` _(`SQLITE_THREADSAFE=2` on Android)_
   - `SQLITE_ENABLE_FTS3`
   - `SQLITE_ENABLE_FTS3_PARENTHESIS`
   - `SQLITE_ENABLE_FTS4`
   - `SQLITE_ENABLE_FTS5`
   - `SQLITE_ENABLE_RTREE`
   - `SQLITE_ENABLE_JSON1`
-  - `SQLITE_OMIT_BUILTIN_TEST`
-  - `SQLITE_OMIT_LOAD_EXTENSION`
+  - `SQLITE_OMIT_BUILTIN_TEST` _(TBD UNWANTED SETTING for iOS/macOS, NOT USED for Android/...)_
+  - `SQLITE_OMIT_LOAD_EXTENSION` _(TBD missing for Android/...)_
   - `SQLITE_DEFAULT_PAGE_SIZE=4096` and `SQLITE_DEFAULT_CACHE_SIZE=-2000` - new ~~stable~~ page/cache sizes from 3.12.0 ref:
     - <http://sqlite.org/pgszchng2016.html>
     - <http://sqlite.org/releaselog/3_12_0.html>
@@ -157,7 +158,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 ## Announcements
 
 - This version references Windows platform toolset v141 to support Visual Studio 2017. Visual Studio 2015 is now supported by [litehelpers / Cordova-sqlite-legacy-build-support](https://github.com/litehelpers/Cordova-sqlite-legacy-build-support).
-- Resolved transaction problem after window.location (page) change with possible data loss ref: [litehelpers/Cordova-sqlite-storage#666](https://github.com/litehelpers/Cordova-sqlite-storage/issues/666)
+- ~~Resolved transaction problem after window.location (page) change with possible data loss ref: [litehelpers/Cordova-sqlite-storage#666](https://github.com/litehelpers/Cordova-sqlite-storage/issues/666)~~ _(XXX INCORRECT WORKAROUND SOLUTION, TODO: UPDATED WORKAROUND SOLUTION WILL BE ROLLED INTO THIS PLUGIN VERSION in the next merge)_
 - This version includes the following extra features: BASE64 (all platforms Android/iOS/macOS/Windows), REGEXP (Android/iOS/macOS)
 - _The_ [brodybits / cordova-sqlite-test-app](https://github.com/brodybits/cordova-sqlite-test-app) project is a CC0 (public domain) starting point (NOTE that this plugin must be added) and may also be used to reproduce issues with this plugin.
 - The Lawnchair adapter is now moved to [litehelpers / cordova-sqlite-lawnchair-adapter](https://github.com/litehelpers/cordova-sqlite-lawnchair-adapter).

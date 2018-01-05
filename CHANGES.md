@@ -1,6 +1,12 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.9.1-pre1
+
+- Android evcore-native-driver NDK build in JAR from <https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free/tree/ext-master> (with FTS5/JSON1/SQLITE_DEFAULT_PAGE_SIZE/SQLITE_DEFAULT_CACHE_SIZE build fixes included), wth JSMN (http://zserge.com/jsmn.html) included again under MIT license, now supports cordova-android@7.
+
 # cordova-sqlite-evcore-extbuild-free 0.9.0
+
+NOTICE: cordova-sqlite-evcore-extbuild-free releases 0.8.5, 0.8.6, 0.8.7, and 0.9.0 include evcore-native-driver build with missing source; a special GPL v3 exception is granted for these releases as described in <https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/issues/24>.
 
 ## cordova-sqlite-storage 2.0.4
 
@@ -19,6 +25,8 @@
 
 # cordova-sqlite-evcore-extbuild-free 0.8.7
 
+NOTICE: cordova-sqlite-evcore-extbuild-free releases 0.8.5, 0.8.6, 0.8.7, and 0.9.0 include evcore-native-driver build with missing source; a special GPL v3 exception is granted for these releases as described in <https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/issues/24>.
+
 ## cordova-sqlite-evcore-common-free 0.7.5
 
 ###### cordova-sqlite-legacy-express-core 1.0.0
@@ -28,6 +36,8 @@
 - Drop engine constraints in package.json & plugin.xml (in this version branch)
 
 # cordova-sqlite-evcore-extbuild-free 0.8.6
+
+NOTICE: cordova-sqlite-evcore-extbuild-free releases 0.8.5, 0.8.6, 0.8.7, and 0.9.0 include evcore-native-driver build with missing source; a special GPL v3 exception is granted for these releases as described in <https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/issues/24>.
 
 ## cordova-sqlite-evcore-common-free 0.7.4
 
@@ -47,6 +57,8 @@
 - Doc fixes and updates
 
 # cordova-sqlite-evcore-extbuild-free 0.8.5
+
+NOTICE: cordova-sqlite-evcore-extbuild-free releases 0.8.5, 0.8.6, 0.8.7, and 0.9.0 include evcore-native-driver build with missing source; a special GPL v3 exception is granted for these releases as described in <https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/issues/24>.
 
 - Fix openDatabase/deleteDatabase exception messages in this version branch
 - Build (with SQLite 3.15.2) with the following defines:

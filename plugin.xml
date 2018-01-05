@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-sqlite-evcore-extbuild-free"
-    version="0.9.0">
+    version="0.9.1-pre1">
 
     <name>Cordova sqlite storage - free enterprise version with Android performance/memory improvements and extra features for PhoneGap Build</name>
 
@@ -33,12 +33,8 @@
 
         <source-file src="src/android/io/sqlc/EVCoreNativeDriver.java" target-dir="src/io/sqlc"/>
 
-        <!-- Android-sqlite-evcore-native-driver [native libs]: -->
-        <source-file src="src/deps/android/libs/armeabi/libsqlc-evcore-native-driver.so" target-dir="libs/armeabi"/>
-        <source-file src="src/deps/android/libs/armeabi-v7a/libsqlc-evcore-native-driver.so" target-dir="libs/armeabi-v7a"/>
-        <source-file src="src/deps/android/libs/arm64-v8a/libsqlc-evcore-native-driver.so" target-dir="libs/arm64-v8a"/>
-        <source-file src="src/deps/android/libs/x86/libsqlc-evcore-native-driver.so" target-dir="libs/x86"/>
-        <source-file src="src/deps/android/libs/x86_64/libsqlc-evcore-native-driver.so" target-dir="libs/x86_64"/>
+        <!-- Android-sqlite-evcore-native-driver [native libs in jar]: -->
+        <lib-file src="src/deps/android/evcore-native-driver.jar" />
     </platform>
 
     <!-- iOS -->
