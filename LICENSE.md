@@ -6,9 +6,11 @@ This version is based on Cordova-sqlite-storage (https://github.com/litehelpers/
 
 _Android platform version includes JSMN (http://zserge.com/jsmn.html) in evcore-native-driver (NDK build) under MIT license._
 
-iOS/macOS version based on Phonegap-SQLitePlugin by @davibe (Davide Bertola <dade@dadeb.it>) and @joenoon (Joe Noon <joenoon@gmail.com>)
+iOS/macOS _platform version_ based on Phonegap-SQLitePlugin by @davibe (Davide Bertola <dade@dadeb.it>) and @joenoon (Joe Noon <joenoon@gmail.com>) _(MIT license)_
 
-Windows version includes SQLite3-WinRT by @doo (doo GmbH) under MIT License
+_iOS/macOS platform version_ includes and uses PSPDFThreadSafeMutableDictionary (PSPDFThreadSafeMutableDictionary.m <https://gist.github.com/steipete/5928916>) by @steipete (<https://gist.github.com/steipete>) _(MIT license)_
+
+Windows _platform version_ includes SQLite3-WinRT by @doo (doo GmbH) under MIT License
 
 Other components:
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2017: Christopher J. Brody (aka Chris Brody)
+ * Copyright (c) 2012-2018: Christopher J. Brody (aka Chris Brody)
  * Copyright (C) 2011 Davide Bertola
  *
  * License for this version: GPL v3 (http://www.gnu.org/licenses/gpl.txt) or commercial license.
@@ -13,6 +13,8 @@
 #import "sqlite3_regexp.h"
 
 #import "sqlite3_base64.h"
+
+#import "PSPDFThreadSafeMutableDictionary.h"
 
 // Defines Macro to only log lines when in DEBUG mode
 #ifdef DEBUG
@@ -31,7 +33,7 @@
     DLog(@"Initializing SQLitePlugin");
 
     {
-        openDBs = [NSMutableDictionary dictionaryWithCapacity:0];
+        openDBs = [PSPDFThreadSafeMutableDictionary dictionaryWithCapacity:0];
         appDBPaths = [NSMutableDictionary dictionaryWithCapacity:0];
 #if !__has_feature(objc_arc)
         [openDBs retain];
@@ -119,16 +121,22 @@
     NSString *dbname = [self getDBPath:dbfilename at:dblocation];
 
     if (dbname == NULL) {
-        DLog(@"No db name specified for open");
+        // XXX NOT EXPECTED (INTERNAL ERROR):
+        NSLog(@"No db name specified for open");
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"You must specify database name"];
     }
     else {
         NSValue *dbPointer = [openDBs objectForKey:dbfilename];
 
         if (dbPointer != NULL) {
-            DLog(@"Reusing existing database connection for db name %@", dbfilename);
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Database opened"];
-        } else {
+            // NO LONGER EXPECTED due to BUG 666 workaround solution:
+            NSLog(@"INTERNAL ERROR: database already open for db name: %@ (db file name: %@)", dbname, dbfilename);
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: @"INTERNAL ERROR: database already open"];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId: command.callbackId];
+            return;
+        }
+
+        @synchronized(self) {
             const char *name = [dbname UTF8String];
             sqlite3 *db;
 

@@ -1,4 +1,3 @@
-
 /*
 License for this version: GPL v3 (http://www.gnu.org/licenses/gpl.txt) or commercial license.
 Contact for commercial license: info@litehelpers.net
@@ -112,7 +111,7 @@ Contact for commercial license: info@litehelpers.net
       this.startNextTransaction();
     } else {
       if (this.dbname in this.openDBs) {
-        console.log('new transaction is waiting for open operation');
+        console.log('new transaction is queued, waiting for open operation to finish');
       } else {
         console.log('database is closed, new transaction is [stuck] waiting until db is opened again!');
       }
@@ -172,7 +171,7 @@ Contact for commercial license: info@litehelpers.net
   };
 
   SQLitePlugin.prototype.open = function(success, error) {
-    var myfn, openerrorcb, opensuccesscb;
+    var openerrorcb, opensuccesscb, step2;
     if (this.dbname in this.openDBs) {
       console.log('database already open: ' + this.dbname);
       this.dbid = this.dbidmap[this.dbname];
@@ -221,13 +220,16 @@ Contact for commercial license: info@litehelpers.net
       this.openDBs[this.dbname] = DB_STATE_INIT;
       this.dbidmap[this.dbname] = this.dbid = null;
       this.fjmap[this.dbname] = false;
-      if (!txLocks[this.dbname]) {
-        myfn = function(tx) {
-          tx.addStatement('ROLLBACK');
+      step2 = (function(_this) {
+        return function() {
+          cordova.exec(opensuccesscb, openerrorcb, "SQLitePlugin", "open", [_this.openargs]);
         };
-        this.addTransaction(new SQLitePluginTransaction(this, myfn, null, null, false, false));
-      }
-      cordova.exec(opensuccesscb, openerrorcb, "SQLitePlugin", "open", [this.openargs]);
+      })(this);
+      cordova.exec(step2, step2, 'SQLitePlugin', 'close', [
+        {
+          path: this.dbname
+        }
+      ]);
     }
   };
 
@@ -975,28 +977,10 @@ Contact for commercial license: info@litehelpers.net
                       SelfTest.finishWithError(errorcb, 'second readTransaction did not finish');
                       return;
                     }
-                    return db.close(function() {
-                      return SQLiteFactory.deleteDatabase({
-                        name: SelfTest.DBNAME,
-                        location: 'default'
-                      }, successcb, function(cleanup_err) {
-                        if (/Windows /.test(navigator.userAgent) || /IEMobile/.test(navigator.userAgent)) {
-                          console.log("IGNORE CLEANUP (DELETE) ERROR: " + (JSON.stringify(cleanup_err)) + " (Windows/WP8)");
-                          successcb();
-                          return;
-                        }
-                        return SelfTest.finishWithError(errorcb, "Cleanup error: " + cleanup_err);
-                      });
+                    db.close(function() {
+                      SelfTest.cleanupAndFinish(successcb, errorcb);
                     }, function(close_err) {
-                      if (/Windows /.test(navigator.userAgent) || /IEMobile/.test(navigator.userAgent)) {
-                        console.log("IGNORE close ERROR: " + (JSON.stringify(close_err)) + " (Windows/WP8)");
-                        SQLiteFactory.deleteDatabase({
-                          name: SelfTest.DBNAME,
-                          location: 'default'
-                        }, successcb, successcb);
-                        return;
-                      }
-                      return SelfTest.finishWithError(errorcb, "close error: " + close_err);
+                      SelfTest.finishWithError(errorcb, "close error: " + close_err);
                     });
                   });
                 });
@@ -1012,15 +996,24 @@ Contact for commercial license: info@litehelpers.net
         return SelfTest.finishWithError(errorcb, "Open database error: " + open_err);
       });
     },
+    cleanupAndFinish: function(successcb, errorcb) {
+      SQLiteFactory.deleteDatabase({
+        name: SelfTest.DBNAME,
+        location: 'default'
+      }, successcb, function(cleanup_err) {
+        SelfTest.finishWithError(errorcb, "CLEANUP DELETE ERROR: " + cleanup_err);
+      });
+    },
     finishWithError: function(errorcb, message) {
       console.log("selfTest ERROR with message: " + message);
       SQLiteFactory.deleteDatabase({
         name: SelfTest.DBNAME,
         location: 'default'
       }, function() {
-        return errorcb(newSQLError(message));
+        errorcb(newSQLError(message));
       }, function(err2) {
-        return errorcb(newSQLError("Cleanup error: " + err2 + " for error: " + message));
+        console.log("selfTest CLEANUP DELETE ERROR " + err2);
+        errorcb(newSQLError("CLEANUP DELETE ERROR: " + err2 + " for error: " + message));
       });
     }
   };

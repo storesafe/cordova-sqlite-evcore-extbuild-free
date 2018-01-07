@@ -1,8 +1,60 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.9.1-pre1
+# cordova-sqlite-evcore-extbuild-free 0.9.1
 
+- cordova-sqlite-evcore-common-free compile-time option fixes for iOS/macOS:
+  - SQLITE_THREADSAFE=2 on iOS/macOS to avoid possible malformed database due to multithreaded access ref: <https://github.com/litehelpers/Cordova-sqlite-storage/issues/703>
+  - Suppress warnings when building sqlite3.c (iOS/macOS)
+  - Remove unwanted SQLITE_OMIT_BUILTIN_TEST option (iOS/macOS)
 - Android evcore-native-driver NDK build in JAR from <https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free/tree/ext-master> (with FTS5/JSON1/SQLITE_DEFAULT_PAGE_SIZE/SQLITE_DEFAULT_CACHE_SIZE build fixes included), wth JSMN (http://zserge.com/jsmn.html) included again under MIT license, now supports cordova-android@7.
+- additional doc fixes
+
+## cordova-sqlite-evcore-common-free 0.7.6
+
+##### cordova-sqlite-legacy-core 1.0.7
+
+- Add error info text in case of close error on Windows
+- Signal INTERNAL ERROR in case of attempt to reuse db on Windows (should never happen due to workaround solution to BUG 666)
+
+###### cordova-sqlite-legacy-express-core 1.0.5
+
+- iOS/macOS @synchronized guard for sqlite3_open operation
+- Signal INTERNAL ERROR in case of attempt to reuse db (Android/iOS) (should never happen due to workaround solution to BUG 666)
+
+##### cordova-sqlite-legacy-core 1.0.6
+
+###### cordova-sqlite-legacy-express-core 1.0.4
+
+- Cleaned up workaround solution to BUG 666: close db before opening (ignore close error)
+- android.database end transaction if active before closing (needed for new BUG 666 workaround solution to pass selfTest in case of builtin android.database implementation)
+
+##### cordova-sqlite-legacy-core 1.0.5
+
+###### cordova-sqlite-legacy-express-core 1.0.3
+
+- Resolve Java 6/7/8 concurrent map compatibility issue reported in litehelpers/Cordova-sqlite-storage#726, THANKS to pointer by @NeoLSN (Jason Yang/楊朝傑) in litehelpers/Cordova-sqlite-storage#727.
+- selfTest database cleanup do not ignore close or delete error on any platforms
+
+##### cordova-sqlite-legacy-core 1.0.4
+
+- New workaround solution to BUG 666: close db before opening (ignore close error)
+
+##### cordova-sqlite-legacy-core 1.0.3
+
+- Suppress warnings when building sqlite3.c & PSPDFThreadSafeMutableDictionary.m on iOS/macOS
+
+##### cordova-sqlite-legacy-core 1.0.2
+
+- Fix log in case of transaction waiting for open to finish; doc fixes
+- Windows 10 (UWP) build with /SAFESEH flag on Win32 (x86) target
+
+###### cordova-sqlite-legacy-express-core 1.0.2
+
+- Use PSPDFThreadSafeMutableDictionary for iOS/macOS to avoid threading issue ref: litehelpers/Cordova-sqlite-storage#716
+
+###### cordova-sqlite-legacy-express-core 1.0.1
+
+- Fix bug 666 workaround to trigger ROLLBACK in the next event tick (needed to support version with pre-populated database on Windows)
 
 # cordova-sqlite-evcore-extbuild-free 0.9.0
 
