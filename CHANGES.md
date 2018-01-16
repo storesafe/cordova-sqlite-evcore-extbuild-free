@@ -1,5 +1,15 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.9.2
+
+## cordova-sqlite-storage 2.2.0
+
+- Fix SQLiteAndroidDatabase implementation for Turkish and other foreign locales
+
+## cordova-sqlite-storage 2.1.0
+
+- Visual Studio 2017 updates for Windows UWP build
+
 # cordova-sqlite-evcore-extbuild-free 0.9.1
 
 - cordova-sqlite-evcore-common-free compile-time option fixes for iOS/macOS:

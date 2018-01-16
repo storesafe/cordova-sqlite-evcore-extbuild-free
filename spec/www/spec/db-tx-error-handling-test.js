@@ -3211,7 +3211,8 @@ var mytests = function() {
         it(suiteName + 'Inline US-ASCII blank string test with arguments array=function (BOGUS) in a try-catch block [TBD (WebKit) Web SQL vs plugin]', function(done) {
           var db = openDatabase("Inline-US-ASCII-string-test-with-arguments-array-equals-function.db", "1.0", "Demo", DEFAULT_SIZE);
 
-          if (isWebSql) pending('SKIP for (WebKit) Web SQL'); // XXX TBD SKIP FOR NOW on (WebKit) Web SQL
+          // if (isWebSql) pending('SKIP for (WebKit) Web SQL'); // XXX TBD SKIP FOR NOW on (WebKit) Web SQL
+          var check1 = false;
           db.transaction(function(transaction) {
             try {
               transaction.executeSql("SELECT ''", function(ignored1, ignored2) {
@@ -3230,10 +3231,12 @@ var mytests = function() {
                 return true;
               });
             } catch(ex) {
-              // NOT EXPECTED for (WebKit) Web SQL or plugin:
-              expect(false).toBe(true);
+              // EXPECTED RESULT for (WebKit) Web SQL ONLY:
+              if (!isWebSql) expect('Plugin BEHAVIOR CHANGED, please update this test').toBe('--');
+              if (isWebSql && !isAndroid) expect('iOS WebKit Web SQL behavior changed').toBe('--');
+              check1 = true;
               expect(ex).toBeDefined();
-              expect(ex.code).toBeDefined();
+              // expect(ex.code).toBeDefined();
               expect(ex.message).toBeDefined();
               throw ex;
             }
@@ -3241,11 +3244,14 @@ var mytests = function() {
           }, function(error) {
             // EXPECTED RESULT for (WebKit) Web SQL ONLY:
             if (!isWebSql) expect('Plugin BEHAVIOR CHANGED, please update this test').toBe('--');
+            if (isWebSql && isAndroid && !(/Android [1-4]/.test(navigator.userAgent)))
+              expect(check1).toBe(true);
             expect(error).toBeDefined();
             expect(error.code).toBeDefined();
             expect(error.message).toBeDefined();
             expect(error.code).toBe(0);
-            expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
+            // TBD ???:
+            // expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
 
             // Close (plugin only) & finish:
             (isWebSql) ? done() : db.close(done, done);
@@ -3261,7 +3267,8 @@ var mytests = function() {
         it(suiteName + 'Inline US-ASCII blank string test with arguments array=function (BOGUS) in a try-catch block read tx [TBD (WebKit) Web SQL vs plugin]', function(done) {
           var db = openDatabase("Inline-US-ASCII-string-test-with-arguments-array-equals-function-read-tx.db", "1.0", "Demo", DEFAULT_SIZE);
 
-          if (isWebSql) pending('SKIP for (WebKit) Web SQL'); // XXX TBD SKIP FOR NOW on (WebKit) Web SQL
+          // if (isWebSql) pending('SKIP for (WebKit) Web SQL'); // XXX TBD SKIP FOR NOW on (WebKit) Web SQL
+          var check1 = false;
           db.readTransaction(function(readTransaction) {
             try {
               readTransaction.executeSql("SELECT ''", function(ignored1, ignored2) {
@@ -3280,10 +3287,12 @@ var mytests = function() {
                 return true;
               });
             } catch(ex) {
-              // NOT EXPECTED for (WebKit) Web SQL or plugin:
-              expect(false).toBe(true);
+              // EXPECTED RESULT for (WebKit) Web SQL ONLY:
+              if (!isWebSql) expect('Plugin BEHAVIOR CHANGED, please update this test').toBe('--');
+              if (isWebSql && !isAndroid) expect('iOS WebKit Web SQL behavior changed').toBe('--');
+              check1 = true;
               expect(ex).toBeDefined();
-              expect(ex.code).toBeDefined();
+              // expect(ex.code).toBeDefined();
               expect(ex.message).toBeDefined();
               throw ex;
             }
@@ -3291,11 +3300,14 @@ var mytests = function() {
           }, function(error) {
             // EXPECTED RESULT for (WebKit) Web SQL ONLY:
             if (!isWebSql) expect('Plugin BEHAVIOR CHANGED, please update this test').toBe('--');
+            if (isWebSql && isAndroid && !(/Android [1-4]/.test(navigator.userAgent)))
+              expect(check1).toBe(true);
             expect(error).toBeDefined();
             expect(error.code).toBeDefined();
             expect(error.message).toBeDefined();
             expect(error.code).toBe(0);
-            expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
+            // TBD ???:
+            // expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
 
             // Close (plugin only) & finish:
             (isWebSql) ? done() : db.close(done, done);
@@ -3311,7 +3323,8 @@ var mytests = function() {
         it(suiteName + 'SELECT ? test with arguments array=function (BOGUS) in a try-catch block [TBD (WebKit) Web SQL vs plugin]', function(done) {
           var db = openDatabase("SELECT-parameter-with-arguments-array-equals-function.db", "1.0", "Demo", DEFAULT_SIZE);
 
-          if (isWebSql) pending('SKIP for (WebKit) Web SQL'); // XXX TBD SKIP FOR NOW on (WebKit) Web SQL
+          // if (isWebSql) pending('SKIP for (WebKit) Web SQL'); // XXX TBD SKIP FOR NOW on (WebKit) Web SQL
+          var check1 = false;
           db.transaction(function(transaction) {
             try {
               transaction.executeSql("SELECT ?", function(ignored1, ignored2) {
@@ -3330,10 +3343,12 @@ var mytests = function() {
                 return true;
               });
             } catch(ex) {
-              // NOT EXPECTED for (WebKit) Web SQL or plugin:
-              expect(false).toBe(true);
+              // EXPECTED RESULT for (WebKit) Web SQL ONLY:
+              if (!isWebSql) expect('Plugin BEHAVIOR CHANGED, please update this test').toBe('--');
+              if (isWebSql && !isAndroid) expect('iOS WebKit Web SQL behavior changed').toBe('--');
+              check1 = true;
               expect(ex).toBeDefined();
-              expect(ex.code).toBeDefined();
+              // expect(ex.code).toBeDefined();
               expect(ex.message).toBeDefined();
               throw ex;
             }
@@ -3341,11 +3356,14 @@ var mytests = function() {
           }, function(error) {
             // EXPECTED RESULT for (WebKit) Web SQL ONLY:
             if (!isWebSql) expect('Plugin BEHAVIOR CHANGED, please update this test').toBe('--');
+            if (isWebSql && isAndroid && !(/Android [1-4]/.test(navigator.userAgent)))
+              expect(check1).toBe(true);
             expect(error).toBeDefined();
             expect(error.code).toBeDefined();
             expect(error.message).toBeDefined();
             expect(error.code).toBe(0);
-            expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
+            // TBD ???:
+            // expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
 
             // Close (plugin only) & finish:
             (isWebSql) ? done() : db.close(done, done);
@@ -3361,7 +3379,8 @@ var mytests = function() {
         it(suiteName + 'SELECT ? test with arguments array=function (BOGUS) in a try-catch block read tx [TBD (WebKit) Web SQL vs plugin]', function(done) {
           var db = openDatabase("SELECT-parameter-with-arguments-array-equals-function-read-tx.db", "1.0", "Demo", DEFAULT_SIZE);
 
-          if (isWebSql) pending('SKIP for (WebKit) Web SQL'); // XXX TBD SKIP FOR NOW on (WebKit) Web SQL
+          // if (isWebSql) pending('SKIP for (WebKit) Web SQL'); // XXX TBD SKIP FOR NOW on (WebKit) Web SQL
+          var check1 = false;
           db.readTransaction(function(transaction) {
             try {
               transaction.executeSql("SELECT ?", function(ignored1, ignored2) {
@@ -3380,10 +3399,12 @@ var mytests = function() {
                 return true;
               });
             } catch(ex) {
-              // NOT EXPECTED for (WebKit) Web SQL or plugin:
-              expect(false).toBe(true);
+              // EXPECTED RESULT for (WebKit) Web SQL ONLY:
+              if (!isWebSql) expect('Plugin BEHAVIOR CHANGED, please update this test').toBe('--');
+              if (isWebSql && !isAndroid) expect('iOS WebKit Web SQL behavior changed').toBe('--');
+              check1 = true;
               expect(ex).toBeDefined();
-              expect(ex.code).toBeDefined();
+              // expect(ex.code).toBeDefined();
               expect(ex.message).toBeDefined();
               throw ex;
             }
@@ -3391,11 +3412,14 @@ var mytests = function() {
           }, function(error) {
             // EXPECTED RESULT for (WebKit) Web SQL ONLY:
             if (!isWebSql) expect('Plugin BEHAVIOR CHANGED, please update this test').toBe('--');
+            if (isWebSql && isAndroid && !(/Android [1-4]/.test(navigator.userAgent)))
+              expect(check1).toBe(true);
             expect(error).toBeDefined();
             expect(error.code).toBeDefined();
             expect(error.message).toBeDefined();
             expect(error.code).toBe(0);
-            expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
+            // TBD ???:
+            // expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
 
             // Close (plugin only) & finish:
             (isWebSql) ? done() : db.close(done, done);

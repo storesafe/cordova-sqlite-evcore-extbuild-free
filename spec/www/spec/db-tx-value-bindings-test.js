@@ -1312,8 +1312,9 @@ var mytests = function() {
 
         it(suiteName + ' returns [Unicode] string with \\u0000 (same as \\0) correctly [BROKEN: TRUNCATES on Windows]', function (done) {
           if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-          if (isWebSql && isAndroid) pending('SKIP for Android (WebKit Web SQL)') // XXX TBD ...
           if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('BROKEN on Android (default evcore-native-driver implementation)'); // [FUTURE TBD (documented)]
+          if (isWindows) pending('BROKEN on Windows'); // XXX
+          // if (isWebSql && isAndroid) pending('SKIP on Android Web SQL'); // XXX TBD - POSSIBLY INCONSISTENT RESULTS Android 4 vs 5 ???
 
           var db = openDatabase('UNICODE-retrieve-u0000-test.db');
 
@@ -1334,10 +1335,7 @@ var mytests = function() {
                     // we would like to know, so the test is coded to fail if it starts
                     // working there.
 
-                    if (isWebSql) {
-                      expect(name.length).toBe(1);
-                      expect(name).toBe('a');
-                    } else if (isWindows) {
+                    if (isWindows || (isWebSql && !(/Android [5-9]/.test(navigator.userAgent)))) {
                       expect(name.length).toBe(1);
                       expect(name).toBe('a');
                     } else {
