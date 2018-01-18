@@ -442,7 +442,7 @@ var mytests = function() {
 
         it(suiteName + "INLINE string vertical tab test", function(done) {
           if (isWP8) pending('BROKEN for WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-          if (isAndroid && !isWebSql && !isImpl2) pending('BROKEN for Android (default evcore-native-driver db implementation)'); // XXX TODO
+          if (isAndroid && !isWebSql && !isImpl2) pending('XXX SKIP: BUG on Android (default Android-sqlite-evcore-native-driver access implementation)'); // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#28
 
           var db = openDatabase("String-vertical-tab-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
@@ -483,7 +483,7 @@ var mytests = function() {
 
         it(suiteName + "INLINE string form feed test", function(done) {
           if (isWP8) pending('BROKEN for WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-          if (isAndroid && !isWebSql && !isImpl2) pending('BROKEN for Android (default evcore-native-driver db implementation)'); // XXX TODO
+          if (isAndroid && !isWebSql && !isImpl2) pending('XXX SKIP: BUG on Android (default Android-sqlite-evcore-native-driver access implementation)'); // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#28
 
           var db = openDatabase("String-form-feed-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
@@ -524,7 +524,7 @@ var mytests = function() {
 
         it(suiteName + "INLINE string backspace test", function(done) {
           if (isWP8) pending('BROKEN for WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-          if (isAndroid && !isWebSql && !isImpl2) pending('BROKEN for Android (default evcore-native-driver db implementation)'); // XXX TODO
+          if (isAndroid && !isWebSql && !isImpl2) pending('XXX SKIP: BUG on Android (default Android-sqlite-evcore-native-driver access implementation)'); // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#28
 
           var db = openDatabase("String-backspace-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
@@ -593,6 +593,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'string parameter value manipulation test with UTF-8 2-octet character é', function(done) {
+          if (isAndroid && !isWebSql && !isImpl2) pending('XXX SKIP: BUG on Android (default Android-sqlite-evcore-native-driver access implementation)'); // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
+
           var db = openDatabase("UTF8-2-octet-upper-value-string-test.db", "1.0", "Demo", DEFAULT_SIZE);
 
           db.transaction(function(tx) {
@@ -648,6 +650,7 @@ var mytests = function() {
 
         it(suiteName + 'string parameter value manipulation test with UTF-8 3-octet character €', function(done) {
           if (isWP8) pending('SKIP for WP(8)');
+          if (isAndroid && !isWebSql && !isImpl2) pending('XXX SKIP: BUG on Android (default Android-sqlite-evcore-native-driver access implementation)'); // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
 
           var db = openDatabase("UTF8-3-octet-string-upper-value-test.db", "1.0", "Demo", DEFAULT_SIZE);
 
@@ -671,17 +674,24 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
-        // TBD NOTE: In case of the default Android database implementation
-        // (Android-sqlite-connector) it is possible to manipulate,
-        // store, and retrieve a text string with 4-octet UTF-8 characters such as emojis.
-        // However HEX manipulations do not work the same as Android/iOS WebKit Web SQL,
+        // TBD NOTE: In case of the default Android database access
+        // implementation (evcore-native-driver) it is possible to
+        // manipulate, store, and retrieve a text string with 4-octet UTF-8
+        // characters such as emojis.
+        // However HEX manipulations _evidently_ do not work the same as Android/iOS WebKit Web SQL,
         // iOS plugin, or Android plugin with androidDatabaseImplementation : 2 setting.
         // This linkely indicates that such characters are stored differently [incorrectly]
-        // due to UTF-8 string handling limitations of Android-sqlite-connector
-        // and Android-sqlite-native-driver. ref: litehelpers/Cordova-sqlite-storage#564
+        // due to UTF-8 string handling limitations of
+        // evcore-native-driver on Android ref:
+        // - litehelpers/Cordova-sqlite-evcore-extbuild-free#19
+        // - litehelpers/Android-sqlite-evcore-native-driver-free#1
+        // - litehelpers/Cordova-sqlite-evcore-extbuild-free#7 (possible crash issue on Android 5.x/...)
+        // SIMILAR TO: litehelpers/Cordova-sqlite-storage#564
 
         it(suiteName + 'Inline emoji string manipulation test: SELECT UPPER("a\\uD83D\\uDE03.") [\\u1F603 SMILING FACE (MOUTH OPEN)]', function(done) {
-          var db = openDatabase("Inline-emoji-hex-test.db", "1.0", "Demo", DEFAULT_SIZE);
+          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('XXX TBD CRASH on Android 7.x/??? (default evcore-native-driver database access implementation)');
+
+          var db = openDatabase("Inline-emoji-hex-test_1.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
 
           db.transaction(function(tx) {
@@ -705,8 +715,8 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
-        it(suiteName + 'Inline emoji HEX test: SELECT HEX("@\\uD83D\\uDE03!") [\\u1F603 SMILING FACE (MOUTH OPEN)] [HEX encoding BUG on Android-sqlite-connector]', function(done) {
-          var db = openDatabase("Inline-emoji-hex-test.db", "1.0", "Demo", DEFAULT_SIZE);
+        it(suiteName + 'Inline emoji HEX test: SELECT HEX("@\\uD83D\\uDE03!") [\\u1F603 SMILING FACE (MOUTH OPEN)] [XXX HEX encoding BUG on Android (default evcore-native-driver database access implementation)]', function(done) {
+          var db = openDatabase("Inline-emoji-hex-test_2.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
 
           db.transaction(function(tx) {
@@ -717,7 +727,8 @@ var mytests = function() {
               expect(rs.rows).toBeDefined();
               expect(rs.rows.length).toBe(1);
 
-              // STOP HERE [HEX encoding BUG] for Android-sqlite-connector:
+              // STOP HERE [HEX encoding BUG] in case of Android
+              // (default evcore-native-driver database access implementation)
               if (!isWebSql && !isWindows && isAndroid && !isImpl2) return done();
 
               if (isWindows)
@@ -739,7 +750,7 @@ var mytests = function() {
 
         it(suiteName + "Inline BLOB with emoji string manipulation test: SELECT LOWER(X'41F09F9883') [A\uD83D\uDE03] [\\u1F603 SMILING FACE (MOUTH OPEN)]", function(done) {
           if (isWP8) pending('BROKEN for WP8');
-          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('BROKEN: CRASH on Android 5.x (default sqlite-connector version)');
+          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('XXX TBD CRASH on Android 5.x/... (default evcore-native-driver database access implementation)');
           if (isWindows) pending('SKIP for Windows'); // FUTURE TBD
 
           var db = openDatabase("Inline-emoji-select-lower-result-test.db", "1.0", "Demo", DEFAULT_SIZE);
@@ -768,7 +779,7 @@ var mytests = function() {
 
         it(suiteName + 'emoji SELECT HEX(?) parameter value test: "@\\uD83D\\uDE03!" [\\u1F603 SMILING FACE (MOUTH OPEN)]', function(done) {
           if (isWP8) pending('BROKEN for WP8');
-          if (isAndroid && !isWebSql && !isImpl2) pending('BROKEN for Android (default sqlite-connector version)');
+          if (isAndroid && !isWebSql && !isImpl2) pending('BROKEN on Android (default evcore-native-driver database access implementation)');
 
           var db = openDatabase("String-emoji-parameter-value-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
@@ -993,6 +1004,7 @@ var mytests = function() {
 
         it(suiteName + 'Inline string manipulation test with UTF-8 2/3 octet characters', function(done) {
           if (isWP8) pending('SKIP for WP(8)');
+          if (isAndroid && !isWebSql && !isImpl2) pending('XXX SKIP: BUG on Android (default Android-sqlite-evcore-native-driver access implementation)'); // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
 
           var db = openDatabase("Inline-UTF8-string-manipulation-test.db", "1.0", "Demo", DEFAULT_SIZE);
 
@@ -1021,6 +1033,7 @@ var mytests = function() {
 
         it(suiteName + 'string parameter manipulation test with UTF-8 2/3 octet characters', function(done) {
           if (isWP8) pending('SKIP for WP(8)');
+          if (isAndroid && !isWebSql && !isImpl2) pending('XXX SKIP: BUG on Android (default Android-sqlite-evcore-native-driver access implementation)'); // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
 
           var db = openDatabase("UTF8-string-parameter-manipulation-test.db", "1.0", "Demo", DEFAULT_SIZE);
 

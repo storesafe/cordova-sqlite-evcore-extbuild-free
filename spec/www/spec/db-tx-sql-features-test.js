@@ -48,7 +48,7 @@ var mytests = function() {
 
         // Known to work with:
         // - iOS 9 Web SQL
-        // - Android (default Android-sqlite-connector implementation)
+        // - Android (default Android evcore-native-driver implementation)
         // - iOS & Windows (with newer sqlite3 build)
         it(suiteName + 'db readTransaction with a WITH clause', function(done) {
           if (isWP8) pending('NOT IMPLEMENTED for WP(8)');
