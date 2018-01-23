@@ -1,9 +1,9 @@
 {
-  "name": "cordova-sqlite-evcore-common-free",
-  "version": "0.7.6",
-  "description": "Cordova/PhoneGap sqlite storage - free enterprise version with performance improvements for Android (common version branch with external sqlite3 dependencies)",
+  "name": "cordova-sqlite-evcore-legacy-ext-common-free",
+  "version": "0.0.1",
+  "description": "Cordova/PhoneGap sqlite storage - free enterprise version with performance improvements for Android (legacy common version branch with external sqlite3 dependencies)",
   "cordova": {
-    "id": "cordova-sqlite-evcore-common-free",
+    "id": "cordova-sqlite-evcore-legacy-ext-common-free",
     "platforms": [
       "android",
       "ios",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/litehelpers/Cordova-sqlite-evcore-common-free.git"
+    "url": "https://github.com/litehelpers/cordova-sqlite-evcore-legacy-ext-common-free.git"
   },
   "keywords": [
     "sqlite",
@@ -26,9 +26,9 @@
   "author": "various",
   "license": "GPL",
   "bugs": {
-    "url": "https://github.com/litehelpers/Cordova-sqlite-evcore-common-free/issues"
+    "url": "https://github.com/litehelpers/cordova-sqlite-evcore-legacy-ext-common-free/issues"
   },
-  "homepage": "https://github.com/litehelpers/Cordova-sqlite-evcore-common-free",
+  "homepage": "https://github.com/litehelpers/cordova-sqlite-evcore-legacy-ext-common-free",
   "dependencies": {
     "cordova-sqlite-evcore-free-dependencies": "0.7.3"
   },

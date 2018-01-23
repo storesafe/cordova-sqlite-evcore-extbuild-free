@@ -7,7 +7,7 @@ var path = require('path');
 var exec = require('child_process').exec;
 
 // XXX FUTURE TBD auto-detect:
-var package_name = 'cordova-sqlite-evcore-common-free';
+var package_name = 'cordova-sqlite-evcore-legacy-ext-common-free';
 
 module.exports = function (context) {
     var Q = context.requireCordovaModule('q');

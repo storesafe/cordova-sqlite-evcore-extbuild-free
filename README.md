@@ -1,6 +1,6 @@
-# Cordova/PhoneGap sqlite storage - free enterprise version with performance improvements for Android
+# Cordova/PhoneGap sqlite storage - free enterprise version with performance improvements for Android (legacy common version with FUTURE TODO limited extra features)
 
-Native interface to sqlite in a Cordova/PhoneGap plugin for Android, iOS, macOS, and Windows 10 (UWP), with API similar to HTML5/[Web SQL API](http://www.w3.org/TR/webdatabase/).
+Native interface to sqlite in a Cordova/PhoneGap plugin for Android, iOS, macOS, Windows 8.1, Windows Phone 8.1, and Windows 10 (UWP), with API similar to HTML5/[Web SQL API](http://www.w3.org/TR/webdatabase/).
 
 This plugin version uses a special native C library to provide significant performance and memory usage improvements on Android.
 
@@ -10,7 +10,7 @@ NOTE: Commercial licenses for [litehelpers / Cordova-sqlite-enterprise-free](htt
 
 ## About this plugin version branch
 
-Free enterprise version with performance improvements for Android - common branch with the external sqlite3 dependencies automatically installed by the `before_plugin_install` hook.
+Free enterprise version with performance improvements for Android - legacy common version branch (supports Windows 8.1/Windows Phone 8.1 along with Android/iOS/macOS/Windows 10 UWP) with FUTURE TODO limited extra features, using the `before_plugin_install` hook to fetch the sqlite3 component dependencies from npm.
 
 <!-- END About this plugin version branch -->
 
@@ -150,7 +150,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 - _The following feature is available in [litehelpers / cordova-sqlite-ext](https://github.com/litehelpers/cordova-sqlite-ext) (with permissive license terms, missing Android-sqlite-evcore-native-driver performance enhancements), TODO MISSING in [litehelpers / Cordova-sqlite-evcore-extbuild-free](https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free):_
   - Pre-populated database (all platforms Android/iOS/macOS/Windows)
 - Windows platform version (using a customized version of the performant [doo / SQLite3-WinRT](https://github.com/doo/SQLite3-WinRT) C++ component) has the following known limitations:
-  - This version branch has dependency on `v140` build toolset included by Visual Studio 2015 ref: [litehelpers/Cordova-sqlite-storage#580](https://github.com/litehelpers/Cordova-sqlite-storage/issues/580) (UNTESTED and UNSUPPORTED WORKAROUND for Visual Studio 2017 is described at: <https://developercommunity.visualstudio.com/content/problem/48806/cant-find-v140-in-visual-studio-2017.html>)
+  - This plugin version has dependency on `v140` build toolset included by Visual Studio 2015 ref: [litehelpers/Cordova-sqlite-storage#580](https://github.com/litehelpers/Cordova-sqlite-storage/issues/580). (UNTESTED and UNSUPPORTED WORKAROUND for Visual Studio 2017 is described at: <https://developercommunity.visualstudio.com/content/problem/48806/cant-find-v140-in-visual-studio-2017.html>.)
   - It is **not** possible to use this plugin with the default "Any CPU" target. A specific target CPU type **must** be specified when building an app with this plugin.
   - Truncation issue with UNICODE `\u0000` character (same as `\0`) ref: [litehelpers/Cordova-sqlite-evcore-extbuild-free#27](https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/issues/27)
   - No background processing
@@ -252,7 +252,7 @@ The Windows platform can present a number of challenges which increase when usin
 Use the following command to install this plugin from the Cordova CLI:
 
 ```shell
-cordova plugin add https://github.com/litehelpers/Cordova-sqlite-evcore-common-free # XXX --save RECOMMENDED for Cordova CLI pre-7.0
+cordova plugin add https://github.com/litehelpers/cordova-sqlite-evcore-legacy-ext-common-free # --save RECOMMENDED for Cordova CLI pre-7.0
 ```
 
 Add any desired platform(s) if not already present, for example:
@@ -1222,7 +1222,7 @@ Other resource (apparently for Ionic 1): <https://www.packtpub.com/books/content
 ## Easy installation with Cordova CLI tool
 
 ```shell
-cordova plugin add https://github.com/litehelpers/Cordova-sqlite-evcore-common-free --save
+cordova plugin add https://github.com/litehelpers/cordova-sqlite-evcore-legacy-ext-common-free # --save RECOMMENDED for Cordova CLI pre-7.0
 ```
 
 **Additional Cordova CLI NOTES:**
@@ -1249,7 +1249,7 @@ cordova platform add ios
 
 ## Plugin installation sources
 
-- https://github.com/litehelpers/Cordova-sqlite-evcore-common-free - latest version
+- https://github.com/litehelpers/cordova-sqlite-evcore-legacy-ext-common-free - latest version
 
 <!-- END Plugin installation sources -->
 
