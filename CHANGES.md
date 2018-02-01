@@ -1,5 +1,9 @@
 # Changes
 
+### cordova-sqlite-evcore-legacy-ext-common-free 0.0.2-dev01
+
+TBD
+
 ### cordova-sqlite-evcore-legacy-ext-common-free 0.0.1
 
 - Support Windows 8.1/Windows Phone 8.1 in this plugin version branch
