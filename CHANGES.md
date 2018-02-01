@@ -1,5 +1,9 @@
 # Changes
 
+### cordova-sqlite-evcore-legacy-ext-common-free 0.0.3-dev01
+
+TBD
+
 ### cordova-sqlite-evcore-legacy-ext-common-free 0.0.2
 
 - Android evcore NDK JAR from cordova-sqlite-evcore-free-dependencies, no longer built with JSMN component
