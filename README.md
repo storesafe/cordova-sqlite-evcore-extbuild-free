@@ -126,6 +126,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 - The iOS database location is now mandatory, as documented below.
 - SQLite version `3.15.2` included with the following compile-time options:
   - `SQLITE_THREADSAFE=2` (all platforms in this plugin version)
+  - `SQLITE_LOCKING_STYLE=1` on iOS/macOS ONLY
   - ~~`SQLITE_DEFAULT_MEMSTATUS=0`~~ _(FUTURE TODO)_
   - ~~`SQLITE_OMIT_DECLTYPE`~~ _(FUTURE TODO)_
   - ~~`SQLITE_OMIT_DEPRECATED`~~ _(FUTURE TODO)_
