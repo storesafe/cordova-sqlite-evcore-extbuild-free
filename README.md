@@ -121,7 +121,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 - This plugin is NOT supported by PhoneGap Developer App or PhoneGap Desktop App.
 - This plugin version uses a `before_plugin_install` hook to fetch and install `cordova-sqlite-evcore-free-dependencies` (with sqlite3 and Android-evcore-native-driver dependencies) from npm.
 - This plugin version will NOT work on `cordova-android@7` due to issue with JAR and NDK library files as discussed in [litehelpers/Cordova-sqlite-storage#729](https://github.com/litehelpers/Cordova-sqlite-storage/issues/729).
-- _A recent version of the Cordova CLI (such as `6.5.0` / `7.1.0`) is recommended. (Cordova CLI 8.x includes `cordova-android@7`, NOT supported by this plugin version due to [litehelpers/Cordova-sqlite-storage#729](https://github.com/litehelpers/Cordova-sqlite-storage/issues/729).) Cordova versions older than `6.0.0` are missing the `cordova-ios@4.0.0` security fixes. In addition it may be necessary to use `cordova prepare` in case of cordova-ios older than `4.3.0` (Cordova CLI `6.4.0`)._
+- A recent version of the Cordova CLI (such as `6.5.0` / `7.1.0`) is recommended. (XXX TODO Cordova CLI 8.x includes `cordova-android@7`, NOT supported by this plugin version due to [litehelpers/Cordova-sqlite-storage#729](https://github.com/litehelpers/Cordova-sqlite-storage/issues/729).) Cordova versions older than `6.0.0` are missing the `cordova-ios@4.0.0` security fixes. In addition it may be necessary to use `cordova prepare` in case of cordova-ios older than `4.3.0` (Cordova CLI `6.4.0`).
 - Use of other systems such as Cordova Plugman, PhoneGap CLI, PhoneGap Build, and Intel XDK is no longer supported by this plugin version since they do not honor the `before_plugin_install` hook. The supported solution is to use [litehelpers / Cordova-sqlite-evcore-extbuild-free](https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free) (GPL or commercial license terms); alternative with permissive license terms is available at: [brodybits / cordova-sqlite-legacy-build-support](https://github.com/brodybits/cordova-sqlite-legacy-build-support) (limited testing, limited updates).
 - The iOS database location is now mandatory, as documented below.
 - SQLite version `3.15.2` included with the following compile-time options:
@@ -139,16 +139,16 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
   - `SQLITE_ENABLE_FTS4`
   - `SQLITE_ENABLE_RTREE`
   - `SQLITE_ENABLE_COLUMN_METADATA` _(iOS/macOS/Windows - TBD NOT NEEDED by this plugin)_
+  - ~~`SQLITE_DEFAULT_PAGE_SIZE=4096` and `SQLITE_DEFAULT_CACHE_SIZE=-2000`~~ - XXX TODO (MISSING) new stable page/cache sizes from 3.12.0 ref: <http://sqlite.org/pgszchng2016.html> and <http://sqlite.org/releaselog/3_12_0.html>
   - `SQLITE_OS_WINRT` (Windows only)
   - `NDEBUG` on Windows (Release build only)
-  - _TODO: explicit `SQLITE_DEFAULT_PAGE_SIZE` and `SQLITE_DEFAULT_CACHE_SIZE` settings needed in this plugin version branch (default values recently changed as described in <http://sqlite.org/pgszchng2016.html>)_
 - This plugin version supports the use of two (2) possible Android sqlite database implementations:
   - default: high-performance, lightweight [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) NDK library (C implementation)
   - optional: built-in Android database classes (usage described below)
 - The following features are available in [litehelpers / cordova-sqlite-ext](https://github.com/litehelpers/cordova-sqlite-ext) (with permissive license terms, missing [Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) performance enhancements) and [litehelpers / Cordova-sqlite-evcore-extbuild-free](https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free) (with [Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) performance enhancements, GPL or commercial license terms):
   - REGEXP (Android/iOS/macOS)
   - SELECT BLOB data in Base64 format (all platforms Android/iOS/macOS/Windows)
-- _The following feature is available in [litehelpers / cordova-sqlite-ext](https://github.com/litehelpers/cordova-sqlite-ext) (with permissive license terms, missing Android-sqlite-evcore-native-driver performance enhancements), TODO MISSING in [litehelpers / Cordova-sqlite-evcore-extbuild-free](https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free):_
+- The following feature is available in [litehelpers / cordova-sqlite-ext](https://github.com/litehelpers/cordova-sqlite-ext) (with permissive license terms, missing Android-sqlite-evcore-native-driver performance enhancements), XXX TODO MISSING in [litehelpers / Cordova-sqlite-evcore-extbuild-free](https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free):
   - Pre-populated database (all platforms Android/iOS/macOS/Windows)
 - Windows platform version (using a customized version of the performant [doo / SQLite3-WinRT](https://github.com/doo/SQLite3-WinRT) C++ component) has the following known limitations:
   - This plugin version has dependency on `v140` build toolset included by Visual Studio 2015 ref: [litehelpers/Cordova-sqlite-storage#580](https://github.com/litehelpers/Cordova-sqlite-storage/issues/580). (UNTESTED and UNSUPPORTED WORKAROUND for Visual Studio 2017 is described at: <https://developercommunity.visualstudio.com/content/problem/48806/cant-find-v140-in-visual-studio-2017.html>.)
@@ -163,7 +163,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 - iOS versions supported: 8.x / 9.x / 10.x / 11.x
 - FTS3, FTS4, and R-Tree are fully tested and supported for all target platforms in this version branch.
 - Default `PRAGMA journal_mode` setting (*tested*):
-  - Android _with builtin android.database implementation_ (as selected using the `androidDatabaseImplementation` option in `window.sqlitePlugin.openDatabase`): _`persist` (pre-8.x) / `truncate` (Android 8+) (NOT covered by automatic spec test suite in this plugin version branch)_
+  - Android with builtin android.database implementation (as selected using the `androidDatabaseImplementation` option in `window.sqlitePlugin.openDatabase`): `persist` (pre-8.x) / `truncate` (Android 8+) (NOT covered by automatic spec test suite in this plugin version branch)
   - otherwise: `delete`
 - AUTO-VACUUM is not enabled by default. If no form of `VACUUM` or `PRAGMA auto_vacuum` is used then sqlite will automatically reuse deleted data space for new data but the database file will never shrink. For reference: <http://www.sqlite.org/pragma.html#pragma_auto_vacuum> and [litehelpers/Cordova-sqlite-storage#646](https://github.com/litehelpers/Cordova-sqlite-storage/issues/646)
 
@@ -577,7 +577,6 @@ Additional limitations are tracked in [marked cordova-sqlite-storage doc-todo is
 - This plugin does **not** work with the default "Any CPU" target. A specific, valid CPU target platform **must** be specified.
 - It is **not** allowed to change the app ID in the Windows platform project. As described in the **Windows platform usage** of the [Installing](#installing) section a Windows-specific app ID may be declared using the `windows-identity-name` attribute or "WindowsStoreIdentityName" setting.
 - A problem locating `SQLite3.md` generally means that there was a problem building the C++ library.
-- TBD TO BE FIXED: This version branch does not work with Visual Studio 2017.
 
 ### General Cordova pitfalls
 
@@ -1347,7 +1346,7 @@ In case of a problem with a pre-populated database, please post your entire proj
 ## What information is needed for help
 
 Please include the following:
-- Which platform(s) (Android/iOS/macOS/~~Windows 8.1/Windows Phone 8.1/~~Windows 10)
+- Which platform(s) (Android/iOS/macOS/Windows 8.1/Windows Phone 8.1/Windows 10)
 - Clear description of the issue
 - A small, complete, self-contained program that demonstrates the problem, preferably as a Github project, based on [brodybits / cordova-sqlite-test-app](https://github.com/brodybits/cordova-sqlite-test-app). ZIP/TGZ/BZ2 archive available from a public link is OK. No RAR or other such formats please.
 - In case of a Windows build problem please capture the entire compiler output.
