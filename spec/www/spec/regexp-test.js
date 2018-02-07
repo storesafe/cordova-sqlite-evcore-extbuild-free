@@ -42,7 +42,7 @@ var mytests = function() {
         function(done) {
           if (isWP8) pending('NOT IMPLEMENTED for WP8 (plugin)');
           if (isWindows) pending('NOT IMPLEMENTED for Windows (plugin)');
-          if (!isWebSql && !isWindows && isAndroid) pending('SKIP for Android plugin'); // TBD SKIP for Android plugin (for now)
+          if (!isWebSql && !isWindows && isAndroid && isImpl2) pending('TBD SKIP for androidDatabaseImplementation: 2'); // XXX TBD (Android 4.x vs 5.x vs ...)
           if (isWebSql && !isAndroid && !isWindows && !isWP8) pending('SKIP for iOS (WebKit) Web SQL');
           if (!isWebSql && !isAndroid && !isWindows && !isWP8) pending('NOT IMPLEMENTED for iOS/macOS plugin');
 

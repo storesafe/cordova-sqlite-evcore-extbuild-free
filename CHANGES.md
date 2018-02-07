@@ -1,7 +1,8 @@
 # Changes
 
-### cordova-sqlite-evcore-legacy-ext-common-free 0.0.2-dev02
+### cordova-sqlite-evcore-legacy-ext-common-free 0.0.2
 
+- Android evcore NDK JAR from cordova-sqlite-evcore-free-dependencies, no longer built with JSMN component
 - Remove SQLITE_ENABLE_COLUMN_METADATA not needed (iOS/macOS/Windows)
 
 ### cordova-sqlite-evcore-legacy-ext-common-free 0.0.1
