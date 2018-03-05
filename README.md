@@ -140,7 +140,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
   - BASE64 integrated from [brodybits / sqlite3-base64](https://github.com/brodybits/sqlite3-base64), using [brodybits / libb64-encode](https://github.com/brodybits/libb64-encode) (based on <http://libb64.sourceforge.net/> by Chris Venter, public domain)
   - REGEXP for Android (default Android-sqlite-connector database implementation), iOS, and macOS using [brodybits / sqlite3-regexp-cached](https://github.com/brodybits/sqlite3-regexp-cached) (based on <http://git.altlinux.org/people/at/packages/?p=sqlite3-pcre.git> by Alexey Tourbin, public domain)
 - SQLite `3.15.2` __included__, with the following _compile-time definitions (for all supported platforms Android/iOS/macOS/Windows)_:
-  - `SQLITE_THREADSAFE=2` _on Android/iOS/macOS (`SQLITE_THREADSAFE=1` on Windows)_
+  - `SQLITE_THREADSAFE=1` on iOS/macOS/Windows (`SQLITE_THREADSAFE=2` Android)
   - ~~`SQLITE_DEFAULT_MEMSTATUS=0`~~ _(FUTURE TODO)_
   - _~~`SQLITE_LOCKING_STYLE=1` on iOS/macOS~~ (XXX TODO ... already present in cordova-sqlite-evcore-common-free plugin version)_
   - ~~`SQLITE_OMIT_DECLTYPE`~~ _(FUTURE TODO)_
