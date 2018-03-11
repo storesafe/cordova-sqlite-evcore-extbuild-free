@@ -127,7 +127,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
   - TBD NOT TESTED in this plugin version: BASE64 integrated from <https://github.com/brodybits/sqlite3-base64>, using <https://github.com/brodybits/libb64-encode> (based on <http://libb64.sourceforge.net/> by Chris Venter, public domain)
   - REGEXP using <https://github.com/brodybits/sqlite3-regexp-cached> (based on <http://git.altlinux.org/people/at/packages/?p=sqlite3-pcre.git> by Alexey Tourbin, public domain)
 - SQLite version `3.15.2` included with the following compile-time options:
-  - `SQLITE_THREADSAFE=2` (all platforms in this plugin version)
+  - `SQLITE_THREADSAFE=1` for iOS/macOS (`SQLITE_THREADSAFE=2` for Android/Windows)
   - `SQLITE_LOCKING_STYLE=1` on iOS/macOS ONLY
   - ~~`SQLITE_DEFAULT_MEMSTATUS=0`~~ _(FUTURE TODO)_
   - ~~`SQLITE_OMIT_DECLTYPE`~~ _(FUTURE TODO)_

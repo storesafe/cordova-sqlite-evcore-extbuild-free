@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-sqlite-evcore-legacy-ext-common-free"
-    version="0.0.3-dev01">
+    version="0.0.3">
 
     <name>Cordova sqlite storage - free enterprise version with performance improvements for Android (legacy common version branch with external sqlite3 dependencies)</name>
 
@@ -59,7 +59,7 @@
 
         <header-file src="node_modules/cordova-sqlite-evcore-free-dependencies/sqlite3.h" />
         <source-file src="node_modules/cordova-sqlite-evcore-free-dependencies/sqlite3.c"
-                     compiler-flags="-w -DSQLITE_TEMP_STORE=2 -DSQLITE_THREADSAFE=2 -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_RTREE -DSQLITE_LOCKING_STYLE=1 -DSQLITE_OMIT_LOAD_EXTENSION" />
+                     compiler-flags="-w -DSQLITE_TEMP_STORE=2 -DSQLITE_THREADSAFE=1 -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_RTREE -DSQLITE_LOCKING_STYLE=1 -DSQLITE_OMIT_LOAD_EXTENSION" />
     </platform>
 
     <!-- macOS (osx) -->
@@ -82,7 +82,7 @@
 
         <header-file src="node_modules/cordova-sqlite-evcore-free-dependencies/sqlite3.h" />
         <source-file src="node_modules/cordova-sqlite-evcore-free-dependencies/sqlite3.c"
-                     compiler-flags="-w -DSQLITE_TEMP_STORE=2 -DSQLITE_THREADSAFE=2 -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_RTREE -DSQLITE_LOCKING_STYLE=1 -DSQLITE_OMIT_LOAD_EXTENSION" />
+                     compiler-flags="-w -DSQLITE_TEMP_STORE=2 -DSQLITE_THREADSAFE=1 -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_RTREE -DSQLITE_LOCKING_STYLE=1 -DSQLITE_OMIT_LOAD_EXTENSION" />
     </platform>
 
     <!-- windows -->
