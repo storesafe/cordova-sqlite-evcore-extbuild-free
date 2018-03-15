@@ -1,5 +1,11 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.9.5
+
+### cordova-sqlite-evcore-legacy-ext-common-free 0.0.4
+
+- additional evcore iOS/macOS/Windows compile-time options
+
 # cordova-sqlite-evcore-extbuild-free 0.9.4
 
 - Android evcore NDK JAR from cordova-sqlite-evcore-free-dependencies 0.8.0, no longer using JSMN component

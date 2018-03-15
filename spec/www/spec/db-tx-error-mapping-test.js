@@ -65,13 +65,17 @@ var mytests = function() {
         // - Android plugin with androidDatabaseImplementation: 2 setting indicates SQLError code 0
         //   (SQLError.UNKNOWN_ERR) in cases other than a syntax error or constraint violation
         // - Windows plugin always reports error code 0 (SQLError.UNKNOWN_ERR) and
-        //   INCONSISTENT messages (missing actual error info)
+        //   INCONSISTENT messages (missing actual error info WITH ERROR DESCRIPTION FROM SQLite)
+        // - In case of default Android evcore-native-driver database access implementation
+        //   error message from sqlite is missing actual error description from SQLite
 
         // OTHER ERROR MAPPING NOTES:
         //
         // - (WebKit) Web SQL apparently includes 'prepare statement error' vs
         //   'execute statement error' info along with the sqlite error code
-        // - Default Android implementation (Android-sqlite-connector) includes
+        // - XXX TODO NOT INCLUDED BY DEFAULT Android-sqlite-evcore-native-driver-free
+        //   IMPLEMENTATION ON THIS PLUGIN VERSION:
+        //   Default Android implementation (Android-sqlite-connector) includes
         //   sqlite3_prepare_v2 vs sqlite3_step function call info indicating
         //   'prepare statement error' vs 'execute statement error'
         // - Android plugin with androidDatabaseImplementation: 2 setting includes the sqlite error code

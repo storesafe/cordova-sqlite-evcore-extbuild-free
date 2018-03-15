@@ -105,6 +105,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'INSERT TEXT string with é (UTF-8 2 octets), SELECT the data, check, and check HEX value [UTF-16le on Windows]', function(done) {
+          if (isAndroid && !isWebSql && !isImpl2) pending('XXX SKIP: BUG on Android (default Android-sqlite-evcore-native-driver access implementation)'); // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
+
           var db = openDatabase('INSERT-UTF8-2-octets-and-check.db', '1.0', 'Demo', DEFAULT_SIZE);
 
           db.transaction(function(tx) {
@@ -144,6 +146,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'INSERT TEXT string with € (UTF-8 3 octets), SELECT the data, check, and check HEX value [UTF-16le on Windows]', function(done) {
+          if (isAndroid && !isWebSql && !isImpl2) pending('XXX SKIP: BUG on Android (default Android-sqlite-evcore-native-driver access implementation)'); // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
+
           var db = openDatabase('INSERT-UTF8-3-octets-and-check.db', '1.0', 'Demo', DEFAULT_SIZE);
 
           db.transaction(function(tx) {
@@ -518,9 +522,16 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
-        // NOTE: emojis and other 4-octet UTF-8 characters apparently not stored
-        // properly by Android-sqlite-connector ref: litehelpers/Cordova-sqlite-storage#564
-        it(suiteName + 'INSERT TEXT string with emoji [\\u1F603 SMILING FACE (MOUTH OPEN)], SELECT the data, check, and check HEX [UTF-16le on Windows; HEX encoding BUG on Android-sqlite-connector]' , function(done) {
+        // NOTE: emojis and other 4-octet UTF-8 characters _evidently_ not stored
+        // properly by Android-sqlite-connector / Android evcore-native-driver
+        // ref:
+        // - litehelpers/Cordova-sqlite-storage#564
+        // - litehelpers/Cordova-sqlite-evcore-extbuild-free#19
+        // - litehelpers/Android-sqlite-evcore-native-driver-free#1
+        // - litehelpers/Cordova-sqlite-evcore-extbuild-free#7 (possible crash issue on Android 5.x/...)
+        it(suiteName + 'INSERT TEXT string with emoji [\\u1F603 SMILING FACE (MOUTH OPEN)], SELECT the data, check, and check HEX [UTF-16le on Windows]' , function(done) {
+          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('XXX TBD CRASH on Android 7.x/??? (default evcore-native-driver database access implementation)');
+
           var db = openDatabase('INSERT-emoji-and-check.db', '1.0', 'Demo', DEFAULT_SIZE);
 
           db.transaction(function(tx) {
@@ -547,8 +558,12 @@ var mytests = function() {
                     expect(rs3.rows).toBeDefined();
                     expect(rs3.rows.length).toBe(1);
 
-                    // STOP HERE [HEX encoding BUG] for Android-sqlite-connector:
-                    if (!isWebSql && !isWindows && isAndroid && !isImpl2) return done();
+                    // TBD NOT APPLICABLE in this plugin version
+                    // (TEST SKIPPPED for default evcore-native-driver database
+                    //  access implementation due to possible crash on
+                    //  Android 7.x/???):
+                    // STOP HERE [HEX encoding BUG] for XXX TBD
+                    // if (!isWebSql && !isWindows && isAndroid && !isImpl2) return done();
 
                     if (isWindows)
                       expect(rs3.rows.item(0).hexvalue).toBe('40003DD803DE2100'); // (UTF-16le)
@@ -1254,10 +1269,10 @@ var mytests = function() {
 
       describe(scenarioList[i] + ': special UNICODE column value binding test(s)', function() {
 
-        it(suiteName + ' stores [Unicode] string with \\u0000 (same as \\0) correctly [HEX encoding check BROKEN for Android-sqlite-connector]', function (done) {
-          if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-          if (isWindows) pending('BROKEN on Windows'); // TBD (truncates on Windows)
-          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('BROKEN on Android (default evcore-native-driver implementation)'); // [FUTURE TBD (documented)]
+        it(suiteName + ' stores [Unicode] string with \\u0000 (same as \\0) correctly [XXX TBD NOT SUPPORTED ON ALL PLATFORMS]', function (done) {
+          // if (isWP8) pending(...); // XXX WP8 NOT SUPPORTED by this plugin version
+          if (isWindows) pending('XXX SKIP DUE TO TRUNCATION ISSUE on Windows'); // XXX TBD
+          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('XXX TBD BROKEN on default Android evcore-native-driver database access implementation'); // XXX TBD
 
           var db = openDatabase('UNICODE-store-u0000-test.db');
 
@@ -1310,11 +1325,10 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
-        it(suiteName + ' returns [Unicode] string with \\u0000 (same as \\0) correctly [BROKEN: TRUNCATES on Windows]', function (done) {
+        it(suiteName + ' returns [Unicode] string with \\u0000 (same as \\0) correctly [XXX BUG on Android & Windows: TRUNCATION on Windows; INCORRECT VALUE on Android (default evcore-native-driver database access implementation)]', function (done) {
           if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('BROKEN on Android (default evcore-native-driver implementation)'); // [FUTURE TBD (documented)]
-          if (isWindows) pending('BROKEN on Windows'); // XXX
-          // if (isWebSql && isAndroid) pending('SKIP on Android Web SQL'); // XXX TBD - POSSIBLY INCONSISTENT RESULTS Android 4 vs 5 ???
+          if (isWebSql && isAndroid) pending('XXX BROKEN on Android (default evcore-native-driver implementation') // XXX TBD ...
+          // if (isWindows) pending('...'); // XXX REPRODUCE TRUNCATION BUG ON Windows
 
           var db = openDatabase('UNICODE-retrieve-u0000-test.db');
 
@@ -1335,9 +1349,21 @@ var mytests = function() {
                     // we would like to know, so the test is coded to fail if it starts
                     // working there.
 
-                    if (isWindows || (isWebSql && !(/Android [5-9]/.test(navigator.userAgent)))) {
+                    //* if (isWindows || (isWebSql && !(/Android [5-9]/.test(navigator.userAgent)))) {
+                    //*   expect(name.length).toBe(1);
+                    //*   expect(name).toBe('a');
+                    //* } // else ...
+                    if (isWebSql) {
                       expect(name.length).toBe(1);
                       expect(name).toBe('a');
+                    } else if (isWindows) {
+                      // XXX BUG on Windows:
+                      expect(name.length).toBe(1);
+                      expect(name).toBe('a');
+                    } else if (!isWindows && isAndroid && !isImpl2) {
+                      // XXX BUG on Android (default evcore-native-driver database access implementation):
+                      expect(name.length).toBe(7);
+                      expect(name).toBe('a0000cd');
                     } else {
                       expect(name.length).toBe(4);
                       expect(name).toBe('a\u0000cd');

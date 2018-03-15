@@ -78,6 +78,8 @@ var mytests = function() {
         // solved the issue for WP8.
         // @brodybits noticed similar issue possible with Android-sqlite-connector
         // if the Android-sqlite-native-driver part is not built correctly.
+        // (TBD it is suspected but not concluded that this could also be an
+        // issue on Android-evcore-native-driver if it is not built properly.)
         test_it(suiteName + 'Multiple updates with key', function () {
           var db = openDatabase("MultipleUpdatesWithKey", "1.0",
 "Demo", DEFAULT_SIZE);

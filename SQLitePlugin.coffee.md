@@ -2,7 +2,7 @@
 
     ###
     License for this version: GPL v3 (http://www.gnu.org/licenses/gpl.txt) or commercial license.
-    Contact for commercial license: info@litehelpers.net
+    Contact for commercial license: sales@litehelpers.net
     ###
 
 #### Use coffee compiler to compile this directly into Javascript

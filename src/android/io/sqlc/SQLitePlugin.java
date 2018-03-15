@@ -39,14 +39,15 @@ import org.apache.cordova.PluginResult;
 public class SQLitePlugin extends CordovaPlugin {
 
     /**
-     * Multiple database runner map (static).
+     * Multiple database runner lookup maps (static).
      *
-     * NOTE: no public static accessor to db (runner) map since it is not
+     * NOTE: no public static accessor to db runner maps since it is not
      * expected to work properly with db threading.
      *
      * FUTURE TBD put DBRunner into a public class that can provide external accessor.
      *
-     * ADDITIONAL NOTE: Storing as Map<String, DBRunner> to avoid portabiity issue
+     * ADDITIONAL NOTE: Storing as Map<String, DBRunner> and
+     * Map<Integer, DBRunner> to avoid portabiity issue
      * between Java 6/7/8 as discussed in:
      * https://gist.github.com/AlainODea/1375759b8720a3f9f094
      *
@@ -54,7 +55,6 @@ public class SQLitePlugin extends CordovaPlugin {
      * https://github.com/litehelpers/Cordova-sqlite-storage/issues/727
      */
     static Map<String, DBRunner> dbrmap = new ConcurrentHashMap<String, DBRunner>();
-    // static ConcurrentHashMap<Integer, DBRunner> dbrmap2 = new ConcurrentHashMap<Integer, DBRunner>();
     static Map<Integer, DBRunner> dbrmap2 = new ConcurrentHashMap<Integer, DBRunner>();
 
     static int lastdbid = 0;
