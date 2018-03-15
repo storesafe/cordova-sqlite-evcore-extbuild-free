@@ -1,8 +1,8 @@
 # Changes
 
-### cordova-sqlite-evcore-legacy-ext-common-free 0.0.4-pre1
+### cordova-sqlite-evcore-legacy-ext-common-free 0.0.4-pre2
 
-- fix evcore (common) iOS/macOS/Windows compile-time options
+- additional evcore iOS/macOS/Windows compile-time options
 
 ### cordova-sqlite-evcore-legacy-ext-common-free 0.0.3
 

@@ -129,22 +129,20 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 - SQLite version `3.15.2` included with the following compile-time options:
   - `SQLITE_THREADSAFE=1` on iOS/macOS/Windows (`SQLITE_THREADSAFE=2` Android)
   - `SQLITE_LOCKING_STYLE=1` on iOS/macOS ONLY
-  - ~~`SQLITE_DEFAULT_MEMSTATUS=0`~~ _(FUTURE TODO)_
-  - ~~`SQLITE_OMIT_DECLTYPE`~~ _(FUTURE TODO)_
-  - ~~`SQLITE_OMIT_DEPRECATED`~~ _(FUTURE TODO)_
-  - ~~`SQLITE_OMIT_PROGRESS_CALLBACK`~~ _(FUTURE TODO)_
-  - ~~`SQLITE_OMIT_SHARED_CACHE`~~ _(FUTURE TODO)_
+  - `HAVE_USLEEP=1` (iOS/macOS/Windows)
   - `SQLITE_TEMP_STORE=2`
-  - `SQLITE_OMIT_LOAD_EXTENSION` _(iOS/macOS/Windows ... XXX TODO missing on Android build)_
+  - `SQLITE_DEFAULT_MEMSTATUS=0` (iOS/macOS/Windows)
+  - `SQLITE_OMIT_DECLTYPE` (iOS/macOS/Windows)
+  - `SQLITE_OMIT_DEPRECATED` (iOS/macOS/Windows)
+  - `SQLITE_OMIT_SHARED_CACHE` (iOS/macOS/Windows)
+  - `SQLITE_OMIT_LOAD_EXTENSION` (iOS/macOS/Windows)
   - `SQLITE_ENABLE_FTS3`
   - `SQLITE_ENABLE_FTS3_PARENTHESIS`
   - `SQLITE_ENABLE_FTS4`
   - `SQLITE_ENABLE_FTS5`
   - `SQLITE_ENABLE_RTREE`
   - `SQLITE_ENABLE_JSON1`
-  - `SQLITE_DEFAULT_PAGE_SIZE=4096` and `SQLITE_DEFAULT_CACHE_SIZE=-2000` - _new stable_ page/cache sizes from 3.12.0 ref:
-    - <http://sqlite.org/pgszchng2016.html>
-    - <http://sqlite.org/releaselog/3_12_0.html>
+  - `SQLITE_DEFAULT_PAGE_SIZE=4096` and `SQLITE_DEFAULT_CACHE_SIZE=-2000` - new stable page/cache sizes from 3.12.0 ref: <http://sqlite.org/pgszchng2016.html>; <http://sqlite.org/releaselog/3_12_0.html>
   - `SQLITE_OS_WINRT` (Windows only)
   - `NDEBUG` on Windows (Release build only)
 - This plugin version supports the use of two (2) possible Android sqlite database implementations:
