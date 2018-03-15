@@ -1,8 +1,13 @@
 # Changes
 
-### cordova-sqlite-evcore-legacy-ext-common-free 0.0.4-pre2
+### cordova-sqlite-evcore-legacy-ext-common-free 0.0.4
 
 - additional evcore iOS/macOS/Windows compile-time options
+
+#### cordova-sqlite-ext-common 0.1.0
+
+- BASE64 support
+- REGEXP for Android/iOS/macOS using sqlite3-regexp-cached
 
 ### cordova-sqlite-evcore-legacy-ext-common-free 0.0.3
 
@@ -10,7 +15,7 @@
 
 ### cordova-sqlite-evcore-legacy-ext-common-free 0.0.2
 
-- Android evcore NDK JAR from cordova-sqlite-evcore-free-dependencies, no longer built with JSMN component
+- Android evcore NDK JAR from cordova-sqlite-evcore-free-dependencies, no longer built with JSMN component (with REGEXP and BASE64 support included for Android)
 - Remove SQLITE_ENABLE_COLUMN_METADATA not needed (iOS/macOS/Windows)
 
 ### cordova-sqlite-evcore-legacy-ext-common-free 0.0.1

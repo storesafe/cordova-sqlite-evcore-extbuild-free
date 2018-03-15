@@ -44,7 +44,7 @@ var mytests = function() {
           if (isWindows) pending('NOT IMPLEMENTED for Windows (plugin)');
           if (!isWebSql && !isWindows && isAndroid && isImpl2) pending('TBD SKIP for androidDatabaseImplementation: 2'); // XXX TBD (Android 4.x vs 5.x vs ...)
           if (isWebSql && !isAndroid && !isWindows && !isWP8) pending('SKIP for iOS (WebKit) Web SQL');
-          if (!isWebSql && !isAndroid && !isWindows && !isWP8) pending('NOT IMPLEMENTED for iOS/macOS plugin');
+          // if (!isWebSql && !isAndroid && !isWindows && !isWP8) pending('...'); // XXX EXPECTED TO PASS on iOS/macOS plugin
 
           var db = openDatabase('simple-regexp-test.db', '1.0', 'test', DEFAULT_SIZE);
 
