@@ -1,5 +1,9 @@
 # Changes
 
+### cordova-sqlite-evcore-legacy-ext-common-free 0.0.4-pre1
+
+- fix evcore (common) iOS/macOS/Windows compile-time options
+
 ### cordova-sqlite-evcore-legacy-ext-common-free 0.0.3
 
 - cordova-sqlite-evcore-legacy-ext-common-free with SQLITE_THREADSAFE=1 on iOS/macOS ref: litehelpers/Cordova-sqlite-storage#754 (<https://github.com/litehelpers/Cordova-sqlite-storage/issues/754>)

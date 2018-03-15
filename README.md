@@ -127,7 +127,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
   - TBD NOT TESTED in this plugin version: BASE64 integrated from <https://github.com/brodybits/sqlite3-base64>, using <https://github.com/brodybits/libb64-encode> (based on <http://libb64.sourceforge.net/> by Chris Venter, public domain)
   - REGEXP using <https://github.com/brodybits/sqlite3-regexp-cached> (based on <http://git.altlinux.org/people/at/packages/?p=sqlite3-pcre.git> by Alexey Tourbin, public domain)
 - SQLite version `3.15.2` included with the following compile-time options:
-  - `SQLITE_THREADSAFE=1` for iOS/macOS (`SQLITE_THREADSAFE=2` for Android/Windows)
+  - `SQLITE_THREADSAFE=1` on iOS/macOS/Windows (`SQLITE_THREADSAFE=2` Android)
   - `SQLITE_LOCKING_STYLE=1` on iOS/macOS ONLY
   - ~~`SQLITE_DEFAULT_MEMSTATUS=0`~~ _(FUTURE TODO)_
   - ~~`SQLITE_OMIT_DECLTYPE`~~ _(FUTURE TODO)_
@@ -135,14 +135,16 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
   - ~~`SQLITE_OMIT_PROGRESS_CALLBACK`~~ _(FUTURE TODO)_
   - ~~`SQLITE_OMIT_SHARED_CACHE`~~ _(FUTURE TODO)_
   - `SQLITE_TEMP_STORE=2`
-  - `SQLITE_OMIT_LOAD_EXTENSION` _(iOS/macOS only)_
+  - `SQLITE_OMIT_LOAD_EXTENSION` _(iOS/macOS/Windows ... XXX TODO missing on Android build)_
   - `SQLITE_ENABLE_FTS3`
   - `SQLITE_ENABLE_FTS3_PARENTHESIS`
   - `SQLITE_ENABLE_FTS4`
-  - `SQLITE_ENABLE_FTS5` (TBD Android only)
+  - `SQLITE_ENABLE_FTS5`
   - `SQLITE_ENABLE_RTREE`
-  - `SQLITE_ENABLE_JSON1` (TBD Android only)
-  - `SQLITE_DEFAULT_PAGE_SIZE=4096` and `SQLITE_DEFAULT_CACHE_SIZE=-2000` (TBD Android only, MISSING on iOS/macOS/Windows) - new stable page/cache sizes from 3.12.0 ref: <http://sqlite.org/pgszchng2016.html> and <http://sqlite.org/releaselog/3_12_0.html>
+  - `SQLITE_ENABLE_JSON1`
+  - `SQLITE_DEFAULT_PAGE_SIZE=4096` and `SQLITE_DEFAULT_CACHE_SIZE=-2000` - _new stable_ page/cache sizes from 3.12.0 ref:
+    - <http://sqlite.org/pgszchng2016.html>
+    - <http://sqlite.org/releaselog/3_12_0.html>
   - `SQLITE_OS_WINRT` (Windows only)
   - `NDEBUG` on Windows (Release build only)
 - This plugin version supports the use of two (2) possible Android sqlite database implementations:
@@ -164,7 +166,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 - The macOS platform version ("osx" platform) is not tested in a release build and should be considered pre-alpha.
 - Android versions supported: 2.3.3 - 7.1.1 (API level 10 - 25), depending on Cordova version ref: <https://cordova.apache.org/docs/en/latest/guide/platforms/android/>
 - iOS versions supported: 8.x / 9.x / 10.x / 11.x
-- FTS3, FTS4, and R-Tree are fully tested and supported for all target platforms in this version branch.
+- FTS3, FTS4, _FTS5, R-Tree, and JSON1_ are fully tested and supported for all target platforms in this version branch.
 - Default `PRAGMA journal_mode` setting (*tested*):
   - Android with builtin android.database implementation (as selected using the `androidDatabaseImplementation` option in `window.sqlitePlugin.openDatabase`): `persist` (pre-8.x) / `truncate` (Android 8+) (NOT covered by automatic spec test suite in this plugin version branch)
   - otherwise: `delete`

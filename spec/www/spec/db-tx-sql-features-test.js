@@ -166,12 +166,9 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
-        // XXX TBD (Android plugin ONLY ...)
         it(suiteName + 'Basic JSON1 json test', function(done) {
           if (isWebSql) pending('SKIP for Web SQL (not implemented)');
-          if (isWindows) pending('SKIP: NOT IMPLEMENTED for Windows'); // FUTURE TBD
           if (!isWebSql && !isWindows && isAndroid && isImpl2) pending('TBD SKIP for androidDatabaseImplementation: 2'); // XXX TBD
-          if (!isWebSql && !isAndroid && !isWindows) pending('SKIP: NOT IMPLEMENTED for iOS/macOS plugin'); // FUTURE TBD
 
           var db = openDatabase('basic-json1-json-test.db', '1.0', 'Test', DEFAULT_SIZE);
 
@@ -198,12 +195,9 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
-        // XXX TBD (Android plugin ONLY ...)
         it(suiteName + 'JSON1 json_object test', function(done) {
           if (isWebSql) pending('SKIP for Web SQL (not implemented)');
-          if (isWindows) pending('SKIP: NOT IMPLEMENTED for Windows'); // FUTURE TBD
           if (!isWebSql && !isWindows && isAndroid && isImpl2) pending('TBD SKIP for androidDatabaseImplementation: 2'); // XXX TBD
-          if (!isWebSql && !isAndroid && !isWindows) pending('SKIP: NOT IMPLEMENTED for iOS/macOS plugin'); // FUTURE TBD
 
           var db = openDatabase('json1-json-object-test.db', '1.0', 'Test', DEFAULT_SIZE);
 
@@ -231,12 +225,9 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
-        // XXX TBD (Android plugin ONLY ...)
         it(suiteName + 'create virtual table using FTS5', function(done) {
           if (isWebSql) pending('SKIP for Web SQL (not implemented)');
-          if (isWindows) pending('SKIP: NOT IMPLEMENTED for Windows'); // FUTURE TBD
           if (!isWebSql && !isWindows && isAndroid && isImpl2) pending('TBD SKIP for androidDatabaseImplementation: 2'); // XXX TBD
-          if (!isWebSql && !isAndroid && !isWindows) pending('SKIP: NOT IMPLEMENTED for iOS/macOS plugin'); // FUTURE TBD
 
           var db = openDatabase('virtual-table-using-fts5.db', '1.0', 'Test', DEFAULT_SIZE);
 
