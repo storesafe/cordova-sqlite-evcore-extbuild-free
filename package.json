@@ -24,7 +24,7 @@
     "cordova-windows"
   ],
   "author": "various",
-  "license": "GPL",
+  "license": "GPL-3.0 OR Commercial",
   "bugs": {
     "url": "https://github.com/litehelpers/cordova-sqlite-evcore-legacy-ext-common-free/issues"
   },
