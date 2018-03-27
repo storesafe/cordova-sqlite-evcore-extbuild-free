@@ -1,5 +1,9 @@
 # Changes
 
+### cordova-sqlite-evcore-legacy-ext-common-free 0.0.5
+
+- Use cordova-sqlite-evcore-free-dependencies 0.8.2 with SQLite 3.22.0, with SQLITE_DEFAULT_SYNCHRONOUS=3 (EXTRA DURABLE ref: litehelpers/Cordova-sqlite-storage#736) & other build fixes
+
 ### cordova-sqlite-evcore-legacy-ext-common-free 0.0.4
 
 - additional evcore iOS/macOS/Windows compile-time options
