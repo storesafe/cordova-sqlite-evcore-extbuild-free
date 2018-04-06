@@ -4,7 +4,7 @@ Native interface to sqlite in a Cordova/PhoneGap plugin for _Android, iOS, macOS
 
 This plugin version uses a special Android NDK sqlite database access library (C-language implementation) to provide significant performance and memory usage improvements on the Android platform.
 
-This plugin version is available under GPL v3 (http://www.gnu.org/licenses/gpl.txt) or commercial license options and includes components available under the MIT and Apache 2.0 licenses listed in [LICENSE.md](./LICENSE.md). Contact for commercial license: <sales@litehelpers.net>
+This plugin version is available under GPL v3 (<https://www.gnu.org/licenses/gpl-3.0.txt>) or commercial license options and includes components available under the MIT and Apache 2.0 licenses listed in [LICENSE.md](./LICENSE.md). Contact for commercial license: <sales@litehelpers.net>
 
 NOTE: Commercial licenses for [litehelpers / Cordova-sqlite-enterprise-free](https://github.com/litehelpers/Cordova-sqlite-enterprise-free) are valid for this plugin version as well.
 
@@ -18,7 +18,7 @@ Free enterprise version with Android performance improvements and other features
 
 ## WARNING: Multiple SQLite problem on Android
 
-This plugin uses _non-standard_ [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) sqlite database access implementation on Android. In case an application access the SAME database using multiple plugins there is a risk of data corruption (ref: [litehelpers/Cordova-sqlite-storage#626](https://github.com/litehelpers/Cordova-sqlite-storage/issues/626)) as described in <http://ericsink.com/entries/multiple_sqlite_problem.html> and <https://www.sqlite.org/howtocorrupt.html>.
+This plugin uses non-standard [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) sqlite database access implementation on Android. In case an application access the SAME database using multiple plugins there is a risk of data corruption (ref: [litehelpers/Cordova-sqlite-storage#626](https://github.com/litehelpers/Cordova-sqlite-storage/issues/626)) as described in <http://ericsink.com/entries/multiple_sqlite_problem.html> and <https://www.sqlite.org/howtocorrupt.html>.
 
 The workaround is to use the `androidDatabaseImplementation: 2` setting as described in the **Android sqlite implementation** section below:
 
@@ -191,7 +191,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
 - This _plugin version_ includes the following extra features: BASE64 (all platforms Android/iOS/macOS/Windows), REGEXP (Android/iOS/macOS)
 - _For the Android platform this plugin version uses the _lightweight, high-performance_ [litehelpers / Android-sqlite-evcore-native-driver-free (ext-master version branch)](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free/tree/ext-master) _database access implementation (by default configuration). Android-sqlite-evcore-native-driver-free is a_ NDK library implemented in C for JSON and SQL statement handling and processes large batches in less than half the time compared to [litehelpers / Cordova-sqlite-storage](https://github.com/litehelpers/Cordova-sqlite-storage), as measured by: [brodybits / Cordova-sql-test-app](https://github.com/brodybits/Cordova-sql-test-app)_
 - The Lawnchair adapter is now moved to [litehelpers / cordova-sqlite-lawnchair-adapter](https://github.com/litehelpers/cordova-sqlite-lawnchair-adapter).
-- _This plugin version_ now supports SELECT BLOB data in Base64 format on all platforms in addition to REGEXP (Android/iOS/macOS) ~~and pre-populated database (FUTURE TODO - all platforms)~~.
+- This plugin version now supports SELECT BLOB data in Base64 format on all platforms in addition to REGEXP (Android/iOS/macOS) ~~and pre-populated database (all platforms - FUTURE TODO)~~.
 - [brodybits / sql-promise-helper](https://github.com/brodybits/sql-promise-helper) provides a Promise-based API wrapper.
 - [nolanlawson / pouchdb-adapter-cordova-sqlite](https://github.com/nolanlawson/pouchdb-adapter-cordova-sqlite) supports this plugin along with other implementations such as [nolanlawson / sqlite-plugin-2](https://github.com/nolanlawson/sqlite-plugin-2) and [Microsoft / cordova-plugin-websql](https://github.com/Microsoft/cordova-plugin-websql).
 - Custom Android database location (supports external storage directory)
@@ -359,7 +359,7 @@ In case you get stuck with something please read through the [support](#support)
 
 ### Plugin usage examples
 
-- [brodybits / cordova-sqlite-storage-starter-app](https://github.com/brodybits/cordova-sqlite-storage-starter-app) _(using `cordova-sqlite-storage` version)_
+- [brodybits / cordova-sqlite-storage-starter-app](https://github.com/brodybits/cordova-sqlite-storage-starter-app) (using `cordova-sqlite-storage` plugin version)
 - <http://stackoverflow.com/questions/26604952/a-simple-cordova-android-example-including-sqlite-read-write-and-search>
 
 ### Plugin tutorials

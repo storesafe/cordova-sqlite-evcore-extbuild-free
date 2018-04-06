@@ -1,6 +1,6 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.9.6-pre1
+# cordova-sqlite-evcore-extbuild-free 0.9.6
 
 - SQLite 3.22.0, with SQLITE_DEFAULT_SYNCHRONOUS=3 (EXTRA DURABLE ref: litehelpers/Cordova-sqlite-storage#736) & other build fixes
 

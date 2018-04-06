@@ -162,7 +162,7 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
-        it(suiteName + 'INSERT syntax error [VALUES in the wrong place] with a trailing space [XXX TBD error info message]', function(done) {
+        it(suiteName + 'INSERT syntax error [VALUES in the wrong place (XXX "incomplete input")] with a trailing space [XXX TBD PROPER INFO MESSAGE NOT ON Android/...]', function(done) {
           if (isWP8) pending('SKIP for WP(8)'); // FUTURE TBD
 
           var db = openDatabase("INSERT-Syntax-error-test.db", "1.0", "Demo", DEFAULT_SIZE);
@@ -200,12 +200,12 @@ var mytests = function() {
                 expect(error.message).toMatch(/could not prepare statement.*1 near \"VALUES\": syntax error/);
               else if (isWindows)
                 expect(error.message).toMatch(/Error preparing an SQLite statement/);
-              else if (isAndroid && !isImpl2)
+              else if (isAndroid && !isImpl2) //* XXX TBD PROPER INFO MESSAGE NOT ON Android/...
                 expect(error.message).toMatch(/syntax error or other error.*code 1/);
               else if (isAndroid && isImpl2)
                 expect(error.message).toMatch(/near \"VALUES\": syntax error.*code 1.*while compiling: INSERT INTO test_table/);
-              //* else // XXX TBD iOS/macOS error info message
-              //*   expect(error.message).toMatch(/near \" \": syntax error/);
+              else
+                expect(error.message).toMatch(/incomplete input/); // XXX SQLite 3.22.0 on iOS/macOS
 
               // FAIL transaction & check reported transaction error:
               return true;
@@ -230,8 +230,10 @@ var mytests = function() {
               expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
             else if (isWindows)
               expect(error.message).toMatch(/error callback did not return false.*Error preparing an SQLite statement/);
-            //* else // XXX TBD Android / iOS / macOS error info message
-            //*   expect(error.message).toMatch(/error callback did not return false.*syntax error/);
+            else if (!isWindows && isAndroid) // XXX TBD PROPER INFO MESSAGE NOT ON Android/...
+              expect(error.message).toMatch(/error callback did not return false.*syntax error/); // XXX Android/...
+            else
+              expect(error.message).toMatch(/error callback did not return false.*incomplete input/); // XXX SQLite 3.22.0 on iOS/macOS
 
             isWebSql ? done() : db.close(done, done);
           }, function() {
