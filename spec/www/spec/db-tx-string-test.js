@@ -593,8 +593,7 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'string parameter value manipulation test with UTF-8 2-octet character é', function(done) {
-          if (isAndroid && !isWebSql && !isImpl2) pending('XXX SKIP: BUG on Android (default Android-sqlite-evcore-native-driver access implementation)'); // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
-
+          // ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
           var db = openDatabase("UTF8-2-octet-upper-value-string-test.db", "1.0", "Demo", DEFAULT_SIZE);
 
           db.transaction(function(tx) {
@@ -649,8 +648,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'string parameter value manipulation test with UTF-8 3-octet character €', function(done) {
+          // ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
           if (isWP8) pending('SKIP for WP(8)');
-          if (isAndroid && !isWebSql && !isImpl2) pending('XXX SKIP: BUG on Android (default Android-sqlite-evcore-native-driver access implementation)'); // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
 
           var db = openDatabase("UTF8-3-octet-string-upper-value-test.db", "1.0", "Demo", DEFAULT_SIZE);
 
