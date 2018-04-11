@@ -10,11 +10,11 @@ NOTE: Commercial licenses for [litehelpers / Cordova-sqlite-enterprise-free](htt
 
 ## About this plugin version branch
 
-Free enterprise version with performance improvements for Android - legacy common version branch (supports Windows 8.1/Windows Phone 8.1 along with Android/iOS/macOS/Windows 10 UWP) with ~~FUTURE TODO~~ limited extra features _(FUTURE TBD pre-populated database support)_, using the `before_plugin_install` hook to fetch the sqlite3 component dependencies from npm.
+Free enterprise version with performance improvements for Android - legacy common version branch (supports Windows 8.1/Windows Phone 8.1 along with Android/iOS/macOS/Windows 10 UWP) with ~~FUTURE TODO~~ limited extra features (FUTURE TODO pre-populated database support), using the `before_plugin_install` hook to fetch the sqlite3 component dependencies from npm.
 
 <!-- END About this plugin version branch -->
 
-## WARNING: Multiple SQLite problem on Android
+## WARNING: Multiple SQLite problem
 
 This plugin uses non-standard [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) sqlite database access implementation on Android. In case an application access the SAME database using multiple plugins there is a risk of data corruption (ref: [litehelpers/Cordova-sqlite-storage#626](https://github.com/litehelpers/Cordova-sqlite-storage/issues/626)) as described in <http://ericsink.com/entries/multiple_sqlite_problem.html> and <https://www.sqlite.org/howtocorrupt.html>.
 
@@ -24,7 +24,9 @@ The workaround is to use the `androidDatabaseImplementation: 2` setting as descr
 var db = window.sqlitePlugin.openDatabase({name: 'my.db', location: 'default', androidDatabaseImplementation: 2});
 ```
 
-<!-- END WARNING: Multiple SQLite problem on Android -->
+This plugin version also uses a fixed version of sqlite3 on iOS/macOS/Windows. In case the application accesses the SAME database using multiple plugins there is a risk of data corruption as described in <https://www.sqlite.org/howtocorrupt.html> (similar to the multiple sqlite problem for Android as described in <http://ericsink.com/entries/multiple_sqlite_problem.html>).
+
+<!-- END WARNING: Multiple SQLite problem on XXX -->
 
 ## Services available
 
@@ -158,7 +160,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation.
   - Truncation issue with UNICODE `\u0000` character (same as `\0`) ref: [litehelpers/Cordova-sqlite-evcore-extbuild-free#27](https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/issues/27)
   - No background processing
   - INCORRECT error code (0) and INCONSISTENT error message (missing actual error info) in error callbacks ref: [litehelpers/Cordova-sqlite-storage#539](https://github.com/litehelpers/Cordova-sqlite-storage/issues/539)
-  - Not possible to SELECT BLOB column values directly (TBD recommended solution is to use HEX function to retrieve the data, working consistently across all platforms as well as (WebKit) Web SQL implementation; BASE64 function is also offered by cordova-sqlite-ext and cordova-sqlite-evcore-extbuild-free plugin versions)
+  - NOT possible to SELECT BLOB column values directly (TBD recommended solution: use built-in HEX function (also supported by (WebKit) Web SQL) or non-standard BASE64 function (as documented below) to retrieve BLOB column values hex or Base-64 format)
   - Windows platform version uses `UTF-16le` internal database encoding while the other platform versions use `UTF-8` internal encoding. (`UTF-8` internal encoding is preferred ref: [litehelpers/Cordova-sqlite-storage#652](https://github.com/litehelpers/Cordova-sqlite-storage/issues/652))
 - The macOS platform version ("osx" platform) is not tested in a release build and should be considered pre-alpha.
 - Android versions supported: 2.3.3 - 7.1.1 (API level 10 - 25) on `armeabi`, `armeabi-v7a`, `x86`, `x86_64`, `arm64-v8a`, tested on Android 4.4 - 8.1 (API level 19 - 27) (cordova-android pre-7.0 needed to support Android pre-4.4 ref: <https://cordova.apache.org/docs/en/latest/guide/platforms/android/>)
@@ -444,6 +446,8 @@ See **Security of sensitive data** in the [Security](#security) section above.
 
 <!-- END Deviations -->
 
+<!-- XXX REPEATED INFO GONE:
+
 ## Security
 
 ### Security of sensitive data
@@ -460,15 +464,13 @@ Unfortunately this plugin will not actually overwrite the deleted content unless
 As "strongly recommended" by [Web SQL Database API 8.5 SQL injection](https://www.w3.org/TR/webdatabase/#sql-injection):
 >Authors are strongly recommended to make use of the `?` placeholder feature of the `executeSql()` method, and to never construct SQL statements on the fly.
 
-<!-- END Security -->
-
 # Avoiding data loss
 
 - Double-check that the application code follows the documented API for SQL statements, parameter values, success callbacks, and error callbacks.
 - For standard Web SQL transactions include a transaction error callback with the proper logic that indicates to the user if data cannot be stored for any reason. In case of individual SQL error handlers be sure to indicate to the user if there is any issue with storing data.
 - For single statement and batch transactions include an error callback with logic that indicates to the user if data cannot be stored for any reason.
 
-<!-- Avoiding data loss -->
+ ... XXX END OF REPEATED INFO -->
 
 ## Known issues
 
@@ -538,7 +540,7 @@ Additional limitations are tracked in [marked cordova-sqlite-storage doc-todo is
 - WITH clause (not supported by some older sqlite3 versions)
 - Handling of invalid transaction and transaction.executeSql arguments
 - Use of database locations on macOS
-- Extremely large and small INTEGER and REAL values ref: [litehelpers/Cordova-sqlite-storage#627](https://github.com/litehelpers/Cordova-sqlite-storage/issues/627))
+- Extremely large and small INTEGER and REAL values ref: [litehelpers/Cordova-sqlite-storage#627](https://github.com/litehelpers/Cordova-sqlite-storage/issues/627)
 - More emojis and other 4-octet UTF-8 characters
 - `?NNN`/`:AAA`/`@AAAA`/`$AAAA` parameter placeholders ref: <https://www.sqlite.org/lang_expr.html#varparam>, <https://www.sqlite.org/c3ref/bind_blob.html>)
 - Single-statement and SQL batch transaction calls with invalid arguments (TBD behavior subject to change)
