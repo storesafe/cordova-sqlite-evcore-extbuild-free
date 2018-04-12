@@ -24,7 +24,7 @@ var mytests = function() {
 
   for (var i=0; i<scenarioCount; ++i) {
 
-    describe(scenarioList[i] + ': detailed tx error handling test(s)', function() {
+    describe(scenarioList[i] + ': tx error handling (detailed tx error handling) test(s)', function() {
       var scenarioName = scenarioList[i];
       var suiteName = scenarioName + ': ';
       var isWebSql = (i === 1);
@@ -2882,14 +2882,15 @@ var mytests = function() {
 
             } catch (ex) {
               expect(ex).toBeDefined();
-              if (!isWebSql)
-                expect(ex.code).not.toBeDefined()
-              else if (!isAndroid)
-                expect(ex.code).toBeDefined()
-              expect(ex.message).toBeDefined();
 
-              if (isWebSql && !isAndroid)
+              if (isWebSql &&
+                  ((isAndroid && (/Android [2-4]/.test(navigator.userAgent))) ||
+                   (!isAndroid && !(/OS 1[1-9]/.test(navigator.userAgent)))))
                 expect(ex.code).toBe(12);
+              else
+                expect(ex.code).not.toBeDefined()
+
+              expect(ex.message).toBeDefined();
 
               if (isWP8)
                 expect(true).toBe(true); // SKIP for now
@@ -2963,14 +2964,15 @@ var mytests = function() {
 
             } catch (ex) {
               expect(ex).toBeDefined();
-              if (!isWebSql)
-                expect(ex.code).not.toBeDefined()
-              else if (!isAndroid)
-                expect(ex.code).toBeDefined()
-              expect(ex.message).toBeDefined();
 
-              if (isWebSql && !isAndroid)
+              if (isWebSql &&
+                  ((isAndroid && (/Android [2-4]/.test(navigator.userAgent))) ||
+                   (!isAndroid && !(/OS 1[1-9]/.test(navigator.userAgent)))))
                 expect(ex.code).toBe(12);
+              else
+                expect(ex.code).not.toBeDefined()
+
+              expect(ex.message).toBeDefined();
 
               if (isWP8)
                 expect(true).toBe(true); // SKIP for now
@@ -3054,11 +3056,13 @@ var mytests = function() {
             } catch(ex) {
               if (!isWebSql) expect('Plugin behavior changed please update this test').toBe('--');
               expect(ex).toBeDefined();
-              if (!isAndroid)
-                expect(ex.code).toBeDefined()
-              expect(ex.message).toBeDefined();
-              if (!isAndroid)
+              if (isWebSql &&
+                  ((isAndroid && (/Android [2-4]/.test(navigator.userAgent))) ||
+                   (!isAndroid && !(/OS 1[1-9]/.test(navigator.userAgent)))))
                 expect(ex.code).toBe(17);
+              else
+                expect(ex.code).not.toBeDefined()
+              expect(ex.message).toBeDefined();
               throw(ex);
             }
 
@@ -3098,11 +3102,13 @@ var mytests = function() {
             } catch(ex) {
               if (!isWebSql) expect('Plugin behavior changed please update this test').toBe('--');
               expect(ex).toBeDefined();
-              if (!isAndroid)
-                expect(ex.code).toBeDefined()
-              expect(ex.message).toBeDefined();
-              if (!isAndroid)
+              if (isWebSql &&
+                  ((isAndroid && (/Android [2-4]/.test(navigator.userAgent))) ||
+                   (!isAndroid && !(/OS 1[1-9]/.test(navigator.userAgent)))))
                 expect(ex.code).toBe(17);
+              else
+                expect(ex.code).not.toBeDefined()
+              expect(ex.message).toBeDefined();
               throw(ex);
             }
 
@@ -3142,11 +3148,13 @@ var mytests = function() {
             } catch(ex) {
               if (!isWebSql) expect('Plugin behavior changed please update this test').toBe('--');
               expect(ex).toBeDefined();
-              if (!isAndroid)
-                expect(ex.code).toBeDefined()
-              expect(ex.message).toBeDefined();
-              if (!isAndroid)
+              if (isWebSql &&
+                  ((isAndroid && (/Android [2-4]/.test(navigator.userAgent))) ||
+                   (!isAndroid && !(/OS 1[1-9]/.test(navigator.userAgent)))))
                 expect(ex.code).toBe(17);
+              else
+                expect(ex.code).not.toBeDefined()
+              expect(ex.message).toBeDefined();
               throw(ex);
             }
 
@@ -3186,11 +3194,13 @@ var mytests = function() {
             } catch(ex) {
               if (!isWebSql) expect('Plugin behavior changed please update this test').toBe('--');
               expect(ex).toBeDefined();
-              if (!isAndroid)
-                expect(ex.code).toBeDefined()
-              expect(ex.message).toBeDefined();
-              if (!isAndroid)
+              if (isWebSql &&
+                  ((isAndroid && (/Android [2-4]/.test(navigator.userAgent))) ||
+                   (!isAndroid && !(/OS 1[1-9]/.test(navigator.userAgent)))))
                 expect(ex.code).toBe(17);
+              else
+                expect(ex.code).not.toBeDefined()
+              expect(ex.message).toBeDefined();
               throw(ex);
             }
 
@@ -3233,7 +3243,6 @@ var mytests = function() {
             } catch(ex) {
               // EXPECTED RESULT for (WebKit) Web SQL ONLY:
               if (!isWebSql) expect('Plugin BEHAVIOR CHANGED, please update this test').toBe('--');
-              if (isWebSql && !isAndroid) expect('iOS WebKit Web SQL behavior changed').toBe('--');
               check1 = true;
               expect(ex).toBeDefined();
               // expect(ex.code).toBeDefined();
@@ -3290,7 +3299,6 @@ var mytests = function() {
             } catch(ex) {
               // EXPECTED RESULT for (WebKit) Web SQL ONLY:
               if (!isWebSql) expect('Plugin BEHAVIOR CHANGED, please update this test').toBe('--');
-              if (isWebSql && !isAndroid) expect('iOS WebKit Web SQL behavior changed').toBe('--');
               check1 = true;
               expect(ex).toBeDefined();
               // expect(ex.code).toBeDefined();
@@ -3347,7 +3355,6 @@ var mytests = function() {
             } catch(ex) {
               // EXPECTED RESULT for (WebKit) Web SQL ONLY:
               if (!isWebSql) expect('Plugin BEHAVIOR CHANGED, please update this test').toBe('--');
-              if (isWebSql && !isAndroid) expect('iOS WebKit Web SQL behavior changed').toBe('--');
               check1 = true;
               expect(ex).toBeDefined();
               // expect(ex.code).toBeDefined();
@@ -3404,7 +3411,6 @@ var mytests = function() {
             } catch(ex) {
               // EXPECTED RESULT for (WebKit) Web SQL ONLY:
               if (!isWebSql) expect('Plugin BEHAVIOR CHANGED, please update this test').toBe('--');
-              if (isWebSql && !isAndroid) expect('iOS WebKit Web SQL behavior changed').toBe('--');
               check1 = true;
               expect(ex).toBeDefined();
               // expect(ex.code).toBeDefined();
@@ -3447,11 +3453,13 @@ var mytests = function() {
             } catch(ex) {
               if (!isWebSql) expect('Plugin behavior changed please update this test').toBe('--');
               expect(ex).toBeDefined();
-              if (!isAndroid)
-                expect(ex.code).toBeDefined()
-              expect(ex.message).toBeDefined();
-              if (!isAndroid)
+              if (isWebSql &&
+                  ((isAndroid && (/Android [2-4]/.test(navigator.userAgent))) ||
+                   (!isAndroid && !(/OS 1[1-9]/.test(navigator.userAgent)))))
                 expect(ex.code).toBe(17);
+              else
+                expect(ex.code).not.toBeDefined()
+              expect(ex.message).toBeDefined();
               throw(ex);
             }
 
@@ -3494,11 +3502,13 @@ var mytests = function() {
             } catch(ex) {
               if (!isWebSql) expect('Plugin behavior changed please update this test').toBe('--');
               expect(ex).toBeDefined();
-              if (!isAndroid)
-                expect(ex.code).toBeDefined()
-              expect(ex.message).toBeDefined();
-              if (!isAndroid)
+              if (isWebSql &&
+                  ((isAndroid && (/Android [2-4]/.test(navigator.userAgent))) ||
+                   (!isAndroid && !(/OS 1[1-9]/.test(navigator.userAgent)))))
                 expect(ex.code).toBe(17);
+              else
+                expect(ex.code).not.toBeDefined()
+              expect(ex.message).toBeDefined();
               throw(ex);
             }
 
@@ -3541,11 +3551,13 @@ var mytests = function() {
             } catch(ex) {
               if (!isWebSql) expect('Plugin behavior changed please update this test').toBe('--');
               expect(ex).toBeDefined();
-              if (!isAndroid)
-                expect(ex.code).toBeDefined()
-              expect(ex.message).toBeDefined();
-              if (!isAndroid)
+              if (isWebSql &&
+                  ((isAndroid && (/Android [2-4]/.test(navigator.userAgent))) ||
+                   (!isAndroid && !(/OS 1[1-9]/.test(navigator.userAgent)))))
                 expect(ex.code).toBe(17);
+              else
+                expect(ex.code).not.toBeDefined()
+              expect(ex.message).toBeDefined();
               throw(ex);
             }
 
@@ -3595,11 +3607,13 @@ var mytests = function() {
             } catch(ex) {
               if (!isWebSql) expect('Plugin behavior changed please update this test').toBe('--');
               expect(ex).toBeDefined();
-              if (!isAndroid)
-                expect(ex.code).toBeDefined()
-              expect(ex.message).toBeDefined();
-              if (!isAndroid)
+              if (isWebSql &&
+                  ((isAndroid && (/Android [2-4]/.test(navigator.userAgent))) ||
+                   (!isAndroid && !(/OS 1[1-9]/.test(navigator.userAgent)))))
                 expect(ex.code).toBe(17);
+              else
+                expect(ex.code).not.toBeDefined()
+              expect(ex.message).toBeDefined();
               throw(ex);
             }
 
@@ -3651,11 +3665,13 @@ var mytests = function() {
             } catch(ex) {
               if (!isWebSql) expect('Plugin behavior changed please update this test').toBe('--');
               expect(ex).toBeDefined();
-              if (!isAndroid)
-                expect(ex.code).toBeDefined()
-              expect(ex.message).toBeDefined();
-              if (!isAndroid)
+              if (isWebSql &&
+                  ((isAndroid && (/Android [2-4]/.test(navigator.userAgent))) ||
+                   (!isAndroid && !(/OS 1[1-9]/.test(navigator.userAgent)))))
                 expect(ex.code).toBe(17);
+              else
+                expect(ex.code).not.toBeDefined()
+              expect(ex.message).toBeDefined();
               throw(ex);
             }
 
@@ -3696,11 +3712,13 @@ var mytests = function() {
             } catch(ex) {
               if (!isWebSql) expect('Plugin behavior changed please update this test').toBe('--');
               expect(ex).toBeDefined();
-              if (!isAndroid)
-                expect(ex.code).toBeDefined()
-              expect(ex.message).toBeDefined();
-              if (!isAndroid)
+              if (isWebSql &&
+                  ((isAndroid && (/Android [2-4]/.test(navigator.userAgent))) ||
+                   (!isAndroid && !(/OS 1[1-9]/.test(navigator.userAgent)))))
                 expect(ex.code).toBe(17);
+              else
+                expect(ex.code).not.toBeDefined()
+              expect(ex.message).toBeDefined();
               throw(ex);
             }
 
@@ -3739,11 +3757,13 @@ var mytests = function() {
             } catch(ex) {
               if (!isWebSql) expect('Plugin behavior changed please update this test').toBe('--');
               expect(ex).toBeDefined();
-              if (!isAndroid)
-                expect(ex.code).toBeDefined()
-              expect(ex.message).toBeDefined();
-              if (!isAndroid)
+              if (isWebSql &&
+                  ((isAndroid && (/Android [2-4]/.test(navigator.userAgent))) ||
+                   (!isAndroid && !(/OS 1[1-9]/.test(navigator.userAgent)))))
                 expect(ex.code).toBe(17);
+              else
+                expect(ex.code).not.toBeDefined()
+              expect(ex.message).toBeDefined();
               throw(ex);
             }
 
@@ -3785,11 +3805,13 @@ var mytests = function() {
             } catch(ex) {
               if (!isWebSql) expect('Plugin behavior changed please update this test').toBe('--');
               expect(ex).toBeDefined();
-              if (!isAndroid)
-                expect(ex.code).toBeDefined()
-              expect(ex.message).toBeDefined();
-              if (!isAndroid)
+              if (isWebSql &&
+                  ((isAndroid && (/Android [2-4]/.test(navigator.userAgent))) ||
+                   (!isAndroid && !(/OS 1[1-9]/.test(navigator.userAgent)))))
                 expect(ex.code).toBe(17);
+              else
+                expect(ex.code).not.toBeDefined()
+              expect(ex.message).toBeDefined();
               throw(ex);
             }
 

@@ -30,7 +30,7 @@ var mytests = function() {
 
   for (var i=0; i<scenarioCount; ++i) {
 
-    describe(scenarioList[i] + ': tx stored value bindings test(s)', function() {
+    describe(scenarioList[i] + ': tx value bindings (stored value bindings) test(s)', function() {
       var scenarioName = scenarioList[i];
       var suiteName = scenarioName + ': ';
       var isWebSql = (i === 1);
@@ -1325,8 +1325,6 @@ var mytests = function() {
 
         it(suiteName + ' returns [Unicode] string with \\u0000 (same as \\0) correctly [XXX BUG on Android & Windows: TRUNCATION on Windows; INCORRECT VALUE on Android (default evcore-native-driver database access implementation)]', function (done) {
           if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-          if (isWebSql && isAndroid) pending('XXX BROKEN on Android (default evcore-native-driver implementation') // XXX TBD ...
-          // if (isWindows) pending('...'); // XXX REPRODUCE TRUNCATION BUG ON Windows
 
           var db = openDatabase('UNICODE-retrieve-u0000-test.db');
 
@@ -1337,6 +1335,10 @@ var mytests = function() {
                   tx.executeSql('SELECT name FROM test', [], function (tx_ignored, rs) {
                     var name = rs.rows.item(0).name;
 
+                    // TRUNCATION BUG
+                    //
+                    // BUG on (WebKit) Web SQL:
+                    //
                     // There is a bug in WebKit and Chromium where strings are created
                     // using methods that rely on '\0' for termination instead of
                     // the specified byte length.
@@ -1346,19 +1348,19 @@ var mytests = function() {
                     // For now we expect this test to fail there, but when it is fixed
                     // we would like to know, so the test is coded to fail if it starts
                     // working there.
+                    //
+                    // UPDATE: SEEMS TO BE FIXED on newer versions of Android
+                    //
+                    // BUG on this plugin:
+                    //
+                    // TRUNCATION BUG REPRODUCED on Windows
 
-                    //* if (isWindows || (isWebSql && !(/Android [5-9]/.test(navigator.userAgent)))) {
-                    //*   expect(name.length).toBe(1);
-                    //*   expect(name).toBe('a');
-                    //* } // else ...
-                    if (isWebSql) {
+                    if ((isWebSql && isAndroid && (/Android [2-4]/.test(navigator.userAgent))) ||
+                        (isWebSql && !isAndroid) ||
+                        (!isWebSql && isWindows)) {
                       expect(name.length).toBe(1);
                       expect(name).toBe('a');
-                    } else if (isWindows) {
-                      // XXX BUG on Windows:
-                      expect(name.length).toBe(1);
-                      expect(name).toBe('a');
-                    } else if (!isWindows && isAndroid && !isImpl2) {
+                    } else if (!isWebSql && !isWindows && isAndroid && !isImpl2) { // XXX BUG
                       // XXX BUG on Android (default evcore-native-driver database access implementation):
                       expect(name.length).toBe(7);
                       expect(name).toBe('a0000cd');
