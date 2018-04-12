@@ -1002,8 +1002,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'Inline string manipulation test with UTF-8 2/3 octet characters', function(done) {
+          // ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
           if (isWP8) pending('SKIP for WP(8)');
-          if (isAndroid && !isWebSql && !isImpl2) pending('XXX SKIP: BUG on Android (default Android-sqlite-evcore-native-driver access implementation)'); // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
 
           var db = openDatabase("Inline-UTF8-string-manipulation-test.db", "1.0", "Demo", DEFAULT_SIZE);
 
@@ -1031,8 +1031,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'string parameter manipulation test with UTF-8 2/3 octet characters', function(done) {
+          // ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
           if (isWP8) pending('SKIP for WP(8)');
-          if (isAndroid && !isWebSql && !isImpl2) pending('XXX SKIP: BUG on Android (default Android-sqlite-evcore-native-driver access implementation)'); // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
 
           var db = openDatabase("UTF8-string-parameter-manipulation-test.db", "1.0", "Demo", DEFAULT_SIZE);
 
