@@ -1,6 +1,6 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.9.7-pre1
+# cordova-sqlite-evcore-extbuild-free 0.9.7-pre2
 
 - fix for multi-byte UTF-8 characters on Android ref:
   - litehelpers/Cordova-sqlite-evcore-extbuild-free#19 (<https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/issues/19>)
