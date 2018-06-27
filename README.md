@@ -446,32 +446,6 @@ See **Security of sensitive data** in the [Security](#security) section above.
 
 <!-- END Deviations -->
 
-<!-- XXX REPEATED INFO GONE:
-
-## Security
-
-### Security of sensitive data
-
-According to [Web SQL Database API 7.2 Sensitivity of data](https://www.w3.org/TR/webdatabase/#sensitivity-of-data):
->User agents should treat persistently stored data as potentially sensitive; it's quite possible for e-mails, calendar appointments, health records, or other confidential documents to be stored in this mechanism.
->
->To this end, user agents should ensure that when deleting data, it is promptly deleted from the underlying storage.
-
-Unfortunately this plugin will not actually overwrite the deleted content unless the [secure_delete PRAGMA](https://www.sqlite.org/pragma.html#pragma_secure_delete) is used.
-
-### SQL injection
-
-As "strongly recommended" by [Web SQL Database API 8.5 SQL injection](https://www.w3.org/TR/webdatabase/#sql-injection):
->Authors are strongly recommended to make use of the `?` placeholder feature of the `executeSql()` method, and to never construct SQL statements on the fly.
-
-# Avoiding data loss
-
-- Double-check that the application code follows the documented API for SQL statements, parameter values, success callbacks, and error callbacks.
-- For standard Web SQL transactions include a transaction error callback with the proper logic that indicates to the user if data cannot be stored for any reason. In case of individual SQL error handlers be sure to indicate to the user if there is any issue with storing data.
-- For single statement and batch transactions include an error callback with logic that indicates to the user if data cannot be stored for any reason.
-
- ... XXX END OF REPEATED INFO -->
-
 ## Known issues
 
 - The iOS/macOS platform versions do not support certain rapidly repeated open-and-close or open-and-delete test scenarios due to how the implementation handles background processing
