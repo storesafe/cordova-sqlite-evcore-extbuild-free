@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    id="cordova-sqlite-evcore-legacy-ext-common-free"
-    version="0.0.6">
+    id="cordova-sqlite-evcore-common-free"
+    version="0.0.1">
 
-    <name>Cordova sqlite storage - free enterprise version with performance improvements for Android (legacy common version branch with external sqlite3 dependencies)</name>
+    <name>Cordova sqlite storage - free enterprise version with performance improvements for Android (common version branch with external sqlite3 dependencies)</name>
 
-    <license>GPL</license>
+    <license>GPL-3.0 OR Commercial</license>
 
     <keywords>sqlite</keywords>
 
@@ -79,7 +79,7 @@
             </feature>
         </config-file>
 
-        <!-- Note: the macOS src is based off src/ios implicitly -->
+        <!-- Note: the macOS (osx) src is based off src/ios implicitly -->
         <header-file src="src/ios/SQLitePlugin.h" />
         <source-file src="src/ios/SQLitePlugin.m" />
 
@@ -116,10 +116,10 @@
 
         <!-- Thanks to AllJoyn-Cordova / cordova-plugin-alljoyn for guidance: -->
         <framework src="src/windows/SQLite3-Win-RT/SQLite3/SQLite3.UWP/SQLite3.UWP.vcxproj" custom="true" type="projectReference" versions="10.*" />
-        <!-- Windows 8.1 / Windows Phone 8.1 supported by this plugin version branch: -->
+        <!-- Windows 8.1 / Windows Phone 8.1 NOT supported by this plugin version:
         <framework src="src/windows/SQLite3-Win-RT/SQLite3/SQLite3.Windows/SQLite3.Windows.vcxproj" custom="true" type="projectReference" target="windows" versions="8.1" />
         <framework src="src/windows/SQLite3-Win-RT/SQLite3/SQLite3.WindowsPhone/SQLite3.WindowsPhone.vcxproj" custom="true" type="projectReference" target="phone" versions="8.1" />
-        <!-- ... -->
+        - -->
     </platform>
 
 </plugin>

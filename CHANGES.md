@@ -1,6 +1,46 @@
 # Changes
 
-### cordova-sqlite-evcore-legacy-ext-common-free 0.0.6
+### cordova-sqlite-evcore-common-free 0.0.1
+
+#### cordova-sqlite-storage 2.3.3
+
+- Quick fix for some iOS/macOS internal plugin error log messagess
+- test updates
+- quick doc updates
+
+#### cordova-sqlite-storage 2.3.2
+
+- Mark some Android errors as internal plugin errors (quick fix)
+- remove trailing whitespace from Android implementation
+- test coverage updates
+- quick doc updates
+
+#### cordova-sqlite-storage 2.3.1
+
+- Mark some iOS/macOS plugin error messages as internal plugin errors (quick fix)
+- Quick documentation updates
+
+#### cordova-sqlite-storage 2.2.1
+
+- Fix Android/iOS src copyright, perpetually
+
+#### cordova-sqlite-storage 2.2.0
+
+- Fix SQLiteAndroidDatabase implementation for Turkish and other foreign locales
+
+#### cordova-sqlite-storage 2.1.0
+
+- Visual Studio 2017 updates for Windows UWP build
+
+#### cordova-sqlite-storage 2.0.2
+
+- Fix Windows target platform version
+
+#### cordova-sqlite-storage 2.0.0
+
+- Reference Windows platform toolset v141 to support Visual Studio 2017 (RC)
+
+#### cordova-sqlite-evcore-legacy-ext-common-free 0.0.6
 
 - Use cordova-sqlite-evcore-free-dependencies 0.8.2 with fix for multi-byte UTF-8 characters on Android ref:
   - litehelpers/Cordova-sqlite-evcore-extbuild-free#19 (<https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/issues/19>)
@@ -33,7 +73,7 @@
 
 - Support Windows 8.1/Windows Phone 8.1 in this plugin version branch
 
-## cordova-sqlite-evcore-common-free 0.7.6
+### cordova-sqlite-evcore-common-free 0.7.6
 
 - cordova-sqlite-evcore-common-free compile-time option fixes (for iOS/macOS):
   - Suppress warnings when building sqlite3.c (iOS/macOS)

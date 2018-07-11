@@ -30,7 +30,7 @@ function start(n) {
   if (wait == 0) test_it_done();
 }
 
-var isWindows = /Windows /.test(navigator.userAgent); // Windows (8.1)
+var isWindows = /Windows /.test(navigator.userAgent); // Windows 8.1/Windows Phone 8.1/Windows 10
 var isAndroid = !isWindows && /Android/.test(navigator.userAgent);
 
 // NOTE: While in certain version branches there is no difference between
@@ -229,7 +229,6 @@ var mytests = function() {
           db1.transaction(function (tx1) {
             tx1.executeSql('CREATE TABLE IF NOT EXISTS test1 (x int)');
           });
-
 
           var db2 = openDatabase("DB2", "1.0", "Demo", DEFAULT_SIZE);
           db2.transaction(function (tx2) {
