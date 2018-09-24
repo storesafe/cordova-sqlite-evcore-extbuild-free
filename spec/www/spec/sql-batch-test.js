@@ -488,7 +488,7 @@ var mytests = function() {
             else if (isWindows)
               expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
             else if (isAndroid && !isImpl2)
-              expect(error.message).toMatch(/syntax error or other error.*code 1/);
+              expect(error.message).toMatch(/syntax error or other error.code: 1 message: near .CRETE.: syntax error/);
             else
               expect(error.message).toMatch(/a statement with no error handler failed.*near \"CRETE\": syntax error/);
 

@@ -1,5 +1,9 @@
 # Changes
 
+### cordova-sqlite-evcore-common-free 0.0.2-pre1
+
+- Use cordova-sqlite-evcore-free-dependencies 0.8.4 with quick fix for error messages on Android
+
 ### cordova-sqlite-evcore-common-free 0.0.1
 
 #### cordova-sqlite-storage 2.3.3
@@ -42,7 +46,7 @@
 
 #### cordova-sqlite-evcore-legacy-ext-common-free 0.0.6
 
-- Use cordova-sqlite-evcore-free-dependencies 0.8.2 with fix for multi-byte UTF-8 characters on Android ref:
+- Use cordova-sqlite-evcore-free-dependencies 0.8.3 with fix for multi-byte UTF-8 characters on Android ref:
   - litehelpers/Cordova-sqlite-evcore-extbuild-free#19 (<https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/issues/19>)
   - litehelpers/Android-sqlite-evcore-native-driver-free#1 (<https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free/pull/1>)
   - litehelpers/Android-sqlite-evcore-native-driver-free#2 (<https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free/pull/2>)
