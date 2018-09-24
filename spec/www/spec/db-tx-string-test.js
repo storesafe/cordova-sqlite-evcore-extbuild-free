@@ -2,11 +2,23 @@
 
 var MYTIMEOUT = 12000;
 
-var DEFAULT_SIZE = 5000000; // max to avoid popup in safari/ios
+// NOTE: DEFAULT_SIZE wanted depends on type of browser
 
-var isWP8 = /IEMobile/.test(navigator.userAgent); // Matches WP(7/8/8.1)
-var isWindows = /Windows /.test(navigator.userAgent); // Windows (8.1)
+var isWindows = /MSAppHost/.test(navigator.userAgent);
 var isAndroid = !isWindows && /Android/.test(navigator.userAgent);
+var isFirefox = /Firefox/.test(navigator.userAgent);
+var isWebKitBrowser = !isWindows && !isAndroid && /Safari/.test(navigator.userAgent);
+var isBrowser = isWebKitBrowser || isFirefox;
+var isEdgeBrowser = isBrowser && (/Edge/.test(navigator.userAgent));
+var isChromeBrowser = isBrowser && !isEdgeBrowser && (/Chrome/.test(navigator.userAgent));
+var isSafariBrowser = isWebKitBrowser && !isEdgeBrowser && !isChromeBrowser;
+var isMac = !isBrowser && /Macintosh/.test(navigator.userAgent);
+var isAppleMobileOS = /iPhone/.test(navigator.userAgent) ||
+      /iPad/.test(navigator.userAgent) || /iPod/.test(navigator.userAgent);
+
+// should avoid popups (Safari seems to count 2x)
+var DEFAULT_SIZE = isSafariBrowser ? 2000000 : 5000000;
+// FUTURE TBD: 50MB should be OK on Chrome and some other test browsers.
 
 // NOTE: While in certain version branches there is no difference between
 // the default Android implementation and implementation #2,
@@ -22,17 +34,21 @@ var scenarioList = [
   'Plugin-implementation-2'
 ];
 
-var scenarioCount = (!!window.hasWebKitBrowser) ? (isAndroid ? 3 : 2) : 1;
+var scenarioCount = (!!window.hasWebKitWebSQL) ? (isAndroid ? 3 : 2) : 1;
 
 var mytests = function() {
 
   for (var i=0; i<scenarioCount; ++i) {
+    // TBD skip plugin test on browser platform (not yet supported):
+    if (isBrowser && (i === 0)) continue;
 
     describe(scenarioList[i] + ': tx string test(s)', function() {
       var scenarioName = scenarioList[i];
       var suiteName = scenarioName + ': ';
       var isWebSql = (i === 1);
       var isImpl2 = (i === 2);
+      // TBD WORKAROUND SOLUTION for (WebKit) Web SQL on Safari browser:
+      var recycleWebDatabase = null;
 
       // NOTE 1: MUST be defined in proper describe function scope, NOT outer scope.
       // NOTE 2: Using same database name in this script to avoid issue with
@@ -40,6 +56,8 @@ var mytests = function() {
       //         (FUTURE TBD NEEDS INVESTIGATION)
       var openDatabase = function(name_ignored, ignored1, ignored2, ignored3) {
         var name = 'string-test.db';
+        if (isWebSql && isSafariBrowser && !!recycleWebDatabase)
+          return recycleWebDatabase;
         if (isImpl2) {
           return window.sqlitePlugin.openDatabase({
             // prevent reuse of database from default db implementation:
@@ -51,7 +69,8 @@ var mytests = function() {
           });
         }
         if (isWebSql) {
-          return window.openDatabase(name, '1.0', 'Test', DEFAULT_SIZE);
+          return recycleWebDatabase =
+            window.openDatabase(name, '1.0', 'Test', DEFAULT_SIZE);
         } else {
           // explicit database location:
           return window.sqlitePlugin.openDatabase({name: name, location: 'default'});
@@ -297,7 +316,7 @@ var mytests = function() {
 
         it(suiteName + 'String HEX encoding test with U+0000 character (same as \\0 [null]) [XXX HEX ENCODING BUG REPRODUCED on default Android NDK access implementation (Android-evcore-native-driver), TRUNCATION ISSUE REPRODUCED on Windows; default sqlite encoding: UTF-16le on Windows & Android 4.1-4.4 (WebKit) Web SQL, UTF-8 otherwise]', function (done) {
           // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#27
-          var db = openDatabase('U-0000-hex-test.db');
+          var db = openDatabase('U+0000-hex-test.db');
 
           db.transaction(function (tx) {
             tx.executeSql('SELECT HEX(?) AS hexvalue', ['abcd'], function (tx_ignored, rs1) {
@@ -363,7 +382,7 @@ var mytests = function() {
                     expect(resultRow3.hexvalue).toBe('6500');       // (UTF-16le with TRUNCATION ISSUE REPRODUCED on Windows)
                   else if ((isWebSql && isAndroid && /Android 4.[1-3]/.test(navigator.userAgent)))
                     expect(resultRow3.hexvalue).toBe('6500000067006800'); // (UTF-16le)
-                  else if (!isWebSql && !isWindows && isAndroid && !isImpl2)
+                  else if (!isWebSql && isAndroid && !isImpl2)
                     expect(resultRow3.hexvalue).toBe('65303030306768'); // (XXX UTF-8 with ENCODING BUG REPRODUCED on Android)
                   else
                     expect(resultRow3.hexvalue).toBe('65006768');   // (UTF-8)
@@ -387,7 +406,7 @@ var mytests = function() {
 
         it(suiteName + 'INLINE HEX encoding test with U+0000 (\\0) [XXX HEX ENCODING BUG REPRODUCED on default Android NDK access implementation (Android-evcore-native-driver), SQL ERROR reported otherwise; default sqlite encoding: UTF-16le on TBD, UTF-8 otherwise]', function (done) {
           // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#27
-          var db = openDatabase('INLINE-UNICODE-0000-hex-test.db');
+          var db = openDatabase('INLINE-U+0000-hex-test.db');
 
           db.transaction(function (tx) {
             tx.executeSql('SELECT HEX("efgh") AS hexvalue', [], function (tx_ignored, rs1) {
@@ -414,8 +433,8 @@ var mytests = function() {
               tx.executeSql("SELECT HEX('e\u0000gh') AS hexvalue", [], function (tx_ignored, rs2) {
                 if (isWebSql) expect('UNEXPECTED SUCCESS on (WebKit) Web SQL PLEASE UPDATE THIS TEST').toBe('--');
                 if (!isWebSql && isWindows) expect('UNEXPECTED SUCCESS on Windows PLUGIN PLEASE UPDATE THIS TEST').toBe('--');
-                if (!isWebSql && !isWindows && isAndroid && isImpl2) expect('UNEXPECTED SUCCESS on BUILTIN android.database PLEASE UPDATE THIS TEST').toBe('--');
-                if (!isWebSql && !isWindows && !isAndroid) expect('UNEXPECTED SUCCESS on iOS/macOS PLUGIN PLEASE UPDATE THIS TEST').toBe('--');
+                if (!isWebSql && isAndroid && isImpl2) expect('UNEXPECTED SUCCESS on BUILTIN android.database PLEASE UPDATE THIS TEST').toBe('--');
+                if (!isWebSql && (isAppleMobileOS || isMac)) expect('UNEXPECTED SUCCESS on iOS/macOS PLUGIN PLEASE UPDATE THIS TEST').toBe('--');
                 expect(rs2).toBeDefined();
                 expect(rs2.rows).toBeDefined();
                 expect(rs2.rows.length).toBe(1);
@@ -459,10 +478,7 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'U+0000 string parameter manipulation test [XXX ENCODING ISSUE REPRODUCED on Android-evcore-native-driver, TBD TRUNCATION ISSUE REPRODUCED on (WebKit) Web SQL & plugin on multiple platforms]', function(done) {
-          if (isWebSql && /Android 5.1.1/.test(navigator.userAgent)) pending('SKIP on (WebKit) Web SQL on Android 5.1.1'); // XXX ???
-          if (isWebSql && /Android 6/.test(navigator.userAgent)) pending('SKIP on (WebKit) Web SQL on Android 6'); // XXX TBD
-
-          var db = openDatabase('U-0000-string-parameter-upper-test');
+          var db = openDatabase('U+0000-string-parameter-upper-test');
 
           db.transaction(function(tx) {
             tx.executeSql('SELECT UPPER(?) AS uppertext', ['a\u0000cd'], function(tx_ignored, rs) {
@@ -470,12 +486,16 @@ var mytests = function() {
               expect(rs.rows).toBeDefined();
               expect(rs.rows.length).toBe(1);
 
-              // TRUNCATION ISSUE REPRODUCED on (WebKit) Web SQL & plugin
-              // on multiple platforms
+              // TRUNCATION ISSUE REPRODUCED on:
+              // - (WebKit) Web SQL (iOS & older Android versions)
+              // - plugin on multiple platforms
 
-              if ((isWebSql && isAndroid && (/Android 4/.test(navigator.userAgent))) ||
-                  (isWebSql && isAndroid && (/Android 5.0/.test(navigator.userAgent))) ||
-                  (isWebSql && !isAndroid) ||
+              if ((isWebSql && isAndroid &&
+                   ((/Android 4/.test(navigator.userAgent)) ||
+                    (/Android 5.0/.test(navigator.userAgent)) ||
+                    (/Android 5.1/.test(navigator.userAgent) && !(/Chrome.6/.test(navigator.userAgent))) ||
+                    (/Android 6/.test(navigator.userAgent) && (/Chrome.[3-4]/.test(navigator.userAgent))))) ||
+                  (isWebSql && !isAndroid && !isChromeBrowser) ||
                   (!isWebSql && isWindows) ||
                   (!isWebSql && !isWindows && isAndroid && isImpl2 &&
                     !(/Android 4/.test(navigator.userAgent)) &&
@@ -760,8 +780,6 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'string vertical tab test (inline vs argument parameter value) [XXX ENCODING ISSUE REPRODUCED on Android-evcore-native-driver; default sqlite HEX encoding: UTF-6le on Windows & Android 4.1-4.3 (WebKit) Web SQL, UTF-8 otherwise]', function(done) {
-          if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-
           var db = openDatabase('String-vertical-tab-test.db');
           expect(db).toBeDefined();
 
@@ -806,8 +824,6 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'string form feed test (inline vs argument parameter value) [XXX ENCODING ISSUE REPRODUCED on Android-evcore-native-driver; default sqlite HEX encoding: UTF-6le on Windows & Android 4.1-4.3 (WebKit) Web SQL, UTF-8 otherwise]', function(done) {
-          if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-
           var db = openDatabase('String-form-feed-test.db');
           expect(db).toBeDefined();
 
@@ -851,10 +867,7 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
-        it(suiteName + 'string backspace test (inline vs argument parameter value) [default sqlite HEX encoding: UTF-6le on Windows & Android 4.1-4.3 (WebKit) Web SQL, UTF-8 otherwise]', function(done) {
-          if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
-          if (isAndroid && !isWebSql && !isImpl2) pending('XXX SKIP: BUG on Android (default Android-sqlite-evcore-native-driver access implementation)'); // XXX ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#28
-
+        it(suiteName + 'string backspace test (inline vs argument parameter value) [XXX ENCODING ISSUE REPRODUCED on Android-evcore-native-driver; default sqlite HEX encoding: UTF-6le on Windows & Android 4.1-4.3 (WebKit) Web SQL, UTF-8 otherwise]', function(done) {
           var db = openDatabase('String-backspace-test.db');
           expect(db).toBeDefined();
 
@@ -866,7 +879,11 @@ var mytests = function() {
               expect(rs1).toBeDefined();
               expect(rs1.rows).toBeDefined();
               expect(rs1.rows.length).toBe(1);
-              expect(rs1.rows.item(0).uppertext).toBe('FIRST\bSECOND');
+              // XXX
+              if (!isWebSql && !isWindows && isAndroid && !isImpl2)
+                expect(rs1.rows.item(0).uppertext).toBe('FIRSTSECOND');
+              else
+                expect(rs1.rows.item(0).uppertext).toBe('FIRST\bSECOND');
 
               // Check value binding & HEX result:
               tx.executeSql("SELECT HEX(?) AS myResult", ['A\b1'], function(tx_ignored, rs2) {
@@ -875,6 +892,8 @@ var mytests = function() {
                 expect(rs2.rows.length).toBe(1);
                 if (isWindows || (isWebSql && isAndroid && /Android 4.[1-3]/.test(navigator.userAgent)))
                   expect(rs2.rows.item(0).myResult).toBe('410008003100'); // (UTF-16le)
+                else if (!isWebSql && isAndroid && !isImpl2) // XXX
+                  expect(rs2.rows.item(0).myResult).toBe('4131'); // XXX
                 else
                   expect(rs2.rows.item(0).myResult).toBe('410831');
 
@@ -1044,7 +1063,8 @@ var mytests = function() {
               expect(resultRow1).toBeDefined();
               expect(resultRow1.myresult).toBeDefined();
               // SQLite3 with ICU-UNICODE for builtin android.database on Android 4.4 and greater
-              if (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent))))
+              if ((isWebSql && isChromeBrowser) ||
+                  (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent)))))
                 expect(resultRow1.myresult).toBe('AÉ');
               else
                 expect(resultRow1.myresult).toBe('Aé');
@@ -1058,7 +1078,8 @@ var mytests = function() {
                 expect(resultRow2).toBeDefined();
                 expect(resultRow2.myresult).toBeDefined();
                 // SQLite3 with ICU-UNICODE for builtin android.database on Android 4.4 and greater
-                if (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent))))
+                if ((isWebSql && isChromeBrowser) ||
+                    (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent)))))
                   expect(resultRow2.myresult).toBe('BÉ');
                 else
                   expect(resultRow2.myresult).toBe('Bé');
@@ -1078,7 +1099,6 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'string HEX value test with UTF-8 3-byte Euro character (€) [default sqlite HEX encoding: UTF-6le on Windows & Android 4.1-4.3 (WebKit) Web SQL, UTF-8 otherwise]', function(done) {
-          // if (isWP8) pending('SKIP for WP(8)'); // XXX GONE
           var db = openDatabase('UTF8-3-byte-euro-hex-value-test.db');
 
           db.transaction(function(tx) {
@@ -1126,7 +1146,6 @@ var mytests = function() {
 
         it(suiteName + 'string parameter value manipulation test with UTF-8 3-byte Euro character (€)', function(done) {
           // ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
-          // if (isWP8) pending('SKIP for WP(8)'); // XXX GONE
           var db = openDatabase('UTF8-3-byte-euro-string-upper-value-test.db');
 
           db.transaction(function(tx) {
@@ -1462,7 +1481,6 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + "Inline BLOB with emoji string manipulation test: SELECT LOWER(X'41F09F9883') [A\uD83D\uDE03] [\\u1F603 SMILING FACE (MOUTH OPEN)]", function(done) {
-          if (isWP8) pending('BROKEN for WP8');
           if (isWebSql && isAndroid && /Android 4.[1-3]/.test(navigator.userAgent)) pending('SKIP for Android 4.1-4.3 (WebKit) Web SQL'); // TBD ???
           if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('XXX KNOWN CRASH ISSUE on Android (default evcore-native-driver database access implementation)'); // XXX
           if (isWindows) pending('SKIP for Windows'); // FUTURE TBD
@@ -1500,8 +1518,6 @@ var mytests = function() {
         // - cordova/cordova-discuss#57 (issue with cordova-android)
 
         it(suiteName + "UNICODE \\u2028 line separator string length", function(done) {
-          if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] Certain UNICODE characters not working with WP(8)
-
           // NOTE: this test verifies that the UNICODE line separator (\u2028)
           // is seen by the sqlite implementation OK:
           var db = openDatabase('UNICODE-line-separator-string-length.db');
@@ -1558,9 +1574,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + ' handles UNICODE \\u2028 line separator correctly [string test]', function (done) {
-          if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
           if (!isWebSql && !isWindows && isAndroid) pending('SKIP for Android plugin (cordova-android 6.x BUG: cordova/cordova-discuss#57)');
-          if (!isWebSql && !isWindows && !isAndroid && !isWP8) pending('SKIP for iOS/macOS plugin (Cordova BUG: CB-9435)');
+          if (!isWebSql && (isAppleMobileOS || isMac)) pending('SKIP for iOS/macOS plugin (Cordova BUG: CB-9435)');
           if (isWebSql && !isWindows && isAndroid) pending('SKIP for Android Web SQL'); // TBD SKIP for Android Web for now
 
           // NOTE: since the above test shows the UNICODE line separator (\u2028)
@@ -1599,8 +1614,6 @@ var mytests = function() {
         // - cordova/cordova-discuss#57 (issue with cordova-android)
 
         it(suiteName + "UNICODE \\u2029 paragraph separator string length", function(done) {
-          if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] Certain UNICODE characters not working with WP(8)
-
           // NOTE: this test verifies that the UNICODE paragraph separator (\u2029)
           // is seen by the sqlite implementation OK:
           var db = openDatabase('UNICODE-paragraph-separator-string-length.db');
@@ -1655,9 +1668,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + ' handles UNICODE \\u2029 paragraph separator correctly [string test]', function (done) {
-          if (isWP8) pending('BROKEN on WP(8)'); // [BUG #202] UNICODE characters not working with WP(8)
           if (!isWebSql && !isWindows && isAndroid) pending('SKIP for Android plugin (cordova-android 6.x BUG: cordova/cordova-discuss#57)');
-          if (!isWebSql && !isWindows && !isAndroid && !isWP8) pending('SKIP for iOS/macOS plugin (Cordova BUG: CB-9435)');
+          if (!isWebSql && (isAppleMobileOS || isMac)) pending('SKIP for iOS/macOS plugin (Cordova BUG: CB-9435)');
 
           // NOTE: since the above test shows the UNICODE paragraph separator (\u2029)
           // is seen by the sqlite implementation OK, it is now concluded that
@@ -1691,8 +1703,6 @@ var mytests = function() {
 
         it(suiteName + 'Inline string manipulation test with a combination of UTF-8 2-byte & 3-byte characters', function(done) {
           // ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
-          if (isWP8) pending('SKIP for WP(8)');
-
           var db = openDatabase('Inline-UTF8-combo-string-manipulation-test.db');
 
           db.transaction(function(tx) {
@@ -1701,7 +1711,8 @@ var mytests = function() {
               expect(rs).toBeDefined();
               expect(rs.rows).toBeDefined();
               expect(rs.rows.length).toBe(1);
-              if (isAndroid && ((isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent))))
+              if ((isWebSql && isChromeBrowser) ||
+                  (isAndroid && ((isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent)))))
                 expect(rs.rows.item(0).upper_result).toBe('TEST ¢ É €');
               else
                 expect(rs.rows.item(0).upper_result).toBe('TEST ¢ é €');
@@ -1720,8 +1731,6 @@ var mytests = function() {
 
         it(suiteName + 'string parameter manipulation test with a combination of UTF-8 2-byte & 3-byte characters', function(done) {
           // ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
-          if (isWP8) pending('SKIP for WP(8)');
-
           var db = openDatabase('UTF8-combo-select-upper-test.db');
 
           db.transaction(function(tx) {
@@ -1730,7 +1739,8 @@ var mytests = function() {
               expect(rs).toBeDefined();
               expect(rs.rows).toBeDefined();
               expect(rs.rows.length).toBe(1);
-              if (isAndroid && ((isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent))))
+              if ((isWebSql && isChromeBrowser) ||
+                  (isAndroid && ((isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent)))))
                 expect(rs.rows.item(0).upper_result).toBe('TEST ¢ É €');
               else
                 expect(rs.rows.item(0).upper_result).toBe('TEST ¢ é €');

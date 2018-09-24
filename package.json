@@ -1,6 +1,6 @@
 {
   "name": "cordova-sqlite-evcore-common-free",
-  "version": "0.0.2-pre1",
+  "version": "0.0.2",
   "description": "Cordova/PhoneGap sqlite storage - free enterprise version with performance improvements for Android (common version branch with external sqlite3 dependencies)",
   "cordova": {
     "id": "cordova-sqlite-evcore-common-free",

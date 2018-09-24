@@ -1,8 +1,15 @@
 # Changes
 
-### cordova-sqlite-evcore-common-free 0.0.2-pre1
+### cordova-sqlite-evcore-common-free 0.0.2
 
 - Use cordova-sqlite-evcore-free-dependencies 0.8.4 with quick fix for error messages on Android
+
+#### cordova-sqlite-storage 2.4.0
+
+- Report internal plugin error in case of attempt to open database with no database name on iOS or macOS
+- Cover use of standard (WebKit) Web SQL API in spec test suite
+- Test and document insertId in UPDATE result set on plugin vs (WebKit) Web SQL
+- other test updates
 
 ### cordova-sqlite-evcore-common-free 0.0.1
 
