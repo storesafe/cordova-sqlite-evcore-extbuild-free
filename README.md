@@ -1,6 +1,4 @@
-# Cordova/PhoneGap sqlite storage - free enterprise version with performance improvements for Android _(common version with limited extra features)_
-
-Native interface to sqlite in a Cordova/PhoneGap plugin for Android, iOS, macOS, Windows 8.1, Windows Phone 8.1, and Windows 10 (UWP), with API similar to HTML5/[Web SQL API](http://www.w3.org/TR/webdatabase/).
+# Cordova/PhoneGap sqlite storage - free enterprise version with performance improvements for Android (common version with limited extra features)
 
 Native SQLite component with API based on HTML5/[Web SQL (DRAFT) API](http://www.w3.org/TR/webdatabase/) for the following platforms:
 - Android
@@ -36,7 +34,7 @@ New release in September 2018 will include the following major enhancements ([li
 
 ## About this plugin version
 
-Free enterprise version with performance improvements for Android - _common version branch with limited extra features (missing pre-populated database support), using the `before_plugin_install` hook to fetch the sqlite3 component dependencies from `cordova-sqlite-evcore-free-dependencies` via npm_.
+Free enterprise version with performance improvements for Android - common version branch with limited extra features (missing pre-populated database support), using the `before_plugin_install` hook to fetch the sqlite3 component dependencies from `cordova-sqlite-evcore-free-dependencies` via npm.
 
 <!-- FUTURE TBD critical bug notices for this plugin version -->
 
@@ -1412,11 +1410,7 @@ Other resource (apparently for Ionic 1): <https://www.packtpub.com/books/content
 ## Easy installation with Cordova CLI tool
 
 ```shell
-npm install -g cordova # (in case you don't have cordova)
-cordova create MyProjectFolder com.my.project MyProject && cd MyProjectFolder # if you are just starting
-cordova plugin add https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free#cordova-sqlite-evcore-common-free # XXX --save RECOMMENDED for Cordova CLI pre-7.0
-cordova platform add <desired platform> # repeat for all desired platform(s)
-cordova prepare # OPTIONAL (MAY BE NEEDED cordova-ios pre-4.3.0 (Cordova CLI pre-6.4.0))
+cordova plugin add https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free#cordova-sqlite-evcore-common-free # --save RECOMMENDED for Cordova CLI pre-7.0
 ```
 
 **Additional Cordova CLI NOTES:**
