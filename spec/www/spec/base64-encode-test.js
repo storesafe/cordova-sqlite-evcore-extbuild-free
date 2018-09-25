@@ -4,8 +4,10 @@ var MYTIMEOUT = 12000;
 
 var DEFAULT_SIZE = 5000000; // max to avoid popup in safari/ios
 
-var isWindows = /Windows /.test(navigator.userAgent); // Windows (8.1)
+var isWindows = /Windows /.test(navigator.userAgent); // Windows XX
 var isAndroid = !isWindows && /Android/.test(navigator.userAgent);
+// XXX QUICK FIX:
+var isBrowser = (/Firefox/.test(navigator.userAgent)) || (!isWindows && !isAndroid && /Safari/.test(navigator.userAgent));
 
 // NOTE: In the common storage-master branch there is no difference between the
 // default implementation and implementation #2. But the test will also apply
@@ -21,6 +23,8 @@ var scenarioCount = (!!window.hasWebKitBrowser) ? (isAndroid ? 3 : 2) : 1;
 var mytests = function() {
 
   for (var i=0; i<scenarioCount; ++i) {
+    // XXX QUICK FIX:
+    if (isBrowser) continue;
 
     describe(scenarioList[i] + ': BASE64 encoding test(s)', function() {
       var scenarioName = scenarioList[i];
