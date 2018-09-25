@@ -1,5 +1,9 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.9.8-pre1
+
+- evcore-native-driver.jar from cordova-sqlite-evcore-free-dependencies 0.8.4, with quick fix for error messages on Android
+
 # cordova-sqlite-evcore-extbuild-free 0.9.7
 
 - fix for multi-byte UTF-8 characters on Android ref:

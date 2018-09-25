@@ -895,7 +895,7 @@ var mytests = function() {
                       else if (isWindows)
                         expect(error.message).toMatch(/Unsupported column type in column 0/);
                       else
-                        expect(error.message).toMatch(/unknown error.*code 0.*Unable to convert BLOB to string/);
+                        expect(error.message).toMatch(/unknown error.*code.* 0.*Unable to convert BLOB to string/); // XXX TBD
                     } else {
                       // NOT EXPECTED:
                       expect(false).toBe(true);
@@ -973,7 +973,7 @@ var mytests = function() {
                       else if (isWindows)
                         expect(error.message).toMatch(/Unsupported column type in column 0/);
                       else
-                        expect(error.message).toMatch(/unknown error.*code 0.*Unable to convert BLOB to string/);
+                        expect(error.message).toMatch(/unknown error.*code. 0.*Unable to convert BLOB to string/);
                     } else {
                       // NOT EXPECTED:
                       expect(false).toBe(true);
@@ -1084,7 +1084,7 @@ var mytests = function() {
                 else if (isWindows)
                   expect(error.message).toMatch(/Error 25 when binding argument to SQL query/);
                 else if (isAndroid && !isImpl2)
-                  expect(error.message).toMatch(/other error.*code 25/);
+                  expect(error.message).toMatch(/other error.*code. 25/);
                 else
                   expect(error.message).toMatch(/index.*out of range/);
 
@@ -1140,7 +1140,7 @@ var mytests = function() {
                 else if (isWindows)
                   expect(error.message).toMatch(/Error 25 when binding argument to SQL query/);
                 else if (isAndroid && !isImpl2)
-                  expect(error.message).toMatch(/other error.*code 25/);
+                  expect(error.message).toMatch(/other error.*code. 25/);
                 else
                   expect(error.message).toMatch(/index.*out of range/);
 
@@ -1196,7 +1196,7 @@ var mytests = function() {
                 else if (isWindows)
                   expect(error.message).toMatch(/Error 25 when binding argument to SQL query/);
                 else if (isAndroid && !isImpl2)
-                  expect(error.message).toMatch(/other error.*code 25/);
+                  expect(error.message).toMatch(/other error.*code. 25/);
                 else
                   expect(error.message).toMatch(/index.*out of range/);
 
@@ -1252,7 +1252,7 @@ var mytests = function() {
                 else if (isWindows)
                   expect(error.message).toMatch(/Error 25 when binding argument to SQL query/);
                 else if (isAndroid && !isImpl2)
-                  expect(error.message).toMatch(/other error.*code 25/);
+                  expect(error.message).toMatch(/other error.*code. 25/);
                 else
                   expect(error.message).toMatch(/index.*out of range/);
 
