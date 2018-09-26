@@ -1,4 +1,4 @@
-# Cordova/PhoneGap sqlite storage - free enterprise version with Android performance improvements and extra features for PhoneGap Build
+# Cordova/PhoneGap sqlite storage - free enterprise version with performance improvements for Android and extra features for PhoneGap Build
 
 Native interface to sqlite in a Cordova/PhoneGap plugin for Android, iOS, macOS, and Windows 10 (UWP), with API similar to HTML5/[Web SQL (DRAFT) API](http://www.w3.org/TR/webdatabase/).
 
@@ -138,7 +138,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation 
 
 - Patches will NOT be accepted on this plugin version due to some possible licensing issues.
 - This plugin is NOT supported by PhoneGap Developer App or PhoneGap Desktop App.
-- This _plugin version_ includes the SQLite and Android-sqlite-evcore-native-driver-free dependencies to work with PhoneGap Build and other some other build systems such as Cordova Plugman, PhoneGap CLI, and Intel XDK.
+- This plugin version includes the SQLite and Android-sqlite-evcore-native-driver-free dependencies to work with PhoneGap Build and other some other build systems such as Cordova Plugman, PhoneGap CLI, and Intel XDK.
 - A recent version of the Cordova CLI (such as `6.5.0` / `7.1.0` / `8.0.0`) is recommended. Cordova versions older than `6.0.0` are missing the `cordova-ios@4.0.0` security fixes. In addition it may be needed to use `cordova prepare` in case of cordova-ios older than `4.3.0` (Cordova CLI `6.4.0`).
 - This plugin version includes the following extra features:
   - BASE64 integrated from [brodybits / sqlite3-base64](https://github.com/brodybits/sqlite3-base64), using [brodybits / libb64-encode](https://github.com/brodybits/libb64-encode) (based on <http://libb64.sourceforge.net/> by Chris Venter, public domain)
@@ -166,8 +166,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation 
   - `SQLITE_OS_WINRT` (Windows only)
   - `NDEBUG` on Windows (Release build only)
 - This plugin version supports the use of two (2) possible Android sqlite database implementations:
-  - default: lightweight [Android-sqlite-connector](https://github.com/liteglue/Android-sqlite-connector)
-  - default: lightweight [Android-sqlite-connector](https://github.com/liteglue/Android-sqlite-connector) (using [brodybits / Android-sqlite-ext-native-driver (sqlite-storage-native-driver branch)](https://github.com/brodybits/Android-sqlite-ext-native-driver/tree/sqlite-storage-native-driver))
+  - default: _high-performance, lightweight Android-sqlite-evcore-native-driver-free NDK library (C-language implementation)_
   - optional: built-in Android database classes (usage described below)
 - The following feature is available in [litehelpers / cordova-sqlite-ext](https://github.com/litehelpers/cordova-sqlite-ext) (with permissive license terms, missing Android-sqlite-evcore-native-driver performance enhancements), XXX TODO _MISSING IN THIS PLUGIN VERSION_:
   - Pre-populated database (all platforms Android/iOS/macOS/Windows)
@@ -225,7 +224,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation 
 - Failure-safe nested transactions with batch processing optimizations (according to HTML5/[Web SQL (DRAFT) API](http://www.w3.org/TR/webdatabase/))
 - Transaction API (based on HTML5/[Web SQL (DRAFT) API](http://www.w3.org/TR/webdatabase/)) is designed for maximum flexiblibility, does not allow any transactions to be left hanging open.
 - As described in [this posting](http://brodyspark.blogspot.com/2012/12/cordovaphonegap-sqlite-plugins-offer.html):
-  - Keeps sqlite database in known, platform specific user data location on all supported platforms (Android/iOS/macOS/Windows), which can be reconfigured on _Android/iOS/macOS_. Whether or not the database on the iOS platform is synchronized to iCloud depends on the selected database location.
+  - Keeps sqlite database in known, platform specific user data location on all supported platforms (Android/iOS/macOS/Windows), which can be reconfigured on _Android, iOS, and macOS_. Whether or not the database on the iOS platform is synchronized to iCloud depends on the selected database location.
   - No arbitrary size limit. SQLite limits described at: <http://www.sqlite.org/limits.html>
 - Also validated for multi-page applications by internal test selfTest function.
 - This project is self-contained. No dependencies on other plugins such as cordova-plugin-file.
@@ -279,10 +278,8 @@ The Windows platform can present a number of challenges which increase when usin
 Use the following command to install this plugin version from the Cordova CLI:
 
 ```shell
-cordova plugin add cordova-sqlite-evcore-extbuild-free --save
+cordova plugin add cordova-sqlite-evcore-extbuild-free # --save option *recommended* for Cordova CLI pre-7.0
 ```
-
-_(`--save` flag NOT NEEDED for Cordova 7.x / 8.x)_
 
 Add any desired platform(s) if not already present, for example:
 
@@ -469,32 +466,6 @@ See **Security of sensitive data** in the [Security](#security) section above.
 - There are some other differences in the SQL error messages reported by WebKit Web SQL and this plugin.
 
 <!-- END Deviations -->
-
-<!-- XXX REPEATED INFO GONE:
-
-## Security
-
-### Security of sensitive data
-
-According to [Web SQL Database API 7.2 Sensitivity of data](https://www.w3.org/TR/webdatabase/#sensitivity-of-data):
->User agents should treat persistently stored data as potentially sensitive; it's quite possible for e-mails, calendar appointments, health records, or other confidential documents to be stored in this mechanism.
->
->To this end, user agents should ensure that when deleting data, it is promptly deleted from the underlying storage.
-
-Unfortunately this plugin will not actually overwrite the deleted content unless the [secure_delete PRAGMA](https://www.sqlite.org/pragma.html#pragma_secure_delete) is used.
-
-### SQL injection
-
-As "strongly recommended" by [Web SQL Database API 8.5 SQL injection](https://www.w3.org/TR/webdatabase/#sql-injection):
->Authors are strongly recommended to make use of the `?` placeholder feature of the `executeSql()` method, and to never construct SQL statements on the fly.
-
-# Avoiding data loss
-
-- Double-check that the application code follows the documented API for SQL statements, parameter values, success callbacks, and error callbacks.
-- For standard Web SQL transactions include a transaction error callback with the proper logic that indicates to the user if data cannot be stored for any reason. In case of individual SQL error handlers be sure to indicate to the user if there is any issue with storing data.
-- For single statement and batch transactions include an error callback with logic that indicates to the user if data cannot be stored for any reason.
-
- ... XXX END OF REPEATED INFO -->
 
 ## Known issues
 
@@ -1299,10 +1270,8 @@ Other resource (apparently for Ionic 1): <https://www.packtpub.com/books/content
 ## Easy installation with Cordova CLI tool
 
 ```shell
-cordova plugin add cordova-sqlite-evcore-extbuild-free # --save RECOMMENDED for Cordova CLI pre-7.0
+cordova plugin add cordova-sqlite-evcore-extbuild-free # --save option *recommended* for Cordova CLI pre-7.0
 ```
-
-_(`--save` flag NOT NEEDED for Cordova 7.x / 8.x)_
 
 **Additional Cordova CLI NOTES:**
 
