@@ -1,8 +1,65 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.9.8-pre1
+# cordova-sqlite-evcore-extbuild-free 0.9.8
 
 - evcore-native-driver.jar from cordova-sqlite-evcore-free-dependencies 0.8.4, with quick fix for error messages on Android
+
+### cordova-sqlite-evcore-common-free 0.0.3
+
+- Internal error message fix for evcore on Android
+
+### cordova-sqlite-evcore-common-free 0.0.2
+
+#### cordova-sqlite-storage 2.4.0
+
+- Report internal plugin error in case of attempt to open database with no database name on iOS or macOS
+- Cover use of standard (WebKit) Web SQL API in spec test suite
+- Test and document insertId in UPDATE result set on plugin vs (WebKit) Web SQL
+- other test updates
+
+### cordova-sqlite-evcore-common-free 0.0.1
+
+#### cordova-sqlite-storage 2.3.3
+
+- Quick fix for some iOS/macOS internal plugin error log messagess
+- test updates
+- quick doc updates
+
+#### cordova-sqlite-storage 2.3.2
+
+- Mark some Android errors as internal plugin errors (quick fix)
+- remove trailing whitespace from Android implementation
+- test coverage updates
+- quick doc updates
+
+#### cordova-sqlite-storage 2.3.1
+
+- Mark some iOS/macOS plugin error messages as internal plugin errors (quick fix)
+- Quick documentation updates
+
+#### cordova-sqlite-storage 2.2.1
+
+- Fix Android/iOS src copyright, perpetually
+
+#### cordova-sqlite-storage 2.2.0
+
+- Fix SQLiteAndroidDatabase implementation for Turkish and other foreign locales
+
+#### cordova-sqlite-storage 2.1.0
+
+- Visual Studio 2017 updates for Windows UWP build
+
+#### cordova-sqlite-storage 2.0.2
+
+- Fix Windows target platform version
+
+#### cordova-sqlite-storage 2.0.0
+
+- Reference Windows platform toolset v141 to support Visual Studio 2017 (RC)
+
+#### cordova-sqlite-evcore-legacy-ext-common-free 0.0.6
+
+- Use cordova-sqlite-evcore-free-dependencies 0.8.3 with fix for multi-byte UTF-8 characters on Android ref:
 
 # cordova-sqlite-evcore-extbuild-free 0.9.7
 

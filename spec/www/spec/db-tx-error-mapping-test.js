@@ -2,11 +2,20 @@
 
 var MYTIMEOUT = 12000;
 
-var DEFAULT_SIZE = 5000000; // max to avoid popup in safari/ios
+// NOTE: DEFAULT_SIZE wanted depends on type of browser
 
-var isWP8 = /IEMobile/.test(navigator.userAgent); // Matches WP(7/8/8.1)
-var isWindows = /Windows /.test(navigator.userAgent); // Windows
+var isWindows = /MSAppHost/.test(navigator.userAgent);
 var isAndroid = !isWindows && /Android/.test(navigator.userAgent);
+var isFirefox = /Firefox/.test(navigator.userAgent);
+var isWebKitBrowser = !isWindows && !isAndroid && /Safari/.test(navigator.userAgent);
+var isBrowser = isWebKitBrowser || isFirefox;
+var isEdgeBrowser = isBrowser && (/Edge/.test(navigator.userAgent));
+var isChromeBrowser = isBrowser && !isEdgeBrowser && (/Chrome/.test(navigator.userAgent));
+var isSafariBrowser = isWebKitBrowser && !isEdgeBrowser && !isChromeBrowser;
+
+// should avoid popups (Safari seems to count 2x)
+var DEFAULT_SIZE = isSafariBrowser ? 2000000 : 5000000;
+// FUTURE TBD: 50MB should be OK on Chrome and some other test browsers.
 
 // NOTE: While in certain version branches there is no difference between
 // the default Android implementation and implementation #2,
@@ -18,24 +27,30 @@ var scenarioList = [
   'Plugin-implementation-2'
 ];
 
-var scenarioCount = (!!window.hasWebKitBrowser) ? (isAndroid ? 3 : 2) : 1;
+var scenarioCount = (!!window.hasWebKitWebSQL) ? (isAndroid ? 3 : 2) : 1;
 
 var mytests = function() {
 
   for (var i=0; i<scenarioCount; ++i) {
+    // TBD skip plugin test on browser platform (not yet supported):
+    if (isBrowser && (i === 0)) continue;
 
     // GENERAL: SKIP ALL on WP8 for now
     describe(scenarioList[i] + ': db tx error mapping test(s)' +
-             ((isWindows && !isWP8) ?
+             (isWindows ?
               ' [Windows version with INCORRECT error code (0) & INCONSISTENT error message (missing actual error info)]' :
                ''), function() {
       var scenarioName = scenarioList[i];
       var suiteName = scenarioName + ': ';
       var isWebSql = (i === 1);
       var isImpl2 = (i === 2);
+      // XXX TBD WORKAROUND SOLUTION for (WebKit) Web SQL on Safari browser (TEST DB NAME IGNORED):
+      var recycleWebDatabase = null;
 
       // NOTE: MUST be defined in function scope, NOT outer scope:
       var openDatabase = function(name, ignored1, ignored2, ignored3) {
+        if (isWebSql && isSafariBrowser && !!recycleWebDatabase)
+          return recycleWebDatabase;
         if (isImpl2) {
           return window.sqlitePlugin.openDatabase({
             // prevent reuse of database from default db implementation:
@@ -46,7 +61,8 @@ var mytests = function() {
           });
         }
         if (isWebSql) {
-          return window.openDatabase(name, "1.0", "Demo", DEFAULT_SIZE);
+          return recycleWebDatabase =
+            window.openDatabase(name, '1.0', 'Test', DEFAULT_SIZE);
         } else {
           return window.sqlitePlugin.openDatabase({name: name, location: 0});
         }
@@ -86,8 +102,6 @@ var mytests = function() {
         // GENERAL NOTE: ERROR MESSAGES are subject to improvements and other possible changes.
 
         it(suiteName + 'syntax error: command with misspelling', function(done) {
-          if (isWP8) pending('SKIP for WP(8)'); // SKIP for now
-
           var db = openDatabase("Syntax-error-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
 
@@ -108,7 +122,7 @@ var mytests = function() {
 
               // error.hasOwnProperty('message') apparently NOT WORKING on
               // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-              if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+              if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
                 expect(error.hasOwnProperty('message')).toBe(true);
 
               if (isWindows || (isAndroid && isImpl2))
@@ -116,13 +130,13 @@ var mytests = function() {
               else
                 expect(error.code).toBe(5);
 
-              if (isWebSql)
+              if (isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent)))
                 expect(error.message).toMatch(/could not prepare statement.*1 near \"SLCT\": syntax error/);
               else if (isWindows)
                 expect(error.message).toMatch(/Error preparing an SQLite statement/);
-              else if (isAndroid && !isImpl2)
-                expect(error.message).toMatch(/syntax error or other error.*code. 1/);
-              else if (isAndroid && isImpl2)
+              else if (!isWebSql && !isWindows && isAndroid && !isImpl2)
+                expect(error.message).toMatch(/syntax error or other error code: 1 message: near .SLCT.: syntax error/);
+              else if (!isWebSql && !isWindows && isAndroid && isImpl2)
                 expect(error.message).toMatch(/near \"SLCT\": syntax error.*code 1.*while compiling: SLCT 1/);
               else
                 expect(error.message).toMatch(/near \"SLCT\": syntax error/);
@@ -139,7 +153,7 @@ var mytests = function() {
 
             // error.hasOwnProperty('message') apparently NOT WORKING on
             // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-            if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+            if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
               expect(error.hasOwnProperty('message')).toBe(true);
 
             if (isWindows || isWebSql || (isAndroid && isImpl2))
@@ -162,9 +176,7 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
-        it(suiteName + 'INSERT syntax error [VALUES in the wrong place (XXX "incomplete input")] with a trailing space [XXX TBD PROPER INFO MESSAGE NOT ON Android/...]', function(done) {
-          if (isWP8) pending('SKIP for WP(8)'); // FUTURE TBD
-
+        it(suiteName + 'INSERT with VALUES in the wrong place (with a trailing space) [XXX TBD "incomplete input" vs "syntax error" message on (WebKit) Web SQL on Android 8.x/...]', function(done) {
           var db = openDatabase("INSERT-Syntax-error-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
 
@@ -188,7 +200,7 @@ var mytests = function() {
 
               // error.hasOwnProperty('message') apparently NOT WORKING on
               // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-              if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+              if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
                 expect(error.hasOwnProperty('message')).toBe(true);
 
               if (isWindows || (isAndroid && isImpl2))
@@ -196,16 +208,22 @@ var mytests = function() {
               else
                 expect(error.code).toBe(5);
 
-              if (isWebSql)
+              if (isWebSql && (/Android [7-9]/.test(navigator.userAgent)))
+                expect(error.message).toMatch(/could not prepare statement.*/); // XXX TBD incomplete input vs syntax error message on Android 8(+)
+              else if (isWebSql && !isChromeBrowser && !(/Android 4.[1-3]/.test(navigator.userAgent)))
                 expect(error.message).toMatch(/could not prepare statement.*1 near \"VALUES\": syntax error/);
+              else if (isWebSql && isBrowser)
+                expect(error.message).toMatch(/could not prepare statement.*1 incomplete input/);
+              else if (isWebSql)
+                expect(error.message).toMatch(/near \"VALUES\": syntax error/);
               else if (isWindows)
                 expect(error.message).toMatch(/Error preparing an SQLite statement/);
-              else if (isAndroid && !isImpl2) //* XXX TBD PROPER INFO MESSAGE NOT ON Android/...
-                expect(error.message).toMatch(/syntax error or other error.*code. 1/);
+              else if (isAndroid && !isImpl2)
+                expect(error.message).toMatch(/syntax error or other error code: 1 message: incomplete input/);
               else if (isAndroid && isImpl2)
                 expect(error.message).toMatch(/near \"VALUES\": syntax error.*code 1.*while compiling: INSERT INTO test_table/);
               else
-                expect(error.message).toMatch(/incomplete input/); // XXX SQLite 3.22.0 on iOS/macOS
+                expect(error.message).toMatch(/incomplete input/);
 
               // FAIL transaction & check reported transaction error:
               return true;
@@ -218,7 +236,7 @@ var mytests = function() {
 
             // error.hasOwnProperty('message') apparently NOT WORKING on
             // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-            if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+            if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
               expect(error.hasOwnProperty('message')).toBe(true);
 
             if (isWindows || isWebSql || (isAndroid && isImpl2))
@@ -230,8 +248,10 @@ var mytests = function() {
               expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
             else if (isWindows)
               expect(error.message).toMatch(/error callback did not return false.*Error preparing an SQLite statement/);
-            else if (!isWindows && isAndroid) // XXX TBD PROPER INFO MESSAGE NOT ON Android/...
-              expect(error.message).toMatch(/error callback did not return false.*syntax error/); // XXX Android/...
+            else if (isAndroid && !isImpl2)
+              expect(error.message).toMatch(/error callback did not return false.*syntax error or other error code: 1 message: incomplete input/);
+            else if (isAndroid && isImpl2)
+              expect(error.message).toMatch(/error callback did not return false.*syntax error/); // XXX TBD Android (built-in)
             else
               expect(error.message).toMatch(/error callback did not return false.*incomplete input/); // XXX SQLite 3.22.0 on iOS/macOS
 
@@ -244,8 +264,6 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'constraint violation', function(done) {
-          if (isWP8) pending('SKIP for WP(8)'); // FUTURE TBD
-
           var db = openDatabase("Constraint-violation-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
 
@@ -276,25 +294,27 @@ var mytests = function() {
 
               // error.hasOwnProperty('message') apparently NOT WORKING on
               // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-              if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+              if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
                 expect(error.hasOwnProperty('message')).toBe(true);
 
-              if (isWebSql && !isAndroid)
-                expect(true).toBe(true); // SKIP for iOS (WebKit) Web SQL
+              if (isWebSql && (!isAndroid || /Android 4.[1-3]/.test(navigator.userAgent)))
+                expect(true).toBe(true); // SKIP for iOS (WebKit) & Android 4.1-4.3 (WebKit) Web SQL
               else if (isWindows)
                 expect(error.code).toBe(0);
               else
                 expect(error.code).toBe(6);
 
               // (WebKit) Web SQL (Android/iOS) possibly with a missing 'r'
-              if (isWebSql && isAndroid)
+              if (isWebSql && /Android 4.[1-3]/.test(navigator.userAgent))
+                expect(error.message).toMatch(/column data is not unique/);
+              else if (isWebSql && isAndroid)
                 expect(error.message).toMatch(/could not execute statement due to a constr?aint failure.*19.*constraint failed/);
               else if (isWebSql)
-                expect(error.message).toMatch(/constr?aint fail/);
+                expect(error.message).toMatch(/constr?aint fail/); // [possibly missing letter on iOS (WebKit) Web SQL]
               else if (isWindows)
                 expect(error.message).toMatch(/SQLite3 step error result code: 1/);
               else if (isAndroid && !isImpl2)
-                expect(error.message).toMatch(/constraint fail.*code.* 19/);
+                expect(error.message).toMatch(/constraint fail.*code: 19 message: UNIQUE constraint failed: test_table\.data/);
               else if (isAndroid && isImpl2)
                 expect(error.message).toMatch(/constraint failure/);
               else
@@ -312,7 +332,7 @@ var mytests = function() {
 
             // error.hasOwnProperty('message') apparently NOT WORKING on
             // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-            if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+            if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
               expect(error.hasOwnProperty('message')).toBe(true);
 
             if (isWindows || isWebSql)
@@ -336,8 +356,6 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'SELECT uper("Test") (misspelled function name) [INCORRECT error code WebKit Web SQL & plugin]', function(done) {
-          if (isWP8) pending('SKIP for WP(8)'); // FUTURE TBD
-
           var db = openDatabase("Misspelled-function-name-error-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
 
@@ -358,7 +376,7 @@ var mytests = function() {
 
               // error.hasOwnProperty('message') apparently NOT WORKING on
               // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-              if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+              if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
                 expect(error.hasOwnProperty('message')).toBe(true);
 
               if (isWindows || (isAndroid && isImpl2))
@@ -367,13 +385,13 @@ var mytests = function() {
                 expect(error.code).toBe(5);
 
               // ACTUAL WebKit Web SQL vs plugin error.message
-              if (isWebSql)
+              if (isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent)))
                 expect(error.message).toMatch(/could not prepare statement.*1 no such function: uper/);
               else if (isWindows)
                 expect(error.message).toMatch(/Error preparing an SQLite statement/);
-              else if (isAndroid && !isImpl2)
-                expect(error.message).toMatch(/syntax error or other error.*code. 1/);
-              else if (isAndroid && isImpl2)
+              else if (!isWebSql && !isWindows && isAndroid && !isImpl2)
+                expect(error.message).toMatch(/syntax error or other error.*code: 1 message: no such function: uper/);
+              else if (!isWebSql && !isWindows && isAndroid && isImpl2)
                 expect(error.message).toMatch(/no such function: uper.*code 1/);
               else
                 expect(error.message).toMatch(/no such function: uper/);
@@ -390,7 +408,7 @@ var mytests = function() {
 
             // error.hasOwnProperty('message') apparently NOT WORKING on
             // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-            if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+            if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
               expect(error.hasOwnProperty('message')).toBe(true);
 
             if (isWebSql || isWindows || (isAndroid && isImpl2))
@@ -403,7 +421,7 @@ var mytests = function() {
             else if (isWindows)
               expect(error.message).toMatch(/error callback did not return false.*Error preparing an SQLite statement/);
             else if (isAndroid && !isImpl2)
-              expect(error.message).toMatch(/error callback did not return false: syntax error or other error.*code. 1/);
+              expect(error.message).toMatch(/error callback did not return false: syntax error or other error.*code: 1 message: no such function: uper/);
             else
               expect(error.message).toMatch(/error callback did not return false.*no such function: uper/);
 
@@ -416,8 +434,6 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'SELECT FROM bogus table (other database error) [INCORRECT error code WebKit Web SQL & plugin]', function(done) {
-          if (isWP8) pending('SKIP for WP(8)'); // FUTURE TBD
-
           var db = openDatabase("SELECT-FROM-bogus-table-error-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
 
@@ -439,7 +455,7 @@ var mytests = function() {
 
               // error.hasOwnProperty('message') apparently NOT WORKING on
               // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-              if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+              if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
                 expect(error.hasOwnProperty('message')).toBe(true);
 
               if (isWindows || (isAndroid && isImpl2))
@@ -447,13 +463,13 @@ var mytests = function() {
               else
                 expect(error.code).toBe(5);
 
-              if (isWebSql)
+              if (isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent)))
                 expect(error.message).toMatch(/could not prepare statement.*1 no such table: BogusTable/);
               else if (isWindows)
                 expect(error.message).toMatch(/Error preparing an SQLite statement/);
-              else if (isAndroid && !isImpl2)
-                expect(error.message).toMatch(/syntax error or other error.*code. 1/);
-              else if (isAndroid && isImpl2)
+              else if (!isWebSql && !isWindows && isAndroid && !isImpl2)
+                expect(error.message).toMatch(/syntax error or other error code: 1 message: no such table: BogusTable/);
+              else if (!isWebSql && !isWindows && isAndroid && isImpl2)
                 expect(error.message).toMatch(/no such table: BogusTable.*code 1/);
               else
                 expect(error.message).toMatch(/no such table: BogusTable/);
@@ -469,7 +485,7 @@ var mytests = function() {
 
             // error.hasOwnProperty('message') apparently NOT WORKING on
             // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-            if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+            if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
               expect(error.hasOwnProperty('message')).toBe(true);
 
             if (isWebSql || isWindows || (isAndroid && isImpl2))
@@ -482,7 +498,7 @@ var mytests = function() {
             else if (isWindows)
               expect(error.message).toMatch(/error callback did not return false.*Error preparing an SQLite statement/);
             else if (isAndroid && !isImpl2)
-              expect(error.message).toMatch(/error callback did not return false: syntax error or other error.*code. 1/);
+              expect(error.message).toMatch(/error callback did not return false: syntax error or other error code: 1 message: no such table: BogusTable/);
             else
               expect(error.message).toMatch(/error callback did not return false.*no such table: BogusTable/);
 
@@ -495,8 +511,6 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'INSERT missing column [INCORRECT error code WebKit Web SQL & plugin]', function(done) {
-          if (isWP8) pending('SKIP for WP(8)'); // FUTURE TBD
-
           var db = openDatabase("INSERT-missing-column-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
 
@@ -519,7 +533,7 @@ var mytests = function() {
 
               // error.hasOwnProperty('message') apparently NOT WORKING on
               // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-              if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+              if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
                 expect(error.hasOwnProperty('message')).toBe(true);
 
               if (isWindows || (isAndroid && isImpl2))
@@ -527,13 +541,13 @@ var mytests = function() {
               else
                 expect(error.code).toBe(5);
 
-              if (isWebSql)
+              if (isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent)))
                 expect(error.message).toMatch(/could not prepare statement.*1 table test_table has 2 columns but 1 values were supplied/);
               else if (isWindows)
                 expect(error.message).toMatch(/Error preparing an SQLite statement/);
-              else if (isAndroid && !isImpl2)
-                expect(error.message).toMatch(/syntax error or other error.*code. 1/);
-              else if (isAndroid && isImpl2)
+              else if (!isWebSql && !isWindows && isAndroid && !isImpl2)
+                expect(error.message).toMatch(/code: 1 message: table test_table has 2 columns but 1 values were supplied/);
+              else if (!isWebSql && !isWindows && isAndroid && isImpl2)
                 expect(error.message).toMatch(/table test_table has 2 columns but 1 values were supplied.*code 1.*while compiling: INSERT INTO test_table/);
               else
                 expect(error.message).toMatch(/table test_table has 2 columns but 1 values were supplied/);
@@ -550,7 +564,7 @@ var mytests = function() {
 
             // error.hasOwnProperty('message') apparently NOT WORKING on
             // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-            if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+            if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
               expect(error.hasOwnProperty('message')).toBe(true);
 
             if (isWebSql || isWindows || (isAndroid && isImpl2))
@@ -563,7 +577,7 @@ var mytests = function() {
             else if (isWindows)
               expect(error.message).toMatch(/error callback did not return false.*Error preparing an SQLite statement/);
             else if (isAndroid && !isImpl2)
-              expect(error.message).toMatch(/error callback did not return false: syntax error or other error.*code. 1/);
+              expect(error.message).toMatch(/error callback did not return false: syntax error or other error code: 1 message: table test_table has 2 columns but 1 values were supplied/);
             else
               expect(error.message).toMatch(/error callback did not return false.*table test_table has 2 columns but 1 values were supplied/);
 
@@ -576,8 +590,6 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'INSERT wrong column name [INCORRECT error code WebKit Web SQL & plugin]', function(done) {
-          if (isWP8) pending('SKIP for WP(8)'); // FUTURE TBD
-
           var db = openDatabase("INSERT-wrong-column-name-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
 
@@ -600,7 +612,7 @@ var mytests = function() {
 
               // error.hasOwnProperty('message') apparently NOT WORKING on
               // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-              if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+              if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
                 expect(error.hasOwnProperty('message')).toBe(true);
 
               if (isWindows || (isAndroid && isImpl2))
@@ -608,13 +620,13 @@ var mytests = function() {
               else
                 expect(error.code).toBe(5);
 
-              if (isWebSql)
+              if (isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent)))
                 expect(error.message).toMatch(/could not prepare statement.*1 table test_table has no column named wrong_column/);
               else if (isWindows)
                 expect(error.message).toMatch(/Error preparing an SQLite statement/);
-              else if (isAndroid && !isImpl2)
-                expect(error.message).toMatch(/syntax error or other error.*code. 1/);
-              else if (isAndroid && isImpl2)
+              else if (!isWebSql && !isWindows && isAndroid && !isImpl2)
+                expect(error.message).toMatch(/syntax error or other error.*code: 1 message: table test_table has no column named wrong_column/);
+              else if (!isWebSql && !isWindows && isAndroid && isImpl2)
                 expect(error.message).toMatch(/table test_table has no column named wrong_column.*code 1.*while compiling: INSERT INTO test_table/);
               else
                 expect(error.message).toMatch(/table test_table has no column named wrong_column/);
@@ -631,7 +643,7 @@ var mytests = function() {
 
             // error.hasOwnProperty('message') apparently NOT WORKING on
             // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-            if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+            if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
               expect(error.hasOwnProperty('message')).toBe(true);
 
             if (isWebSql || isWindows || (isAndroid && isImpl2))
@@ -644,7 +656,7 @@ var mytests = function() {
             else if (isWindows)
               expect(error.message).toMatch(/error callback did not return false.*Error preparing an SQLite statement/);
             else if (isAndroid && !isImpl2)
-              expect(error.message).toMatch(/error callback did not return false: syntax error or other error.*code. 1/);
+              expect(error.message).toMatch(/error callback did not return false: syntax error or other error.*code: 1 message: table test_table has no column named wrong_column/);
             else
               expect(error.message).toMatch(/error callback did not return false.*table test_table has no column named wrong_column/);
 
@@ -660,8 +672,6 @@ var mytests = function() {
         // claims to detect the error at the "prepare statement" stage while the
         // plugin detects the error at the "execute statement" stage.
         it(suiteName + 'CREATE VIRTUAL TABLE USING bogus module (other database error) [INCORRECT error code WebKit Web SQL & plugin]', function(done) {
-          if (isWP8) pending('SKIP for WP(8)'); // FUTURE TBD
-
           var db = openDatabase("create-virtual-table-using-bogus-module-error-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
 
@@ -683,7 +693,7 @@ var mytests = function() {
 
               // error.hasOwnProperty('message') apparently NOT WORKING on
               // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-              if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+              if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
                 expect(error.hasOwnProperty('message')).toBe(true);
 
               if (isWindows || (!isWebSql && isAndroid && isImpl2))
@@ -691,14 +701,18 @@ var mytests = function() {
               else
                 expect(error.code).toBe(5);
 
-              if (isWebSql && isAndroid)
+              if (isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent)))
                 expect(error.message).toMatch(/could not prepare statement.*not authorized/);
-              else if (isWebSql) // (iOS)
+              else if (isWebSql && isAndroid)
+                expect(error.message).toMatch(/not authorized/);
+              else if (isWebSql && (isBrowser && (/Chrome/.test(navigator.userAgent))))
+                expect(error.message).toMatch(/could not prepare statement.*23 not authorized/);
+              else if (isWebSql) // [iOS (WebKit) Web SQL]
                 expect(error.message).toMatch(/could not prepare statement.*1 not authorized/);
               else if (isWindows)
                 expect(error.message).toMatch(/SQLite3 step error result code: 1/);
               else if (isAndroid && !isImpl2)
-                expect(error.message).toMatch(/syntax error or other error.*code. 1/);
+                expect(error.message).toMatch(/syntax error or other error.*code: 1 message: no such module: bogus_module/);
               else if (isAndroid && isImpl2)
                 expect(error.message).toMatch(/no such module: bogus.*code 1/);
               else
@@ -715,7 +729,7 @@ var mytests = function() {
 
             // error.hasOwnProperty('message') apparently NOT WORKING on
             // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-            if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+            if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
               expect(error.hasOwnProperty('message')).toBe(true);
 
             if (isWebSql || isWindows || (isAndroid && isImpl2))
@@ -728,7 +742,7 @@ var mytests = function() {
             else if (isWindows)
               expect(error.message).toMatch(/error callback did not return false.*SQLite3 step error result code: 1/);
             else if (isAndroid && !isImpl2)
-              expect(error.message).toMatch(/error callback did not return false: syntax error or other error.*code. 1/);
+              expect(error.message).toMatch(/error callback did not return false: syntax error or other error.*code: 1 message: no such module: bogus_module/);
             else
               expect(error.message).toMatch(/error callback did not return false.*no such module: bogus/);
 
@@ -743,8 +757,6 @@ var mytests = function() {
         // TESTS with no SQL error handler:
 
         it(suiteName + 'transaction.executeSql syntax error (command with misspelling) with no SQL error handler', function(done) {
-          if (isWP8) pending('SKIP for WP(8)'); // FUTURE TBD
-
           db = openDatabase('tx-sql-syntax-error-with-no-sql-error-handler-test.db');
           db.transaction(function(transaction) {
             transaction.executeSql('SLCT 1');
@@ -756,7 +768,7 @@ var mytests = function() {
 
             // error.hasOwnProperty('message') apparently NOT WORKING on
             // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-            if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+            if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
               expect(error.hasOwnProperty('message')).toBe(true);
 
             if (isWindows || (isAndroid && isImpl2))
@@ -764,16 +776,18 @@ var mytests = function() {
             else
               expect(error.code).toBe(5);
 
-            if (isWebSql)
+            if (isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent)))
               expect(error.message).toMatch(/could not prepare statement.*1 near \"SLCT\": syntax error/);
             else if (isWindows)
               expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
-            else if (isAndroid && !isImpl2)
-              expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code. 1/);
-            else if (isAndroid && isImpl2)
+            else if (!isWebSql && !isWindows && isAndroid && !isImpl2)
+              expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code: 1 message: near .SLCT.: syntax error/);
+            else if (!isWebSql && !isWindows && isAndroid && isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: near \"SLCT\": syntax error.*code 1.*while compiling: SLCT 1/);
-            else
+            else if (!isWebSql) // [iOS/macOS plugin]
               expect(error.message).toMatch(/a statement with no error handler failed.*near \"SLCT\": syntax error/);
+            else
+              expect(error.message).toMatch(/near \"SLCT\": syntax error/);
 
             isWebSql ? done() : db.close(done, done);
           }, function() {
@@ -784,8 +798,6 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'transaction.executeSql constraint violation with no SQL error handler', function(done) {
-          if (isWP8) pending('SKIP for WP(8)'); // FUTURE TBD
-
           var db = openDatabase("Constraint-violation-with-no-sql-error-handler.db", "1.0", "Demo", DEFAULT_SIZE);
 
           db.transaction(function(tx) {
@@ -803,25 +815,27 @@ var mytests = function() {
 
             // error.hasOwnProperty('message') apparently NOT WORKING on
             // WebKit Web SQL on Android 5.x/... or iOS 10.x/...:
-            if (!isWebSql || isWindows || (isAndroid && (/Android [1-4]/.test(navigator.userAgent))))
+            if (!isWebSql || isWindows || (isAndroid && (/Android 4/.test(navigator.userAgent))))
               expect(error.hasOwnProperty('message')).toBe(true);
 
-            if (isWebSql && !isAndroid)
-              expect(true).toBe(true); // SKIP for iOS (WebKit) Web SQL
+            if (isWebSql && (!isAndroid || /Android 4.[1-3]/.test(navigator.userAgent)))
+              expect(true).toBe(true); // SKIP for iOS (WebKit) & Android 4.1-4.3 (WebKit) Web SQL
             else if (isWindows)
               expect(error.code).toBe(0);
             else
               expect(error.code).toBe(6);
 
             // (WebKit) Web SQL (Android/iOS) possibly with a missing 'r'
-            if (isWebSql && isAndroid)
+            if (isWebSql && /Android 4.[1-3]/.test(navigator.userAgent))
+              expect(error.message).toMatch(/column data is not unique/);
+            else if (isWebSql && isAndroid)
               expect(error.message).toMatch(/could not execute statement due to a constr?aint failure.*19.*constraint failed/);
             else if (isWebSql)
               expect(error.message).toMatch(/constr?aint fail/);
             else if (isWindows)
               expect(error.message).toMatch(/a statement with no error handler failed: SQLite3 step error result code: 1/);
             else if (isAndroid && !isImpl2)
-              expect(error.message).toMatch(/a statement with no error handler failed: constraint fail.*code.* 19/);
+              expect(error.message).toMatch(/a statement with no error handler failed: constraint fail.*code: 19 message: UNIQUE constraint failed: test_table.data/);
             else if (isAndroid && isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed:.*constraint failure/);
             else
