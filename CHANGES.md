@@ -1,5 +1,9 @@
 # Changes
 
+### cordova-sqlite-evcore-common-free 0.0.3
+
+- Internal error message fix for evcore on Android
+
 ### cordova-sqlite-evcore-common-free 0.0.2
 
 - Use cordova-sqlite-evcore-free-dependencies 0.8.4 with quick fix for error messages on Android

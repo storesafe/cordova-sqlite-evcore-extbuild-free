@@ -78,8 +78,8 @@ public class SQLitePlugin extends CordovaPlugin {
                 try {
                     r.q.put(q);
                 } catch(Exception e) {
-                    Log.e(SQLitePlugin.class.getSimpleName(), "couldn't add to queue", e);
-                    cbc.error("couldn't add to queue");
+                    Log.e(SQLitePlugin.class.getSimpleName(), "INTERNAL PLUGIN ERROR: could not add to queue", e);
+                    cbc.error("INTERNAL PLUGIN ERROR: could not add to queue");
                 }
             } else {
                 cbc.error("database not open");
