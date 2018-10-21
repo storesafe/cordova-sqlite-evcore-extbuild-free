@@ -539,8 +539,8 @@ var mytests = function() {
         // - litehelpers/Cordova-sqlite-evcore-extbuild-free#19
         // - litehelpers/Android-sqlite-evcore-native-driver-free#1
         // - litehelpers/Cordova-sqlite-evcore-extbuild-free#7 (XXX KNOWN CRASH issue on Android)
-        it(suiteName + 'INSERT TEXT string with emoji [\\u1F603 SMILING FACE (MOUTH OPEN)], SELECT the data, check, and check HEX [XXX TBD TRUNCATION BUG REPRODUCED on Windows; default sqlite HEX encoding: UTF-6le on Windows & Android 4.1-4.3 (WebKit) Web SQL, UTF-8 otherwise]' , function(done) {
-          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('XXX KNOWN CRASH ISSUE on Android (default evcore-native-driver database access implementation)'); // XXX
+        it(suiteName + 'INSERT TEXT string with emoji [\\u1F603 SMILING FACE (MOUTH OPEN)], SELECT the data, check, and check HEX [XXX TBD value result IGNORED on Android; TRUNCATION BUG REPRODUCED on Windows; default sqlite HEX encoding: UTF-6le on Windows & Android 4.1-4.3 (WebKit) Web SQL, UTF-8 otherwise]' , function(done) {
+          // if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('XXX KNOWN CRASH ISSUE on Android (default evcore-native-driver database access implementation)'); // XXX GONE
 
           var db = openDatabase('INSERT-emoji-and-check.db', '1.0', 'Demo', DEFAULT_SIZE);
 
@@ -559,8 +559,14 @@ var mytests = function() {
 
                   var row = rs2.rows.item(0);
                   // Full object check:
+                  if (!isWebSql && !isWindows && isAndroid && !isImpl2 && !(/Android [4-5]/.test(navigator.userAgent))) // XXX BUG XXX
+                    expect(row).toEqual({data: '@?!'}); // XXX BUG XXX
+                  else // XXX
                   expect(row).toEqual({data: '@\uD83D\uDE03!'});
                   // Check individual members:
+                  if (!isWebSql && !isWindows && isAndroid && !isImpl2 && !(/Android [4-5]/.test(navigator.userAgent))) // XXX BUG XXX
+                    expect(row.data).toBe('@?!'); // XXX BUG XXX
+                  else // XXX
                   expect(row.data).toBe('@\uD83D\uDE03!');
 
                   tx.executeSql('SELECT HEX(data) AS hexvalue FROM test_table', [], function(tx_ignored, rs3) {
@@ -568,18 +574,21 @@ var mytests = function() {
                     expect(rs3.rows).toBeDefined();
                     expect(rs3.rows.length).toBe(1);
 
-                    // TBD NOT APPLICABLE in this plugin version
+                    // XXX GONE: NOT APPLICABLE in this plugin version
                     // (TEST SKIPPPED for default evcore-native-driver database
                     //  access implementation due to possible crash on
                     //  Android 7.x/???):
-                    // STOP HERE [HEX encoding BUG] for XXX TBD
+                    // XXX GONE: STOP HERE [HEX encoding BUG] for XXX TBD
                     // if (!isWebSql && !isWindows && isAndroid && !isImpl2) return done();
 
                     if (isWindows || (isWebSql && isAndroid && /Android 4.[1-3]/.test(navigator.userAgent)))
                       expect(rs3.rows.item(0).hexvalue).toBe('40003DD803DE2100'); // (UTF-16le)
-                    /* XXX TBD HEX encoding BUG IGNORED on default Android NDK access implementation (...)
+                    //* XXX CORRECT (no bug) on Android pre-6.0:
+                    else if (!isWebSql && !isWindows && isAndroid && !isImpl2 && /Android [4-5]/.test(navigator.userAgent))
+                      expect(rs3.rows.item(0).hexvalue).toBe('40EDA0BDEDB88321'); // XXX Android pre-6.0 UTF-8
+                    //* XXX TBD HEX encoding BUG REPRODUCED on default Android evcore NDK implementation on post-5.x (...)
                     else if (!isWebSql && isAndroid && !isImpl2)
-                      expect(rs3.rows.item(0).hexvalue).toBe('--'); // (...) */
+                      expect(rs3.rows.item(0).hexvalue).toBe('403F21'); // XXX TBD Anroid post-5.x UTF-8
                     else
                       expect(rs3.rows.item(0).hexvalue).toBe('40F09F988321'); // (UTF-8)
 

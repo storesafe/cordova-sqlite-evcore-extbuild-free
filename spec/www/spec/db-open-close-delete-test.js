@@ -320,7 +320,7 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'Open database with U+0801 (3-byte Samaritan character Bit) & check internal database file name', function(done) {
-          if (!isWindows && isAndroid && !isImpl2) pending('XXX CRASH on Android (default evcore-native-driver database access implementation)');
+          // if (!isWindows && isAndroid && !isImpl2) pending('XXX CRASH on Android (default evcore-native-driver database access implementation)'); // XXX GONE
 
           var dbName = 'a\u0801.db';
 
@@ -360,7 +360,7 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'Open database with emoji \uD83D\uDE03 (UTF-8 4 bytes) & check internal database file name', function(done) {
-          if (!isWindows && isAndroid && !isImpl2) pending('XXX CRASH on Android (default evcore-native-driver database access implementation)');
+          if (!isWindows && isAndroid && !isImpl2) pending('XXX BROKEN on Android (default evcore-native-driver database access implementation)'); // XXX
 
           var dbName = 'a\uD83D\uDE03.db';
 
