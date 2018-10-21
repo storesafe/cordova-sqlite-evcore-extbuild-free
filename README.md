@@ -192,7 +192,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation 
 
 ## Status
 
-- Patches will NOT be accepted on this plugin version due to some possible licensing issues.
+- Patches will **not** be accepted on this plugin version due to some possible licensing issues.
 - This plugin is NOT supported by PhoneGap Developer App or PhoneGap Desktop App.
 - This plugin version uses a `before_plugin_install` hook to fetch and install `cordova-sqlite-evcore-free-dependencies` (with sqlite3 and Android-evcore-native-driver dependencies) from npm.
 - A recent version of the Cordova CLI (such as `6.5.0` / `7.1.0` / `8.0.0`) is recommended. Cordova versions older than `6.0.0` are missing the `cordova-ios@4.0.0` security fixes. In addition it may be needed to use `cordova prepare` in case of cordova-ios older than `4.3.0` (Cordova CLI `6.4.0`).
@@ -1792,7 +1792,7 @@ function closeDB() {
 - Testimonials of apps that are using this plugin would be especially helpful.
 - Reporting issues can help improve the quality of this plugin.
 
-**NOTE:** As stated above, patches will NOT be accepted on this project due to some possible licensing issues. Issues with reproduction scenarios will help maintain and improve the quality of this plugin for future users. (Any pointers to the code may be causing the issue would also be helpful.)
+**NOTE:** As stated above, patches will **not** be accepted on this project due to some possible licensing issues. Issues with reproduction scenarios will help maintain and improve the quality of this plugin for future users. (Any pointers to the code may be causing the issue would also be helpful.)
 
 <!-- END Contributing -->
 
