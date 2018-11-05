@@ -35,11 +35,7 @@ var mytests = function() {
     // TBD skip plugin test on browser platform (not yet supported):
     if (isBrowser && (i === 0)) continue;
 
-    // GENERAL: SKIP ALL on WP8 for now
-    describe(scenarioList[i] + ': db tx error mapping test(s)' +
-             (isWindows ?
-              ' [Windows version with INCORRECT error code (0) & INCONSISTENT error message (missing actual error info)]' :
-               ''), function() {
+    describe(scenarioList[i] + ': db tx error mapping test(s) [TBD INCORRECT & INCONSISTENT error message on Windows - missing actual error info ref: litehelpers/Cordova-sqlite-storage#539]', function() {
       var scenarioName = scenarioList[i];
       var suiteName = scenarioName + ': ';
       var isWebSql = (i === 1);
@@ -253,7 +249,7 @@ var mytests = function() {
             else if (isAndroid && isImpl2)
               expect(error.message).toMatch(/error callback did not return false.*syntax error/); // XXX TBD Android (built-in)
             else
-              expect(error.message).toMatch(/error callback did not return false.*incomplete input/); // XXX SQLite 3.22.0 on iOS/macOS
+              expect(error.message).toMatch(/error callback did not return false.*incomplete input/);
 
             isWebSql ? done() : db.close(done, done);
           }, function() {

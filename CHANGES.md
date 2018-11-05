@@ -1,5 +1,15 @@
 # Changes
 
+### cordova-sqlite-evcore-common-free 0.0.4-pre1
+
+#### cordova-sqlite-storage 2.5.1
+
+- fix internal plugin cleanup error log on Android
+
+#### cordova-sqlite-storage 2.5.0
+
+- androidDatabaseProvider: 'system' setting, to replace androidDatabaseImplementation setting which is now deprecated
+
 ### cordova-sqlite-evcore-common-free 0.0.3
 
 - Internal error message fix for evcore on Android
