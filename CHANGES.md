@@ -1,8 +1,18 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.9.9-rc1
+# cordova-sqlite-evcore-extbuild-free 0.9.9
 
 - evcore-native-driver.jar from cordova-sqlite-evcore-free-dependencies 0.8.6, with workaround for 4-byte UTF-8 crash bug and fix for Samaritan character crash bug on Android
+
+### cordova-sqlite-evcore-common-free 0.0.4
+
+#### cordova-sqlite-storage 2.5.1
+
+- fix internal plugin cleanup error log on Android
+
+#### cordova-sqlite-storage 2.5.0
+
+- androidDatabaseProvider: 'system' setting, to replace androidDatabaseImplementation setting which is now deprecated
 
 # cordova-sqlite-evcore-extbuild-free 0.9.8
 
