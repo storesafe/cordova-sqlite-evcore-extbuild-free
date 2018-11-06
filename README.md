@@ -1,4 +1,4 @@
-# Cordova/PhoneGap sqlite storage - free enterprise version with performance improvements for Android (common version with limited extra features)
+# Cordova/PhoneGap sqlite storage - free enterprise version with performance improvements for Android (evcore common version branch with limited extra features)
 
 Native SQLite component with API based on HTML5/[Web SQL (DRAFT) API](http://www.w3.org/TR/webdatabase/) for the following platforms:
 - Android
@@ -35,7 +35,7 @@ New release in December 2018 will include the following major enhancements ([lit
 
 ## About this plugin version
 
-Free enterprise version with performance improvements for Android - common version branch with limited extra features (missing pre-populated database support), using the `before_plugin_install` hook to fetch the sqlite3 component dependencies from `cordova-sqlite-evcore-free-dependencies` via npm.
+Free enterprise version with performance improvements for Android - evcore common version branch with limited extra features (missing pre-populated database support), using the `before_plugin_install` hook to fetch the sqlite3 component dependencies from `cordova-sqlite-evcore-free-dependencies` via npm.
 
 <!-- FUTURE TBD critical bug notices for this plugin version -->
 
@@ -1443,7 +1443,7 @@ cordova platform add ios
 
 ## Plugin installation sources
 
-- https://github.com/litehelpers/cordova-sqlite-evcore-legacy-ext-common-free - latest version
+- `https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free#cordova-sqlite-evcore-common-free` (<https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/tree/cordova-sqlite-evcore-common-free>) - latest version
 
 <!-- END Plugin installation sources -->
 
