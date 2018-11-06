@@ -55,7 +55,6 @@ var mytests = function() {
         function(done) {
           if (isWebSql && isBrowser && !isChromeBrowser) pending('SKIP for (WebKit) Web SQL on non-Chrome desktop browser');
           if (isWindows) pending('NOT IMPLEMENTED for Windows (plugin)');
-          // if (!isWebSql && isAndroid && isImpl2 && /Android [1-4]/.test(navigator.userAgent)) pending('BROKEN for android.database (version 1.x-4.x)');
           if (!isWebSql && !isWindows && isAndroid && isImpl2) pending('TBD SKIP for androidDatabaseImplementation: 2'); // XXX TBD (Android 4.x vs 5.x vs ...)
           if (isWebSql && /Android 4.[1-3]/.test(navigator.userAgent)) pending('SKIP for Android 4.1-4.3 (WebKit) Web SQL');
           if (isWebSql && isAppleMobileOS) pending('SKIP for iOS (WebKit) Web SQL');

@@ -1113,7 +1113,7 @@ var mytests = function() {
                       if (isWindows)
                         expect(error.message).toMatch(/Unsupported column type in column 0/);
                       else
-                        expect(error.message).toMatch(/unknown error.*code.* 0.*Unable to convert BLOB to string/); // XXX TBD
+                        expect(error.message).toMatch(/unknown error.*code 0.*Unable to convert BLOB to string/);
                     } else {
                       // NOT EXPECTED:
                       expect(false).toBe(true);
