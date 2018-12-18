@@ -1,5 +1,9 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.9.10
+
+- Include SQLite 3.26.0 update from cordova-sqlite-evcore-free-dependencies 0.8.7
+
 # cordova-sqlite-evcore-extbuild-free 0.9.9
 
 - evcore-native-driver.jar from cordova-sqlite-evcore-free-dependencies 0.8.6, with workaround for 4-byte UTF-8 crash bug and fix for Samaritan character crash bug on Android
