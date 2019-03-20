@@ -1,5 +1,11 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.10.0-pre1
+
+- evcore-native-driver.jar from cordova-sqlite-evcore-free-dependencies 0.9.0, with the following Android build updates (using SQLite 3.26.0):
+  - Set SQLITE_DBCONFIG_DEFENSIVE flag when opening db (POSSIBLY BREAKING CHANGE)
+  - Explicit APP_PLATFORM := android-14 setting in jni/Application.mk
+
 # cordova-sqlite-evcore-extbuild-free 0.9.10
 
 - Include SQLite 3.26.0 update from cordova-sqlite-evcore-free-dependencies 0.8.7
