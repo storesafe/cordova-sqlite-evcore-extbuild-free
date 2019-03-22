@@ -224,13 +224,9 @@ See the [Sample section](#sample) for a sample with a more detailed explanation 
   - `SQLITE_DEFAULT_PAGE_SIZE=4096` and `SQLITE_DEFAULT_CACHE_SIZE=-2000` - new stable page/cache sizes from 3.12.0 ref: <http://sqlite.org/pgszchng2016.html>; <http://sqlite.org/releaselog/3_12_0.html>
   - `SQLITE_OS_WINRT` (Windows only)
   - `NDEBUG` on Windows (Release build only)
-- `SQLITE_DBCONFIG_DEFENSIVE` flag is used for extra SQL safety on Android ref: <https://www.sqlite.org/c3ref/c_dbconfig_defensive.html>, <https://www.sqlite.org/releaselog/3_26_0.html>
-- The iOS database location is now mandatory, as documented below.
-- This plugin version supports the use of two (2) possible Android sqlite database implementations:
-  - default: high-performance, lightweight [litehelpers / Android-sqlite-evcore-native-driver-free](https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free) NDK library (C-language implementation)
-  - optional: Android system database implementation, using the `androidDatabaseProvider: 'system'` setting in `sqlitePlugin.openDatabase()` call as described in the [Android database provider](android-database-provider) section below.
-- The following feature is available in [litehelpers / cordova-sqlite-ext](https://github.com/litehelpers/cordova-sqlite-ext) (with permissive license terms, missing Android-sqlite-evcore-native-driver performance enhancements), MISSING in this plugin version:
-  - Pre-populated database (all platforms Android/iOS/macOS/Windows)
+- `SQLITE_DBCONFIG_DEFENSIVE` flag is used for extra SQL safety on _all platforms Android/iOS/macOS/Windows_ ref:
+  - <https://www.sqlite.org/c3ref/c_dbconfig_defensive.html>
+  - <https://www.sqlite.org/releaselog/3_26_0.html>
 - Windows platform version (using a customized version of the performant [doo / SQLite3-WinRT](https://github.com/doo/SQLite3-WinRT) C++ component) has the following known limitations:
   - This plugin version branch has dependency on platform toolset libraries included by Visual Studio 2017 ref: [litehelpers/Cordova-sqlite-storage#580](https://github.com/litehelpers/Cordova-sqlite-storage/issues/580). Visual Studio 2015 is now supported by [litehelpers / cordova-sqlite-legacy](https://github.com/litehelpers/cordova-sqlite-legacy) (permissive license terms, no performance enhancements for Android) and [litehelpers / Cordova-sqlite-evcore-common-free](https://github.com/litehelpers/Cordova-sqlite-evcore-common-free) (GPL or commercial license terms, with performance enhancements for Android). UNTESTED workaround for Visual Studio 2015: it *may* be possible to support this plugin version on Visual Studio 2015 Update 3 by installing platform toolset v141.)
   - Visual Studio components needed: Universal Windows Platform development, C++ Universal Windows Platform tools. A recent version of Visual Studio 2017 will offer to install any missing feature components.
@@ -242,8 +238,8 @@ See the [Sample section](#sample) for a sample with a more detailed explanation 
   - Windows platform version uses `UTF-16le` internal database encoding while the other platform versions use `UTF-8` internal encoding. (`UTF-8` internal encoding is preferred ref: [litehelpers/Cordova-sqlite-storage#652](https://github.com/litehelpers/Cordova-sqlite-storage/issues/652))
   - Known issue with database names that contain certain US-ASCII punctuation and control characters (see below)
 - The macOS platform version ("osx" platform) is not tested in a release build and should be considered pre-alpha.
-- _Android versions supported: 2.3.3 - 8.1, P (API levels 10 - 27, P) on `armeabi`, `armeabi-v7a`, `x86`, `x86_64`, `arm64-v8a`, depending on Cordova version ref: <https://cordova.apache.org/docs/en/latest/guide/platforms/android/>_
-- iOS versions supported: 8.x / 9.x / 10.x / 11.x, see [deviations section](#deviations) below for differences in case of WKWebView (using cordova-plugin-wkwebview-engine)
+- Android versions supported: 3.0 - 9.0 (API level 11 - 28), depending on Cordova version ref: <https://cordova.apache.org/docs/en/latest/guide/platforms/android/>
+- iOS versions supported: 8.x / 9.x / 10.x / 11.x / 12.x (see [deviations section](#deviations) below for differences in case of WKWebView)
 - FTS3, FTS4, FTS5, R-Tree, and JSON1 are fully tested and supported for all target platforms in this version branch.
 - Default `PRAGMA journal_mode` setting (*tested*):
   - Android use of the `androidDatabaseProvider: 'system'` setting: `persist` (pre-8.0) / `truncate` (Android 8.0, 8.1) / `wal` (Android Pie)
@@ -254,7 +250,8 @@ See the [Sample section](#sample) for a sample with a more detailed explanation 
 
 ## Announcements
 
-- _Using recent version of SQLite3 (`3.26.0`) with security update, window functions; with `SQLITE_DEFAULT_SYNCHRONOUS=3` (EXTRA DURABLE) build setting to be extra robust against possible database corruption ref: [litehelpers/Cordova-sqlite-storage#736](https://github.com/litehelpers/Cordova-sqlite-storage/issues/736)_
+- _Using recent version of SQLite3 (`3.26.0`) with a security update ([litehelpers/Cordova-sqlite-storage#837](https://github.com/litehelpers/Cordova-sqlite-storage/issues/837)) and window functions; with `SQLITE_DEFAULT_SYNCHRONOUS=3` (EXTRA DURABLE) build setting to be extra robust against possible database corruption ref: [litehelpers/Cordova-sqlite-storage#736](https://github.com/litehelpers/Cordova-sqlite-storage/issues/736)_
+- `SQLITE_DBCONFIG_DEFENSIVE` flag is used for extra SQL safety, as described above
 - Nice overview of alternatives for storing local data in Cordova apps at: <https://www.sitepoint.com/storing-local-data-in-a-cordova-app/>
 - New alternative solution for small data storage: [TheCocoaProject / cordova-plugin-nativestorage](https://github.com/TheCocoaProject/cordova-plugin-nativestorage) - simpler "native storage of variables" for Android/iOS/Windows
 - Resolved Java 6/7/8 concurrent map compatibility issue reported in [litehelpers/Cordova-sqlite-storage#726](https://github.com/litehelpers/Cordova-sqlite-storage/issues/726), THANKS to pointer by [@NeoLSN (Jason Yang/楊朝傑)](https://github.com/NeoLSN) in [litehelpers/Cordova-sqlite-storage#727](https://github.com/litehelpers/Cordova-sqlite-storage/issues/727).

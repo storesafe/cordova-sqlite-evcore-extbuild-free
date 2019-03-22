@@ -1,10 +1,35 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.10.0-pre1
+# cordova-sqlite-evcore-extbuild-free 0.10.0
 
 - evcore-native-driver.jar from cordova-sqlite-evcore-free-dependencies 0.9.0, with the following Android build updates (using SQLite 3.26.0):
   - Set SQLITE_DBCONFIG_DEFENSIVE flag when opening db (POSSIBLY BREAKING CHANGE)
   - Explicit APP_PLATFORM := android-14 setting in jni/Application.mk
+
+_with no more static members on Android_
+
+###### cordova-sqlite-ext-core-common 0.1.0
+
+- beforePluginInstall.js updates
+  - use standard Promise
+  - get the plugin package name from package.json
+  - use const instead of var (this should be considered a POSSIBLY BREAKING CHANGE since const may not work on some really old Node.js versions)
+  - remove hasbang line that is not needed
+
+###### cordova-sqlite-storage-ext-core-common 2.0.0
+
+- SQLITE_DBCONFIG_DEFENSIVE flag - iOS/macOS/Windows (POTENTIALLY BREAKING CHANGE)
+- remove internal qid usage from JavaScript (not needed)
+- non-static Android database runner map (POTENTIALLY BREAKING CHANGE)
+- Completely remove old Android SuppressLint (android.annotation.SuppressLint) - POSSIBLY BREAKING CHANGE
+- drop workaround for pre-Honeycomb Android API (BREAKING CHANGE)
+- no extra @synchronized block per batch (iOS/macOS) - should be considered a POSSIBLY BREAKING change
+- remove backgroundExecuteSql method not needed (iOS/macOS)
+- Completely remove iOS/macOS MRC (Manual Reference Counting) support - should be considered a POSSIBLY BREAKING change
+
+###### cordova-sqlite-storage-ext-core-common 1.0.0
+
+- Use SQLite 3.26.0 (with a security update and support for window functions) with SQLITE_DEFAULT_SYNCHRONOUS=3 (EXTRA DURABLE) from cordova-sqlite-storage-dependencies 1.2.1 in this plugin version branch
 
 # cordova-sqlite-evcore-extbuild-free 0.9.10
 
