@@ -1,5 +1,9 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.10.1
+
+- SQLite 3.28.0 update from cordova-sqlite-evcore-free-dependencies 0.9.1
+
 # cordova-sqlite-evcore-extbuild-free 0.10.0
 
 - evcore-native-driver.jar from cordova-sqlite-evcore-free-dependencies 0.9.0, with the following Android build updates (using SQLite 3.26.0):
