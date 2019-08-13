@@ -595,13 +595,16 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
+        // ref:
+        // - litehelpers/Cordova-sqlite-evcore-extbuild-free#43
+        // - litehelpers/Cordova-sqlite-storage#564
         it(suiteName + 'INSERT TEXT string with 25 emojis, SELECT the data, and check - ENCODING ISSUE REPRODUCED on Android post-5.x (default evcore NDK implementation)' , function(done) {
           // ref:
           // - litehelpers/Cordova-sqlite-evcore-extbuild-free#44
           // - litehelpers/Cordova-sqlite-storage#564
           // - litehelpers/Cordova-sqlite-evcore-extbuild-free#43
           // - litehelpers/Cordova-sqlite-evcore-extbuild-free#7
-          var db = openDatabase('INSERT-emoji-and-check.db', '1.0', 'Demo', DEFAULT_SIZE);
+          var db = openDatabase('INSERT-25-emojis-and-check.db');
 
           db.transaction(function(tx) {
             tx.executeSql('DROP TABLE IF EXISTS test_table');

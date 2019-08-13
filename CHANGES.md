@@ -4,6 +4,10 @@
 
 - use cordova-sqlite-evcore-free-dependencies@0.9.1 (with SQLite 3.28.0 update)
 
+#### cordova-sqlite-storage-commoncore 1.0.0
+
+- additional EU string manipulation test cases
+
 ### cordova-sqlite-evcore-common-free 0.0.4
 
 - Use cordova-sqlite-evcore-free-dependencies 0.8.6, with workaround for 4-byte UTF-8 crash bug and fix for Samaritan character crash bug on Android
