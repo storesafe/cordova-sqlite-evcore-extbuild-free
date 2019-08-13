@@ -41,7 +41,7 @@ var mytests = function() {
     // TBD skip plugin test on browser platform (not yet supported):
     if (isBrowser && (i === 0)) continue;
 
-    describe(scenarioList[i] + ': db tx error mapping test(s) [TBD INCORRECT & INCONSISTENT error message on Windows - missing actual error info ref: litehelpers/Cordova-sqlite-storage#539]', function() {
+    describe(scenarioList[i] + ': db tx error mapping test(s) - with error message on Windows NOW FIXED IN THIS PLUGIN VERSION, FUTURE TBD CLEANUP NEEDED', function() {
       var scenarioName = scenarioList[i];
       var suiteName = scenarioName + ': ';
       var isWebSql = (i === 1);
@@ -136,7 +136,7 @@ var mytests = function() {
               if (isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent)))
                 expect(error.message).toMatch(/could not prepare statement.*1 near \"SLCT\": syntax error/);
               else if (isWindows)
-                expect(error.message).toMatch(/Error preparing an SQLite statement/);
+                expect(error.message).toMatch(/Error preparing SQLite statement - with message: near \"SLCT\": syntax error/);
               else if (!isWebSql && !isWindows && isAndroid && !isImpl2)
                 expect(error.message).toMatch(/syntax error or other error code: 1 message: near .SLCT.: syntax error/);
               else if (!isWebSql && !isWindows && isAndroid && isImpl2)
@@ -167,7 +167,7 @@ var mytests = function() {
             if (isWebSql)
               expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
             else if (isWindows)
-              expect(error.message).toMatch(/error callback did not return false.*Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement error callback did not return false: Error preparing SQLite statement - with message: near \"SLCT\": syntax error/);
             else
               expect(error.message).toMatch(/error callback did not return false.*syntax error/);
 
@@ -212,7 +212,7 @@ var mytests = function() {
               if (isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent)))
                 expect(error.message).toMatch(/could not prepare statement.*1 near \"from\": syntax error/);
               else if (isWindows)
-                expect(error.message).toMatch(/Error preparing an SQLite statement/);
+                expect(error.message).toMatch(/Error preparing SQLite statement - with message: near \"from\": syntax error/);
               else
                 expect(error.message).toMatch(/near \"from\": syntax error/);
 
@@ -239,7 +239,7 @@ var mytests = function() {
             if (isWebSql)
               expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
             else if (isWindows)
-              expect(error.message).toMatch(/error callback did not return false.*Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement error callback did not return false: Error preparing SQLite statement - with message: near \"from\": syntax error/);
             else
               expect(error.message).toMatch(/error callback did not return false.*syntax error/);
 
@@ -294,7 +294,7 @@ var mytests = function() {
               else if (isWebSql)
                 expect(error.message).toMatch(/near \"VALUES\": syntax error/);
               else if (isWindows)
-                expect(error.message).toMatch(/Error preparing an SQLite statement/);
+                expect(error.message).toMatch(/Error preparing SQLite statement - with message: incomplete input/);
               else if (isAndroid && !isImpl2)
                 expect(error.message).toMatch(/syntax error or other error code: 1 message: incomplete input/);
               else if (isAndroid && isImpl2)
@@ -324,7 +324,7 @@ var mytests = function() {
             if (isWebSql)
               expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
             else if (isWindows)
-              expect(error.message).toMatch(/error callback did not return false.*Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement error callback did not return false: Error preparing SQLite statement - with message: incomplete input/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/error callback did not return false.*syntax error or other error code: 1 message: incomplete input/);
             else if (isAndroid && isImpl2)
@@ -340,7 +340,7 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
-        it(suiteName + 'constraint violation', function(done) {
+        it(suiteName + 'constraint violation [TBD INCONSISTENT ERROR MESSAGE PERSISTS ON WINDOWS IN THIS CASE]', function(done) {
           var db = openDatabase("Constraint-violation-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
 
@@ -390,7 +390,7 @@ var mytests = function() {
               else if (isWebSql)
                 expect(error.message).toMatch(/constr?aint fail/); // [possibly missing letter on iOS (WebKit) Web SQL]
               else if (isWindows)
-                expect(error.message).toMatch(/SQLite3 step error result code: 1/);
+                expect(error.message).toMatch(/SQLite3 step error result - with code: 1 message: SQL logic error/);
               else if (isAndroid && !isImpl2)
                 expect(error.message).toMatch(/constraint fail.*code: 19 message: UNIQUE constraint failed: test_table\.data/);
               else if (isAndroid && isImpl2)
@@ -421,7 +421,7 @@ var mytests = function() {
             if (isWebSql)
               expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
             else if (isWindows)
-              expect(error.message).toMatch(/error callback did not return false.*SQLite3 step error result code: 1/);
+              expect(error.message).toMatch(/a statement error callback did not return false: SQLite3 step error result - with code: 1 message: SQL logic error/);
             else
               expect(error.message).toMatch(/error callback did not return false.*constraint fail/);
 
@@ -467,7 +467,7 @@ var mytests = function() {
               if (isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent)))
                 expect(error.message).toMatch(/could not prepare statement.*1 no such function: uper/);
               else if (isWindows)
-                expect(error.message).toMatch(/Error preparing an SQLite statement/);
+                expect(error.message).toMatch(/Error preparing SQLite statement - with message: no such function: uper/);
               else if (!isWebSql && !isWindows && isAndroid && !isImpl2)
                 expect(error.message).toMatch(/syntax error or other error.*code: 1 message: no such function: uper/);
               else if (!isWebSql && !isWindows && isAndroid && isImpl2)
@@ -498,7 +498,7 @@ var mytests = function() {
             if (isWebSql)
               expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
             else if (isWindows)
-              expect(error.message).toMatch(/error callback did not return false.*Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement error callback did not return false: Error preparing SQLite statement - with message: no such function: uper/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/error callback did not return false: syntax error or other error.*code: 1 message: no such function: uper/);
             else
@@ -546,7 +546,7 @@ var mytests = function() {
               if (isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent)))
                 expect(error.message).toMatch(/could not prepare statement.*1 no such table: BogusTable/);
               else if (isWindows)
-                expect(error.message).toMatch(/Error preparing an SQLite statement/);
+                expect(error.message).toMatch(/Error preparing SQLite statement - with message: no such table: BogusTable/);
               else if (!isWebSql && !isWindows && isAndroid && !isImpl2)
                 expect(error.message).toMatch(/syntax error or other error code: 1 message: no such table: BogusTable/);
               else if (!isWebSql && !isWindows && isAndroid && isImpl2)
@@ -576,7 +576,7 @@ var mytests = function() {
             if (isWebSql)
               expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
             else if (isWindows)
-              expect(error.message).toMatch(/error callback did not return false.*Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement error callback did not return false: Error preparing SQLite statement - with message: no such table: BogusTable/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/error callback did not return false: syntax error or other error code: 1 message: no such table: BogusTable/);
             else
@@ -625,7 +625,7 @@ var mytests = function() {
               if (isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent)))
                 expect(error.message).toMatch(/could not prepare statement.*1 table test_table has 2 columns but 1 values were supplied/);
               else if (isWindows)
-                expect(error.message).toMatch(/Error preparing an SQLite statement/);
+                expect(error.message).toMatch(/Error preparing SQLite statement - with message: table test_table has 2 columns but 1 values were supplied/);
               else if (!isWebSql && !isWindows && isAndroid && !isImpl2)
                 expect(error.message).toMatch(/code: 1 message: table test_table has 2 columns but 1 values were supplied/);
               else if (!isWebSql && !isWindows && isAndroid && isImpl2)
@@ -656,7 +656,7 @@ var mytests = function() {
             if (isWebSql)
               expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
             else if (isWindows)
-              expect(error.message).toMatch(/error callback did not return false.*Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement error callback did not return false: Error preparing SQLite statement - with message: table test_table has 2 columns but 1 values were supplied/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/error callback did not return false: syntax error or other error code: 1 message: table test_table has 2 columns but 1 values were supplied/);
             else
@@ -705,7 +705,7 @@ var mytests = function() {
               if (isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent)))
                 expect(error.message).toMatch(/could not prepare statement.*1 table test_table has no column named wrong_column/);
               else if (isWindows)
-                expect(error.message).toMatch(/Error preparing an SQLite statement/);
+                expect(error.message).toMatch(/Error preparing SQLite statement - with message: table test_table has no column named wrong_column/);
               else if (!isWebSql && !isWindows && isAndroid && !isImpl2)
                 expect(error.message).toMatch(/syntax error or other error.*code: 1 message: table test_table has no column named wrong_column/);
               else if (!isWebSql && !isWindows && isAndroid && isImpl2)
@@ -736,7 +736,7 @@ var mytests = function() {
             if (isWebSql)
               expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
             else if (isWindows)
-              expect(error.message).toMatch(/error callback did not return false.*Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement error callback did not return false: Error preparing SQLite statement - with message: table test_table has no column named wrong_column/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/error callback did not return false: syntax error or other error.*code: 1 message: table test_table has no column named wrong_column/);
             else
@@ -753,7 +753,7 @@ var mytests = function() {
         // NOTE: For some reason the Android/iOS (WebKit) Web SQL implementation
         // claims to detect the error at the "prepare statement" stage while the
         // plugin detects the error at the "execute statement" stage.
-        it(suiteName + 'CREATE VIRTUAL TABLE USING bogus module (other database error) [INCORRECT error code WebKit Web SQL & plugin]', function(done) {
+        it(suiteName + 'CREATE VIRTUAL TABLE USING bogus module (other database error) [TBD INCONSISTENT ERROR MESSAGE PERSISTS ON WINDOWS IN THIS CASE; INCORRECT error code WebKit Web SQL & plugin]', function(done) {
           var db = openDatabase("create-virtual-table-using-bogus-module-error-test.db", "1.0", "Demo", DEFAULT_SIZE);
           expect(db).toBeDefined();
 
@@ -793,7 +793,7 @@ var mytests = function() {
               else if (isWebSql) // [iOS (WebKit) Web SQL]
                 expect(error.message).toMatch(/could not prepare statement.*1 not authorized/);
               else if (isWindows)
-                expect(error.message).toMatch(/SQLite3 step error result code: 1/);
+                expect(error.message).toMatch(/SQLite3 step error result - with code: 1 message: SQL logic error/);
               else if (isAndroid && !isImpl2)
                 expect(error.message).toMatch(/syntax error or other error.*code: 1 message: no such module: bogus_module/);
               else if (isAndroid && isImpl2)
@@ -823,7 +823,7 @@ var mytests = function() {
             if (isWebSql)
               expect(error.message).toMatch(/callback raised an exception.*or.*error callback did not return false/);
             else if (isWindows)
-              expect(error.message).toMatch(/error callback did not return false.*SQLite3 step error result code: 1/);
+              expect(error.message).toMatch(/a statement error callback did not return false: SQLite3 step error result - with code: 1 message: SQL logic error/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/error callback did not return false: syntax error or other error.*code: 1 message: no such module: bogus_module/);
             else
@@ -862,7 +862,7 @@ var mytests = function() {
             if (isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent)))
               expect(error.message).toMatch(/could not prepare statement.*1 near \"SLCT\": syntax error/);
             else if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing SQLite statement - with message: near \"SLCT\": syntax error/);
             else if (!isWebSql && !isWindows && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code: 1 message: near .SLCT.: syntax error/);
             else if (!isWebSql && !isWindows && isAndroid && isImpl2)
@@ -880,7 +880,7 @@ var mytests = function() {
           })
         }, MYTIMEOUT);
 
-        it(suiteName + 'transaction.executeSql constraint violation with no SQL error handler', function(done) {
+        it(suiteName + 'transaction.executeSql constraint violation with no SQL error handler [TBD INCONSISTENT ERROR MESSAGE PERSISTS ON WINDOWS IN THIS CASE]', function(done) {
           var db = openDatabase("Constraint-violation-with-no-sql-error-handler.db", "1.0", "Demo", DEFAULT_SIZE);
 
           db.transaction(function(tx) {
@@ -916,7 +916,7 @@ var mytests = function() {
             else if (isWebSql)
               expect(error.message).toMatch(/constr?aint fail/);
             else if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: SQLite3 step error result code: 1/);
+              expect(error.message).toMatch(/a statement with no error handler failed: SQLite3 step error result - with code: 1 message: SQL logic error/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: constraint fail.*code: 19 message: UNIQUE constraint failed: test_table.data/);
             else if (isAndroid && isImpl2)

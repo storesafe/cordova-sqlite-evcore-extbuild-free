@@ -19,10 +19,11 @@
   }
 
   Statement = WinJS.Class.define(function (db, sql, args) {
+    this.dbc = db.connection;
     try {
       this.statement = db.connection.prepare(sql);
     } catch (comException) {
-      throwSQLiteError('Error preparing an SQLite statement.', comException);
+      throwSQLiteError('Error preparing SQLite statement - with message: ' + db.connection.errMessage(), comException);
     }
 
     if (args) {
@@ -80,7 +81,7 @@
       }
 
       if (resultCode !== SQLite3.ResultCode.done && resultCode !== SQLite3.ResultCode.ok) {
-        throw new Error("SQLite3 step error result code: " + resultCode);
+        throw new Error('SQLite3 step error result - with code: ' + resultCode + ' message: ' + this.dbc.errMessage());
       }
     },
     map: function (callback) {

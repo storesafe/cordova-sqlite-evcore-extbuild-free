@@ -487,7 +487,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing SQLite statement - with message: near .CRETE.: syntax error/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/syntax error or other error.code: 1 message: near .CRETE.: syntax error/);
             else
@@ -524,7 +524,7 @@ var mytests = function() {
               expect(error.code).toBe(6);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: SQLite3 step error result code: 1/);
+              expect(error.message).toMatch(/a statement with no error handler failed: SQLite3 step error result - with code: 1 message: SQL logic error/);
             else
               expect(error.message).toMatch(/a statement with no error handler failed.*constraint fail/);
             db.close(done, done);

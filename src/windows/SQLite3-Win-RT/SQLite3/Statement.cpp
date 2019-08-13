@@ -5,7 +5,7 @@
 
 namespace SQLite3
 {
-  Statement::Statement(Database^ database, Platform::String^ sql)
+  Statement::Statement(Database^ database, Platform::String^ sql) : db(database)
   {
     int ret = sqlite3_prepare16(database->sqlite, sql->Data(), -1, &statement, 0);
 
@@ -13,6 +13,7 @@ namespace SQLite3
     {
       sqlite3_finalize(statement);
 
+      db->errmsg = static_cast<const wchar_t *>(sqlite3_errmsg16(db->sqlite));
       HRESULT hresult = MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, ret);
       throw ref new Platform::COMException(hresult);
     }
@@ -25,7 +26,10 @@ namespace SQLite3
 
   int Statement::Step()
   {
-    return sqlite3_step(statement);
+    const int rv = sqlite3_step(statement);
+    if (rv != SQLITE_OK && rv != SQLITE_DONE)
+      db->errmsg = static_cast<const wchar_t *>(sqlite3_errmsg16(db->sqlite));
+    return rv;
   }
 
   int Statement::ColumnCount()

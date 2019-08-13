@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sqlite3.h"
+#include <string>
 
 namespace SQLite3
 {
@@ -19,10 +20,12 @@ namespace SQLite3
 
     int LastInsertRowid();
     int TotalChanges();
+    Platform::String^ ErrMessage();
 
   private:
     friend Statement;
 
     sqlite3* sqlite;
+    std::wstring errmsg;
   };
 }

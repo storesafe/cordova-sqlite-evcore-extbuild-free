@@ -56,4 +56,6 @@ namespace SQLite3
   {
     return sqlite3_total_changes(sqlite);
   }
+  // FUTURE TBD CLEANUP NEEDED:
+  Platform::String^ Database::ErrMessage() { return ref new Platform::String(static_cast<const wchar_t*>(errmsg.c_str())); }
 }

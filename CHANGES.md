@@ -2,6 +2,7 @@
 
 ### cordova-sqlite-evcore-commoncore-free 0.0.1-dev
 
+- quick fix of error messages on Windows
 - use cordova-sqlite-evcore-free-dependencies@0.9.1 (with SQLite 3.28.0 update)
 
 #### cordova-sqlite-storage-commoncore 1.0.0
