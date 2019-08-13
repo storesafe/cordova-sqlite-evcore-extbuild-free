@@ -1,4 +1,4 @@
-# Cordova/PhoneGap sqlite storage - free enterprise version with performance improvements for Android (evcore common version branch with limited extra features)
+# Cordova/PhoneGap sqlite storage - free enterprise version with performance improvements for Android (cordova-sqlite-evcore-commoncore-free version branch with limited extra features)
 
 Native SQLite component with API based on HTML5/[Web SQL (DRAFT) API](http://www.w3.org/TR/webdatabase/) for the following platforms:
 - Android

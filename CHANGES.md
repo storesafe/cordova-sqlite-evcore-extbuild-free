@@ -1,5 +1,7 @@
 # Changes
 
+### cordova-sqlite-evcore-commoncore-free 0.0.1-dev
+
 ### cordova-sqlite-evcore-common-free 0.0.4
 
 - Use cordova-sqlite-evcore-free-dependencies 0.8.6, with workaround for 4-byte UTF-8 crash bug and fix for Samaritan character crash bug on Android
