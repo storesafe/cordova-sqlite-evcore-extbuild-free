@@ -1060,7 +1060,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/Error preparing SQLite statement - with message: near .true.: syntax error/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/syntax error or other error.code: 1.message: near .true.: syntax error/);
             else
@@ -1090,7 +1090,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/Error preparing SQLite statement - with message: near .false.: syntax error/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/syntax error or other error.code: 1.message: near .false.: syntax error/);
             else
@@ -1120,7 +1120,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/Error preparing SQLite statement - with message: near .Infinity.: syntax error/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/syntax error or other error.code: 1.message: near .Infinity.: syntax error/);
             else
@@ -1150,7 +1150,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/Error preparing SQLite statement - with message: near .-.: syntax error/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/syntax error or other error.code: 1.message: near .-.: syntax error/);
             else
@@ -1180,7 +1180,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/Error preparing SQLite statement - with message: near .NaN.: syntax error/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/syntax error or other error.code: 1.message: near .NaN.: syntax error/);
             else
@@ -1210,7 +1210,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/Error preparing SQLite statement - with message: near .SLCT.: syntax error/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/syntax error or other error.code: 1.message: near .SLCT.: syntax error/);
             else
@@ -1240,7 +1240,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/Error preparing SQLite statement - with message: near .SLCT.: syntax error/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/syntax error or other error.code: 1.message: near .SLCT.: syntax error/);
             else
@@ -1489,7 +1489,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/Error preparing SQLite statement - with message: near .SELCT.: syntax error/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/syntax error or other error.code: 1.message: near .SELCT.: syntax error/);
             else
@@ -1515,7 +1515,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/Error preparing SQLite statement - with message: no such function: uper/);
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/syntax error or other error.code: 1.message: no such function: uper/);
             else

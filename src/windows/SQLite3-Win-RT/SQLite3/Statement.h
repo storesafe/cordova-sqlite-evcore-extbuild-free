@@ -30,6 +30,7 @@ namespace SQLite3
     int BindNull(int index);
 
   private:
+    Database^ db;
     sqlite3_stmt* statement;
   };
 }

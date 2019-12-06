@@ -1,5 +1,20 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.10.3-rc1
+
+### cordova-sqlite-evcore-commoncore-free 0.0.2
+
+- use & test with cordova-sqlite-evcore-free-dependencies@0.9.2 with SQLite 3.30.1 update
+
+### cordova-sqlite-evcore-commoncore-free 0.0.1
+
+- quick fix of error messages on Windows
+- use cordova-sqlite-evcore-free-dependencies@0.9.1 (with SQLite 3.28.0 update)
+
+#### cordova-sqlite-storage-commoncore 1.0.0
+
+- additional EU string manipulation test cases
+
 # cordova-sqlite-evcore-extbuild-free 0.10.2
 
 - SQLite 3.30.1 update from cordova-sqlite-evcore-free-dependencies@0.9.2

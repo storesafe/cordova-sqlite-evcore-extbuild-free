@@ -1792,7 +1792,7 @@ var mytests = function() {
 
         }, MYTIMEOUT);
 
-        it(suiteName + "transaction.executeSql on BOGUS empty SQL string ('')", function (done) {
+        it(suiteName + "transaction.executeSql on BOGUS empty SQL string ('') [XXX TBD BOGUS 'not an error' message on Windows]", function (done) {
           var db = openDatabase("tx-empty-sql-string.db", "1.0", "Demo", DEFAULT_SIZE);
 
           var check1 = false;
@@ -1814,7 +1814,7 @@ var mytests = function() {
               expect(error.code).toBe(1);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: SQLite3 step error result code: 21/);
+              expect(error.message).toMatch(/a statement with no error handler failed: SQLite3 step error result - with code: 21 message: not an error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: other error.*code: 21 message: not an error/);
             else if (isAndroid && isImpl2)
@@ -1856,7 +1856,7 @@ var mytests = function() {
 
         }, MYTIMEOUT);
 
-        it(suiteName + "readTransaction.executeSql on BOGUS empty SQL string ('')", function (done) {
+        it(suiteName + "readTransaction.executeSql on BOGUS empty SQL string ('') [XXX TBD BOGUS 'not an error' message on Windows]", function (done) {
           var db = openDatabase("read-tx-empty-sql-string.db", "1.0", "Demo", DEFAULT_SIZE);
 
           var check1 = false;
@@ -1878,7 +1878,7 @@ var mytests = function() {
               expect(error.code).toBe(1);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: SQLite3 step error result code: 21/);
+              expect(error.message).toMatch(/a statement with no error handler failed: SQLite3 step error result - with code: 21 message: not an error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: other error.*code: 21 message: not an error/);
             else if (isAndroid && isImpl2)
@@ -1920,7 +1920,7 @@ var mytests = function() {
 
         }, MYTIMEOUT);
 
-        it(suiteName + "transaction.executeSql on BOGUS ';' SQL statement", function (done) {
+        it(suiteName + "transaction.executeSql on BOGUS ';' SQL statement [XXX TBD BOGUS 'not an error' message on Windows]", function (done) {
           var db = openDatabase("tx-semicolon-sql-statement.db", "1.0", "Demo", DEFAULT_SIZE);
 
           var check1 = false;
@@ -1942,7 +1942,7 @@ var mytests = function() {
               expect(error.code).toBe(1);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: SQLite3 step error result code: 21/);
+              expect(error.message).toMatch(/a statement with no error handler failed: SQLite3 step error result - with code: 21 message: not an error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: other error.*code: 21 message: not an error/);
             else if (isAndroid && isImpl2)
@@ -1985,7 +1985,7 @@ var mytests = function() {
 
         }, MYTIMEOUT);
 
-        it(suiteName + "readTransaction.executeSql on BOGUS ';' SQL statement", function (done) {
+        it(suiteName + "readTransaction.executeSql on BOGUS ';' SQL statement [XXX TBD BOGUS 'not an error' message on Windows]", function (done) {
           var db = openDatabase("read-tx-semicolon-sql-statement.db", "1.0", "Demo", DEFAULT_SIZE);
 
           var check1 = false;
@@ -2007,7 +2007,7 @@ var mytests = function() {
               expect(error.code).toBe(1);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: SQLite3 step error result code: 21/);
+              expect(error.message).toMatch(/a statement with no error handler failed: SQLite3 step error result - with code: 21 message: not an error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: other error.*code: 21 message: not an error/);
             else if (isAndroid && isImpl2)
@@ -2072,7 +2072,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing SQLite statement - with message: near \"\[object Object\]\": syntax error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code: 1 message: near .*object Object.*: syntax error/);
             else if (!isWebSql)
@@ -2138,7 +2138,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing SQLite statement - with message: near \"\[object Object\]\": syntax error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code: 1 message: near .*object Object.*: syntax error/);
             else if (!isWebSql)
@@ -2204,7 +2204,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing SQLite statement - with message: near \"first\": syntax error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code: 1 message: near .*first.*: syntax error/);
             else if (!isWebSql)
@@ -2266,7 +2266,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing SQLite statement - with message: near \"101\": syntax error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code: 1 message: near .*101.*: syntax error/);
             else if (!isWebSql)
@@ -2329,7 +2329,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing SQLite statement - with message: near \"0\": syntax error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code: 1 message: near .*0.*: syntax error/);
             else if (!isWebSql)
@@ -2522,7 +2522,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing SQLite statement - with message: near \"true\": syntax error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code: 1 message: near .*true.*: syntax error/);
             else if (!isWebSql)
@@ -2584,7 +2584,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing SQLite statement - with message: near \"false\": syntax error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code: 1 message: near .*false.*: syntax error/);
             else if (!isWebSql)
@@ -2646,7 +2646,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing SQLite statement - with message: near \"Infinity\": syntax error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code: 1 message: near .Infinity.: syntax error/);
             else if (!isWebSql)
@@ -2707,7 +2707,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing SQLite statement - with message: near \"-\": syntax error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code: 1 message: near .-.: syntax error/);
             else if (!isWebSql)
@@ -2768,7 +2768,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing SQLite statement - with message: near \"NaN\": syntax error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code: 1 message: near .NaN.: syntax error/);
             else if (!isWebSql)
@@ -2829,7 +2829,7 @@ var mytests = function() {
               expect(error.code).toBe(5);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing SQLite statement - with message: near \"NaN\": syntax error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code: 1 message: near .NaN.: syntax error/);
             else if (!isWebSql)
@@ -3655,7 +3655,7 @@ var mytests = function() {
               expect(error.code).toBe(0);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing SQLite statement - with message: near \"SLCT\": syntax error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code: 1 message: near .SLCT.: syntax error/);
             else if (!isWebSql)
@@ -3711,7 +3711,7 @@ var mytests = function() {
               expect(error.code).toBe(0);
 
             if (isWindows)
-              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing an SQLite statement/);
+              expect(error.message).toMatch(/a statement with no error handler failed: Error preparing SQLite statement - with message: near \"SLCT\": syntax error/);
             else if (!isWebSql && isAndroid && !isImpl2)
               expect(error.message).toMatch(/a statement with no error handler failed: syntax error or other error.*code: 1 message: near .SLCT.: syntax error/);
             else if (!isWebSql)
