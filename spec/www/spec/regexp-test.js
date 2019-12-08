@@ -53,12 +53,11 @@ var mytests = function() {
 
       it(suiteName + 'Simple REGEXP test',
         function(done) {
-          if (isWebSql && isBrowser && !isChromeBrowser) pending('SKIP for (WebKit) Web SQL on non-Chrome desktop browser');
-          if (isWindows) pending('NOT IMPLEMENTED for Windows (plugin)');
-          if (!isWebSql && !isWindows && isAndroid && isImpl2) pending('TBD SKIP for androidDatabaseImplementation: 2'); // XXX TBD (Android 4.x vs 5.x vs ...)
+          if (isWebSql && isBrowser && !isChromeBrowser) pending('SKIP on (WebKit) Web SQL on non-Chrome desktop browser');
           if (isWebSql && /Android 4.[1-3]/.test(navigator.userAgent)) pending('SKIP for Android 4.1-4.3 (WebKit) Web SQL');
-          if (isWebSql && isAppleMobileOS) pending('SKIP for iOS (WebKit) Web SQL');
-          // if (!isWebSql && (isAppleMobileOS || isMac)) pending('NOT IMPLEMENTED on iOS/macOS plugin'); // XXX EXPECTED TO PASS on iOS/macOS plugin
+          if (isWebSql && isAppleMobileOS) pending('SKIP on iOS (WebKit) Web SQL');
+          if (!isWebSql && isWindows) pending('SKIP on Windows plugin - NOT IMPLEMENTED');
+          if (!isWebSql && isAndroid && isImpl2 && /Android [2-4]/.test(navigator.userAgent)) pending('TBD SKIP for system android.database provider on Android 2.x-4.x');
 
           var db = openDatabase('simple-regexp-test.db', '1.0', 'test', DEFAULT_SIZE);
 

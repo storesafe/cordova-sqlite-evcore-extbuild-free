@@ -1835,8 +1835,8 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
-        it(suiteName + "SELECT X'FFD1FFD2' [TBD BROKEN androidDatabaseImplementation: 2 & Windows; missing result value iOS/macOS; actual value IGNORED]", function(done) {
-          if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('BROKEN: CRASH on Android 5.x/... (default evcore-native-driver database access implementation)');
+        it(suiteName + "SELECT X'FFD1FFD2' [ERROR REPRODUCED on androidDatabaseImplementation: 2 & Windows; MISSING result data column on iOS/macOS; actual result value is IGNORED on (WebKit) Web SQL & plugin on other platforms]", function(done) {
+          // if (!isWebSql && !isWindows && isAndroid && !isImpl2) pending('XXX TBD POSSIBLE CRASH on Android 5.x/... (default evcore-native-driver database access implementation)'); // XXX TBD ???
 
           var db = openDatabase("Inline-SELECT-BLOB-FFD1FFD2-result-test.db", "1.0", "Demo", DEFAULT_SIZE);
 

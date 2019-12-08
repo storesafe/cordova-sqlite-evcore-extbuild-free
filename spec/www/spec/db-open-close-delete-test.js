@@ -1695,6 +1695,7 @@ var mytests = function() {
 
         // (Was needed to test support for an enterprise application)
         test_it(suiteName + ' close then re-open (2x) allows subsequent queries to run', function () {
+          if (isAndroid && isImpl2) pending('XXX TBD SKIP for now on builtin android.database implementation (androidDatabaseImplementation: 2)'); // XXX TBD ???
           // asynch test coming up
           stop(1);
 

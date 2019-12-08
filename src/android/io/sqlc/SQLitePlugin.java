@@ -6,8 +6,6 @@
 
 package io.sqlc;
 
-import android.annotation.SuppressLint;
-
 import android.util.Log;
 
 import java.io.File;
@@ -34,7 +32,7 @@ import org.apache.cordova.PluginResult;
 public class SQLitePlugin extends CordovaPlugin {
 
     /**
-     * Multiple database runner lookup maps (static).
+     * Concurrent database runner map.
      *
      * NOTE: no public static accessor to db runner maps since it is not
      * expected to work properly with db threading.
@@ -49,9 +47,11 @@ public class SQLitePlugin extends CordovaPlugin {
      * THANKS to @NeoLSN (Jason Yang/楊朝傑) for giving the pointer in:
      * https://github.com/litehelpers/Cordova-sqlite-storage/issues/727
      */
-    static Map<String, DBRunner> dbrmap = new ConcurrentHashMap<String, DBRunner>();
+    private Map<String, DBRunner> dbrmap = new ConcurrentHashMap<String, DBRunner>();
+    // XXX TODO make this a private, non-static member:
     static Map<Integer, DBRunner> dbrmap2 = new ConcurrentHashMap<Integer, DBRunner>();
 
+    // XXX TODO make this a private, non-static member:
     static int lastdbid = 0;
 
     /**

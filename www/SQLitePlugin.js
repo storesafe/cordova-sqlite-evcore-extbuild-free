@@ -576,7 +576,6 @@ Contact for commercial license: sales@litehelpers.net
         error: handlerFor(i, false)
       };
       tropts.push({
-        qid: null,
         sql: request.sql,
         params: request.params
       });
