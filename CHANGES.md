@@ -2,6 +2,8 @@
 
 ### cordova-sqlite-evcore-commoncore-free 0.1.0-pre01
 
+- internal Android evcore database state 100% non-static and private
+
 #### cordova-sqlite-ext-common 2.0.0
 
 - SQLite 3.30.1 build update, with new default page & cache sizes from cordova-sqlite-ext-deps@2.1.0
