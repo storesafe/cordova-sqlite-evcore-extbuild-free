@@ -1,6 +1,6 @@
 # Changes
 
-### cordova-sqlite-evcore-commoncore-free 0.1.0-pre01
+### cordova-sqlite-evcore-commoncore-free 0.1.0-rc1
 
 - internal Android evcore database state 100% non-static and private
 

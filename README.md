@@ -14,21 +14,21 @@ This plugin version is available under GPL v3 (<https://www.gnu.org/licenses/gpl
 
 NOTE: Commercial licenses for [litehelpers / Cordova-sqlite-enterprise-free](https://github.com/litehelpers/Cordova-sqlite-enterprise-free) are valid for this plugin version as well.
 
-__WARNING: Multiple SQLite problem on all platforms__ _with possible corruption risk in case of sqlite access from multiple plugins (see below)_
+**WARNING: Multiple SQLite problem on all platforms** with possible corruption risk in case of sqlite access from multiple plugins (see below)
 
 ## NEW MAJOR RELEASE Coming with BREAKING CHANGES
 
 A new major release is planned as discussed in ([xpbrew/cordova-sqlite-storage#773](https://github.com/xpbrew/cordova-sqlite-storage/issues/773)).
 
-**BREAKING CHANGES expected:**
+**BREAKING CHANGES expected IN THE NEAR FUTURE:**
+
+- drop support for Android pre-4.4 (Android 4.4 with old `armeabi` CPU to be deprecatd with limited updates in the future) ([xpbrew/cordova-sqlite-storage#771](https://github.com/xpbrew/cordova-sqlite-storage/issues/771))
+
+**More BREAKING CHANGES expected:**
 
 - error `code` will always be `0` (which is already the case on Windows); actual SQLite3 error code will be part of the error `message` member whenever possible ([xpbrew/cordova-sqlite-storage#821](https://github.com/xpbrew/cordova-sqlite-storage/issues/821))
 - drop support for iOS 8.x (was already dropped by cordova-ios@4.4.0)
 - drop support for location: 0-2 values in openDatabase call (please use `location: 'default'` or `iosDatabaseLocation` setting in openDatabase as documented below)
-
-__BREAKING CHANGE under consideration:__
-
-- drop support for Android pre-4.4 (Android 4.4 with old `armeabi` CPU to be deprecatd with limited updates in the future) ([xpbrew/cordova-sqlite-storage#771](https://github.com/xpbrew/cordova-sqlite-storage/issues/771))
 
 ## About this plugin version
 
@@ -243,12 +243,14 @@ See the [Sample section](#sample) for a sample with a more detailed explanation 
 and window functions
 - Using `SQLITE_DEFAULT_SYNCHRONOUS=3` (EXTRA DURABLE) build setting to be extra robust against possible database corruption ref: [xpbrew/cordova-sqlite-storage#736](https://github.com/xpbrew/cordova-sqlite-storage/issues/736)
 - `SQLITE_DBCONFIG_DEFENSIVE` flag is used for extra SQL safety, as described above
+- Recent build fixes:
+  - Fixed iOS/macOS platform version to use *custom* version of [PSPDFThreadSafeMutableDictionary.m](https://gist.github.com/steipete/5928916) to avoid threading issue, custom version to avoid potential conflicts with custom iOS/macOS plugins ref: [xpbrew/cordova-sqlite-storage#716](https://github.com/xpbrew/cordova-sqlite-storage/issues/716), [xpbrew/cordova-sqlite-storage#861](https://github.com/xpbrew/cordova-sqlite-storage/issues/861)
+  - workaround for redefinition of `SYNTAX_ERR` when using some other plugins ref: [xpbrew/cordova-sqlite-storage#868](https://github.com/xpbrew/cordova-sqlite-storage/issues/868)
 - Nice overview of alternatives for storing local data in Cordova apps at: <https://www.sitepoint.com/storing-local-data-in-a-cordova-app/>
 - New alternative solution for small data storage: [TheCocoaProject / cordova-plugin-nativestorage](https://github.com/TheCocoaProject/cordova-plugin-nativestorage) - simpler "native storage of variables" for Android/iOS/Windows
 - Resolved Java 6/7/8 concurrent map compatibility issue reported in [xpbrew/cordova-sqlite-storage#726](https://github.com/xpbrew/cordova-sqlite-storage/issues/726), with no more static state in evcore plugin version, THANKS to pointer by [@NeoLSN (Jason Yang/楊朝傑)](https://github.com/NeoLSN) in [xpbrew/cordova-sqlite-storage#727](https://github.com/xpbrew/cordova-sqlite-storage/issues/727).
 - Updated workaround solution to [BUG 666 (xpbrew/cordova-sqlite-storage#666)](https://github.com/xpbrew/cordova-sqlite-storage/issues/666) (possible transaction issue after window.location change with possible data loss): close database if already open before opening again
 - Windows 10 (UWP) build with /SAFESEH flag on Win32 (x86) target to specify "Image has Safe Exception Handlers" as described in <https://docs.microsoft.com/en-us/cpp/build/reference/safeseh-image-has-safe-exception-handlers>
-- Fixed iOS/macOS platform version to use [PSPDFThreadSafeMutableDictionary.m](https://gist.github.com/steipete/5928916) to avoid threading issue ref: [xpbrew/cordova-sqlite-storage#716](https://github.com/xpbrew/cordova-sqlite-storage/issues/716)
 - This plugin version references Windows platform toolset v141 to support Visual Studio 2017 ref: [xpbrew/cordova-sqlite-storage#580](https://github.com/xpbrew/cordova-sqlite-storage/issues/580). (Visual Studio 2015 is now supported by [`brodybits/cordova-sqlite-legacy`](https://github.com/brodybits/cordova-sqlite-legacy) (permissive license terms, no performance enhancements for Android) and [`brodybits/cordova-sqlite-evcore-legacy-ext-common-free`](https://github.com/brodybits/cordova-sqlite-evcore-legacy-ext-common-free) (GPL or commercial license terms, with performance enhancements for Android). UNTESTED workaround for Visual Studio 2015: it *may* be possible to support this plugin version on Visual Studio 2015 Update 3 by installing platform toolset v141.)
 - [brodybits / cordova-sqlite-test-app](https://github.com/brodybits/cordova-sqlite-test-app) project is a CC0 (public domain) starting point (NOTE that this plugin must be added) and may also be used to reproduce issues with this plugin.
 - The Lawnchair adapter is now moved to [litehelpers / cordova-sqlite-lawnchair-adapter](https://github.com/litehelpers/cordova-sqlite-lawnchair-adapter).
