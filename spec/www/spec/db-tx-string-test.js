@@ -131,6 +131,33 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
+        it(suiteName + 'Inline US-ASCII String manipulation test with double-quotes in result key', function(done) {
+          // ref: brodysoft/cordova-sqlite-evcore-extbuild-free#51
+          if (!isWebSql && isAndroid && !isImpl2) pending('XXX SKIP for default Android evcore NDK implementation due to KNOWN ISSUE'); // XXX
+          var db = openDatabase('Inline-US-ASCII-string-test-with-double-quotes-in-result-key.db');
+          expect(db).toBeDefined();
+
+          db.transaction(function(tx) {
+            expect(tx).toBeDefined();
+
+            tx.executeSql('SELECT UPPER("Some US-ASCII text")', null, function(tx_ignored, rs) {
+              expect(rs).toBeDefined();
+              expect(rs.rows).toBeDefined();
+              expect(rs.rows.length).toBe(1);
+              expect(rs.rows.item(0)).toEqual({ 'UPPER("Some US-ASCII text")' : 'SOME US-ASCII TEXT' });
+
+              // Close (plugin only) & finish:
+              (isWebSql) ? done() : db.close(done, done);
+            });
+          }, function(error) {
+            // NOT EXPECTED:
+            expect(false).toBe(true);
+            expect(error.message).toBe('--');
+            // Close (plugin only) & finish:
+            (isWebSql) ? done() : db.close(done, done);
+          });
+        }, MYTIMEOUT);
+
         it(suiteName + 'Inline US-ASCII String manipulation test with undefined parameter list', function(done) {
           var db = openDatabase('Inline-US-ASCII-string-test-with-undefined-parameter-list.db');
 
@@ -499,7 +526,7 @@ var mytests = function() {
                   (!isWebSql && isWindows) ||
                   (!isWebSql && !isWindows && isAndroid && isImpl2 &&
                     !(/Android 4/.test(navigator.userAgent)) &&
-                    !(/Android 8/.test(navigator.userAgent))))
+                    !(/Android [8-9]/.test(navigator.userAgent))))
                 expect(rs.rows.item(0).uppertext).toBe('A');
               else if (!isWebSql && !isWindows && isAndroid && !isImpl2) // XXX
                expect(rs.rows.item(0).uppertext).toBe('A0000CD'); // XXX
@@ -1577,7 +1604,7 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
-        it(suiteName + "SELECT LOWER(X'41EDA080EDBCB1') - RETURNS '\\uED41\u80A0\\uBCED' ('\uED41\u80A0\uBCED') on Android 4.1-4.3 (WebKit) Web SQL & Windows (UTF-16le), 'a\uD800\uDF31' (non-standard encoding) on Android with default Android NDK provider on all Android versions & androidDatabaseProvider: 'system' on Android 4.x, 'a\\uFFFD\\uFFFD' ('a\uFFFD\uFFFD') on Android with androidDatabaseProvider: 'system' on Android post-4.x & (WebKit) Web SQL (Android/iOS/Browser); MISSING RESULT VALUE on iOS/macOS plugin", function(done) {
+        it(suiteName + "SELECT LOWER(X'41EDA080EDBCB1') - result column value is '\\uED41\u80A0\\uBCED' ('\uED41\u80A0\uBCED') on Android 4.1-4.3 (WebKit) Web SQL & Windows (UTF-16le), 'a\uD800\uDF31' (non-standard encoding) on Android with default Android NDK provider on all Android versions & androidDatabaseProvider: 'system' on Android 4.x, MISSING on iOS/macOS plugin, 'a\\uFFFD\\uFFFD' ('a\uFFFD\uFFFD') on Android with androidDatabaseProvider: 'system' on Android post-4.x & (WebKit) Web SQL (Android post-4.3/iOS/Browser)", function(done) {
           // ref:
           // - litehelpers/Cordova-sqlite-evcore-extbuild-free#44
           // - litehelpers/Cordova-sqlite-storage#564
@@ -1765,7 +1792,7 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
-        it(suiteName + "SELECT LOWER(X'41EDA0BDEDB88321') - RETURNS '\\uED41\\uBDA0\\uB8ED\\u2183' ('\uED41\uBDA0\uB8ED\u2183') on Android 4.1-4.3 (WebKit) Web SQL & Windows (UTF-16le), 'a\\uD83D\\uDE03!' ('a\uD83D\uDE03!') on Android with default Android NDK provider on all Android versions & androidDatabaseProvider: 'system' on Android 4.x, '\\uED41\\uBDA0\\uB8ED\\u2183' ('\uED41\uBDA0\uB8ED\u2183') on (WebKit) Web SQL & Android with androidDatabaseProvider: 'system' on Android post-4.x; MISSING RESULT VALUE on iOS/macOS plugin", function(done) {
+        it(suiteName + "SELECT LOWER(X'41EDA0BDEDB88321') - result column value is '\\uED41\\uBDA0\\uB8ED\\u2183' ('\uED41\uBDA0\uB8ED\u2183') on Android 4.1-4.3 (WebKit) Web SQL & Windows (UTF-16le), 'a\\uD83D\\uDE03!' ('a\uD83D\uDE03!') [non-standard encoding] on Android with default Android NDK provider on all Android versions & androidDatabaseProvider: 'system' on Android 4.x, MISSING on iOS/macOS plugin, '\\uED41\\uBDA0\\uB8ED\\u2183' ('\uED41\uBDA0\uB8ED\u2183') on Android with androidDatabaseProvider: 'system' on Android post-4.x & (WebKit) Web SQL (Android post-4.3/iOS/Browser)", function(done) {
           // ref:
           // - litehelpers/Cordova-sqlite-evcore-extbuild-free#44
           // - litehelpers/Cordova-sqlite-storage#564

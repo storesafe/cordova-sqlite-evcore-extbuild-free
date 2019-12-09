@@ -12,7 +12,6 @@ var isBrowser = isWebKitBrowser || isFirefox;
 var isEdgeBrowser = isBrowser && (/Edge/.test(navigator.userAgent));
 var isChromeBrowser = isBrowser && !isEdgeBrowser && (/Chrome/.test(navigator.userAgent));
 var isSafariBrowser = isWebKitBrowser && !isEdgeBrowser && !isChromeBrowser;
-
 // detect iOS platform:
 var isAppleMobileOS =
   (/iPhone/.test(navigator.userAgent)
@@ -298,7 +297,8 @@ var mytests = function() {
               else if (isAndroid && !isImpl2)
                 expect(error.message).toMatch(/syntax error or other error code: 1 message: incomplete input/);
               else if (isAndroid && isImpl2)
-                expect(error.message).toMatch(/near \"VALUES\": syntax error.*code 1.*while compiling: INSERT INTO test_table/);
+                // TBD more general pattern for Android 9 vs ...
+                expect(error.message).toMatch(/code 1.*while compiling: INSERT INTO test_table/);
               else
                 expect(error.message).toMatch(/incomplete input/);
 
@@ -328,7 +328,8 @@ var mytests = function() {
             else if (isAndroid && !isImpl2)
               expect(error.message).toMatch(/error callback did not return false.*syntax error or other error code: 1 message: incomplete input/);
             else if (isAndroid && isImpl2)
-              expect(error.message).toMatch(/error callback did not return false.*syntax error/); // XXX TBD Android (built-in)
+              // TBD more general pattern for Android 9 vs ...
+              expect(error.message).toMatch(/error callback did not return false.*code 1/);
             else
               expect(error.message).toMatch(/error callback did not return false.*incomplete input/);
 

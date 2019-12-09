@@ -53,13 +53,9 @@ public class SQLitePlugin extends CordovaPlugin {
      * https://github.com/litehelpers/Cordova-sqlite-storage/issues/727
      */
     private Map<String, DBRunner> dbrmap = new ConcurrentHashMap<String, DBRunner>();
-    /* XXX no longer static: */
-    private
-        Map<Integer, DBRunner> dbrmap2 = new ConcurrentHashMap<Integer, DBRunner>();
+    private Map<Integer, DBRunner> dbrmap2 = new ConcurrentHashMap<Integer, DBRunner>();
 
-    /* XXX no longer static: */
-    private
-        int lastdbid = 0;
+    private int lastdbid = 0;
 
     /**
      * NOTE: Using default constructor, no explicit constructor.
