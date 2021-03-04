@@ -1,5 +1,7 @@
 # Changes
 
+## cordova-sqlite-evcore-feature-android-db-location 0.8.0-dev
+
 ## cordova-sqlite-evcore-feature-android-db-location 0.7.2-dev1
 
 - Custom Android database file location

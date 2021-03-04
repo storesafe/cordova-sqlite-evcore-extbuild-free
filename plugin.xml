@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-sqlite-evcore-feature-android-db-location"
-    version="0.7.2-dev1">
+    version="0.8.0-dev">
 
     <name>Cordova sqlite storage - free enterprise version with memory improvements and extras (Android and iOS)</name>
 
