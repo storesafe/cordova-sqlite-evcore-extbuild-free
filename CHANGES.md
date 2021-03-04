@@ -2,6 +2,8 @@
 
 ## cordova-sqlite-evcore-feature-android-db-location 0.8.0-dev
 
+- refactor: update androidDatabaseLocation error messages
+
 ### cordova-sqlite-evcore-commoncore-free 0.3.0
 
 ### cordova-sqlite-ext-common 4.0.0

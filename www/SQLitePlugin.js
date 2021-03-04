@@ -698,13 +698,13 @@ Contact for commercial license: sales@litehelpers.net
         throw newSQLError('Database name value is missing in openDatabase call');
       }
       if (!openargs.iosDatabaseLocation && !openargs.location && openargs.location !== 0 && !openargs.androidDatabaseLocation) {
-        throw newSQLError('Database location (or iosDatabaseLocation or androidDatabaseLocation) value is now mandatory in openDatabase call');
+        throw newSQLError('Database location (or iosDatabaseLocation or androidDatabaseLocation) setting is now mandatory in openDatabase call.');
       }
       if (!!openargs.location && !!openargs.iosDatabaseLocation) {
         throw newSQLError('AMBIGUOUS: both location and iosDatabaseLocation settings are present in openDatabase call. Please use either setting, not both.');
       }
       if (!!openargs.location && !!openargs.androidDatabaseLocation) {
-        throw newSQLError('AMBIGUOUS: both location or androidDatabaseLocation values are present in openDatabase call');
+        throw newSQLError('AMBIGUOUS: both location and androidDatabaseLocation settings are present in openDatabase call. Please use either setting, not both. But you *can* use androidDatabaseLocation and iosDatabaseLocation together.');
       }
       dblocation = !!openargs.location && openargs.location === 'default' ? iosLocationMap['default'] : !!openargs.iosDatabaseLocation ? iosLocationMap[openargs.iosDatabaseLocation] : !openargs.location && openargs.location !== 0 ? iosLocationMap['default'] : dblocations[openargs.location];
       if (!dblocation) {
@@ -755,13 +755,13 @@ Contact for commercial license: sales@litehelpers.net
         args.path = dbname;
       }
       if (!first.iosDatabaseLocation && !first.location && first.location !== 0 && !first.androidDatabaseLocation) {
-        throw newSQLError('Database location (or iosDatabaseLocation or androidDatabaseLocation) value is now mandatory in deleteDatabase call');
+        throw newSQLError('Database location (or iosDatabaseLocation or androidDatabaseLocation) setting is now mandatory in deleteDatabase call.');
       }
       if (!!first.location && !!first.iosDatabaseLocation) {
         throw newSQLError('AMBIGUOUS: both location and iosDatabaseLocation settings are present in deleteDatabase call. Please use either setting value, not both.');
       }
       if (!!first.location && !!first.androidDatabaseLocation) {
-        throw newSQLError('AMBIGUOUS: both location or androidDatabaseLocation values are present in deleteDatabase call');
+        throw newSQLError('AMBIGUOUS: both location and androidDatabaseLocation settings are present in deleteDatabase call. Please use either setting, not both. But you *can* use androidDatabaseLocation and iosDatabaseLocation together.');
       }
       dblocation = !!first.location && first.location === 'default' ? iosLocationMap['default'] : !!first.iosDatabaseLocation ? iosLocationMap[first.iosDatabaseLocation] : !first.location && first.location !== 0 ? iosLocationMap['default'] : dblocations[first.location];
       if (!dblocation) {
