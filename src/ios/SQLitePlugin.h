@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2016: Christopher J. Brody (aka Chris Brody)
+ * Copyright (c) 2012-present Christopher J. Brody (aka Chris Brody)
  * Copyright (C) 2011 Davide Bertola
  *
  * License for this version: GPL v3 (http://www.gnu.org/licenses/gpl.txt) or commercial license.
@@ -17,7 +17,7 @@ enum WebSQLError {
     VERSION_ERR = 2,
     TOO_LARGE_ERR = 3,
     QUOTA_ERR = 4,
-    SYNTAX_ERR = 5,
+    SYNTAX_ERR_ = 5,
     CONSTRAINT_ERR = 6,
     TIMEOUT_ERR = 7
 };

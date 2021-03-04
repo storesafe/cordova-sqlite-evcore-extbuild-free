@@ -7,27 +7,39 @@
     "platforms": [
       "android",
       "ios",
+      "osx",
       "windows"
     ]
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/litehelpers/Cordova-sqlite-evcore-common-free.git"
+    "url": "https://github.com/litehelpers/cordova-sqlite-evcore-legacy-ext-common-free.git"
   },
   "keywords": [
     "sqlite",
     "ecosystem:cordova",
     "cordova-android",
     "cordova-ios",
+    "cordova-osx",
     "cordova-windows"
   ],
   "author": "various",
-  "license": "GPL",
+  "license": "GPL-3.0 OR Commercial",
   "bugs": {
-    "url": "https://github.com/litehelpers/Cordova-sqlite-evcore-common-free/issues"
+    "url": "https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/issues"
   },
-  "homepage": "https://github.com/litehelpers/Cordova-sqlite-evcore-common-free",
+  "homepage": "https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/tree/cordova-sqlite-evcore-common-free",
   "dependencies": {
-    "cordova-sqlite-evcore-free-dependencies": "0.7.1"
+    "cordova-sqlite-evcore-free-dependencies": "0.9.3"
+  },
+  "scripts": {
+    "clean-spec": "rm -rf spec/[mnp]* && git cl spec/config.xml spec/package.json && git status --ignored",
+    "prepare-js": "coffee -p SQLitePlugin.coffee.md > www/SQLitePlugin.js",
+    "prepare-spec": "node scripts/prepareSpec.js"
+  },
+  "devDependencies": {
+    "coffeescript": "1",
+    "cross-spawn": "^6.0.5",
+    "fs-extra": "^8.1.0"
   }
 }

@@ -2,6 +2,377 @@
 
 ## cordova-sqlite-evcore-feature-android-db-location 0.8.0-dev
 
+### cordova-sqlite-evcore-commoncore-free 0.3.0
+
+### cordova-sqlite-ext-common 4.0.0
+
+### cordova-sqlite-storage-commoncore 2.0.0
+
+- refactor: clean up imports for Android
+- Fix plugin param name for macOS ("osx") - *tested* with Cordova 9 and cordova-osx@5
+- Drop support for Windows on ARM (Windows Mobile)
+
+#### cordova-sqlite-storage 5.0.1
+
+- enable RENAME table with view test - from December 2019 SQLite crash report, fixed in 2020 ref:
+  - http://sqlite.1065341.n5.nabble.com/Crash-Bug-Report-tc109903.html
+  - https://github.com/xpbrew/cordova-sqlite-storage/issues/904
+
+### cordova-sqlite-evcore-commoncore-free 0.2.1
+
+- SQLite 3.32.3 update from cordova-sqlite-evcore-free-dependencies@0.9.3
+
+### cordova-sqlite-evcore-commoncore-free 0.2.0
+
+### cordova-sqlite-ext-common 3.0.0
+
+#### cordova-sqlite-storage 5.0.0
+
+- avoid incorrect default directory on iOS/macOS - to be extra safe (see <https://github.com/xpbrew/cordova-sqlite-storage/issues/907>)
+  - ensure that default "nosync" directory *always* has resource value set for `NSURLIsExcludedFromBackupKey`
+  - add more checks for missing database directory
+
+### cordova-sqlite-ext-common 2.0.0
+
+### cordova-sqlite-evcore-commoncore-free 0.1.0-rc1
+
+- internal Android evcore database state 100% non-static and private
+
+#### cordova-sqlite-ext-common 2.0.0
+- SQLite 3.30.1 build update, with new default page & cache sizes from cordova-sqlite-ext-deps@2.1.0
+
+#### cordova-sqlite-storage 4.0.0
+
+- rename PSPDFThreadSafeMutableDictionary to CustomPSPDFThreadSafeMutableDictionary and completely remove PSPDFThreadSafeMutableDictionary.h
+
+#### cordova-sqlite-storage 3.4.1
+
+- SQLite 3.30.1 update from cordova-sqlite-storage-dependencies@2.1.1
+
+#### cordova-sqlite-storage 3.4.0
+
+- quick workaround for `SYNTAX_ERR` redefinition
+
+#### cordova-sqlite-storage 3.3.0
+
+- new default page & cache sizes with cordova-sqlite-storage-dependencies@2.1.0
+
+##### cordova-sqlite-storage-commoncore 1.0.0
+
+- additional EU string manipulation test cases
+
+#### cordova-sqlite-storage 3.2.1
+
+- cordova-sqlite-storage-dependencies@2.0.1 with SQLite 3.28.0 update for all supported platforms Android/iOS/macOS/Windows
+
+#### cordova-sqlite-storage 3.2.0
+
+- sqlite3_threadsafe() error handling on iOS/macOS
+
+#### cordova-sqlite-storage 3.1.0
+
+- no SQLITE_DEFAULT_CACHE_SIZE compile-time setting on iOS/macOS/Windows
+
+#### cordova-sqlite-storage 3.0.0
+
+- Use cordova-sqlite-storage-dependencies 2.0.0 with SQLITE_DBCONFIG_DEFENSIVE setting used by sqlite-native-driver.jar on Android
+
+###### cordova-sqlite-ext-common-core 0.2.0
+
+- Move SQLite3.UWP.vcxproj out of extra SQLite3.UWP subdirectory
+- Completely remove old Windows 8.1 & Windows Phone 8.1 vcxproj files
+
+###### cordova-sqlite-extcore 0.1.0
+
+- move the embedded `SQLite3-WinRT` component to `src/windows/SQLite3-WinRT-sync` and update `plugin.xml`
+
+### cordova-sqlite-ext-common 1.0.0
+
+- Use cordova-sqlite-ext-deps@2.0.0 with SQLITE_DBCONFIG_DEFENSIVE setting used by sqlite-native-driver.jar on Android
+
+### cordova-sqlite-common-ext-common 0.2.0
+
+- SQLite3 build updates from cordova-sqlite-ext version 2.3.1:
+  - build with SQLite 3.26.0 from cordova-sqlite-ext-deps@1.1.1
+  - sqlite-native-driver NDK build in JAR
+  - FTS5 & JSON1 enabled on all platforms
+  - SQLITE_DEFAULT_SYNCHRONOUS=3 (EXTRA DURABLE) compile-time setting on all platforms
+  - continue using SQLITE_THREADSAFE=1 on all platforms
+
+###### cordova-sqlite-ext-core-common 0.1.0
+
+- beforePluginInstall.js updates
+  - use standard Promise
+  - get the plugin package name from package.json
+  - use const instead of var (this should be considered a POSSIBLY BREAKING CHANGE since const may not work on some really old Node.js versions)
+  - remove hasbang line that is not needed
+
+###### cordova-sqlite-storage-ext-core-common 2.0.0
+
+- SQLITE_DBCONFIG_DEFENSIVE flag - iOS/macOS/Windows (POTENTIALLY BREAKING CHANGE)
+- remove internal qid usage from JavaScript (not needed)
+- non-static Android database runner map (POTENTIALLY BREAKING CHANGE)
+- Completely remove old Android SuppressLint (android.annotation.SuppressLint) - POSSIBLY BREAKING CHANGE
+- drop workaround for pre-Honeycomb Android API (BREAKING CHANGE)
+- no extra @synchronized block per batch (iOS/macOS) - should be considered a POSSIBLY BREAKING change
+- remove backgroundExecuteSql method not needed (iOS/macOS)
+- Completely remove iOS/macOS MRC (Manual Reference Counting) support - should be considered a POSSIBLY BREAKING change
+
+### cordova-sqlite-storage 2.6.0
+
+- Use cordova-sqlite-storage-dependencies 1.2.1 with SQLite 3.26.0, with a security update and support for window functions
+
+### cordova-sqlite-storage 2.5.2
+
+- Ignore Android end transaction error when closing for androidDatabaseProvider: 'system' setting, to avoid possible crash during app shutdown (<https://github.com/litehelpers/Cordova-sqlite-storage/issues/833>)
+
+### cordova-sqlite-evcore-commoncore-free 0.0.2
+
+- use & test with cordova-sqlite-evcore-free-dependencies@0.9.2 with SQLite 3.30.1 update
+
+### cordova-sqlite-evcore-commoncore-free 0.0.1
+
+- quick fix of error messages on Windows
+- use cordova-sqlite-evcore-free-dependencies@0.9.1 (with SQLite 3.28.0 update)
+
+#### cordova-sqlite-storage-commoncore 1.0.0
+
+- additional EU string manipulation test cases
+
+### cordova-sqlite-evcore-common-free 0.0.4
+
+- Use cordova-sqlite-evcore-free-dependencies 0.8.6, with workaround for 4-byte UTF-8 crash bug and fix for Samaritan character crash bug on Android
+
+#### cordova-sqlite-storage 2.5.1
+
+- fix internal plugin cleanup error log on Android
+
+#### cordova-sqlite-storage 2.5.0
+
+- androidDatabaseProvider: 'system' setting, to replace androidDatabaseImplementation setting which is now deprecated
+
+### cordova-sqlite-evcore-common-free 0.0.3
+
+- Internal error message fix for evcore on Android
+
+### cordova-sqlite-evcore-common-free 0.0.2
+
+- Use cordova-sqlite-evcore-free-dependencies 0.8.4 with quick fix for error messages on Android
+
+#### cordova-sqlite-storage 2.4.0
+
+- Report internal plugin error in case of attempt to open database with no database name on iOS or macOS
+- Cover use of standard (WebKit) Web SQL API in spec test suite
+- Test and document insertId in UPDATE result set on plugin vs (WebKit) Web SQL
+- other test updates
+
+### cordova-sqlite-evcore-common-free 0.0.1
+
+#### cordova-sqlite-storage 2.3.3
+
+- Quick fix for some iOS/macOS internal plugin error log messagess
+- test updates
+- quick doc updates
+
+#### cordova-sqlite-storage 2.3.2
+
+- Mark some Android errors as internal plugin errors (quick fix)
+- remove trailing whitespace from Android implementation
+- test coverage updates
+- quick doc updates
+
+#### cordova-sqlite-storage 2.3.1
+
+- Mark some iOS/macOS plugin error messages as internal plugin errors (quick fix)
+- Quick documentation updates
+
+#### cordova-sqlite-storage 2.2.1
+
+- Fix Android/iOS src copyright, perpetually
+
+#### cordova-sqlite-storage 2.2.0
+
+- Fix SQLiteAndroidDatabase implementation for Turkish and other foreign locales
+
+#### cordova-sqlite-storage 2.1.0
+
+- Visual Studio 2017 updates for Windows UWP build
+
+#### cordova-sqlite-storage 2.0.2
+
+- Fix Windows target platform version
+
+#### cordova-sqlite-storage 2.0.0
+
+- Reference Windows platform toolset v141 to support Visual Studio 2017 (RC)
+
+#### cordova-sqlite-evcore-legacy-ext-common-free 0.0.6
+
+- Use cordova-sqlite-evcore-free-dependencies 0.8.3 with fix for multi-byte UTF-8 characters on Android ref:
+  - litehelpers/Cordova-sqlite-evcore-extbuild-free#19 (<https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/issues/19>)
+  - litehelpers/Android-sqlite-evcore-native-driver-free#1 (<https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free/pull/1>)
+  - litehelpers/Android-sqlite-evcore-native-driver-free#2 (<https://github.com/litehelpers/Android-sqlite-evcore-native-driver-free/pull/2>)
+
+### cordova-sqlite-evcore-legacy-ext-common-free 0.0.5
+
+- Use cordova-sqlite-evcore-free-dependencies 0.8.2 with SQLite 3.22.0, with SQLITE_DEFAULT_SYNCHRONOUS=3 (EXTRA DURABLE ref: litehelpers/Cordova-sqlite-storage#736) & other build fixes
+
+### cordova-sqlite-evcore-legacy-ext-common-free 0.0.4
+
+- additional evcore iOS/macOS/Windows compile-time options
+
+#### cordova-sqlite-ext-common 0.1.0
+
+- BASE64 support
+- REGEXP for Android/iOS/macOS using sqlite3-regexp-cached
+
+### cordova-sqlite-evcore-legacy-ext-common-free 0.0.3
+
+- cordova-sqlite-evcore-legacy-ext-common-free with SQLITE_THREADSAFE=1 on iOS/macOS ref: litehelpers/Cordova-sqlite-storage#754 (<https://github.com/litehelpers/Cordova-sqlite-storage/issues/754>)
+
+### cordova-sqlite-evcore-legacy-ext-common-free 0.0.2
+
+- Android evcore NDK JAR from cordova-sqlite-evcore-free-dependencies, no longer built with JSMN component (with REGEXP and BASE64 support included for Android)
+- Remove SQLITE_ENABLE_COLUMN_METADATA not needed (iOS/macOS/Windows)
+
+### cordova-sqlite-evcore-legacy-ext-common-free 0.0.1
+
+- Support Windows 8.1/Windows Phone 8.1 in this plugin version branch
+
+### cordova-sqlite-evcore-common-free 0.7.6
+
+- cordova-sqlite-evcore-common-free compile-time option fixes (for iOS/macOS):
+  - Suppress warnings when building sqlite3.c (iOS/macOS)
+  - Remove unwanted SQLITE_OMIT_BUILTIN_TEST option (iOS/macOS)
+
+##### cordova-sqlite-legacy-core 1.0.7
+
+- Add error info text in case of close error on Windows
+- Signal INTERNAL ERROR in case of attempt to reuse db on Windows (should never happen due to workaround solution to BUG 666)
+
+###### cordova-sqlite-legacy-express-core 1.0.5
+
+- iOS/macOS @synchronized guard for sqlite3_open operation
+- Signal INTERNAL ERROR in case of attempt to reuse db (Android/iOS) (should never happen due to workaround solution to BUG 666)
+
+##### cordova-sqlite-legacy-core 1.0.6
+
+###### cordova-sqlite-legacy-express-core 1.0.4
+
+- Cleaned up workaround solution to BUG 666: close db before opening (ignore close error)
+- android.database end transaction if active before closing (needed for new BUG 666 workaround solution to pass selfTest in case of builtin android.database implementation)
+
+##### cordova-sqlite-legacy-core 1.0.5
+
+###### cordova-sqlite-legacy-express-core 1.0.3
+
+- Resolve Java 6/7/8 concurrent map compatibility issue reported in litehelpers/Cordova-sqlite-storage#726, THANKS to pointer by @NeoLSN (Jason Yang/楊朝傑) in litehelpers/Cordova-sqlite-storage#727.
+- selfTest database cleanup do not ignore close or delete error on any platforms
+
+##### cordova-sqlite-legacy-core 1.0.4
+
+- New workaround solution to BUG 666: close db before opening (ignore close error)
+
+##### cordova-sqlite-legacy-core 1.0.3
+
+- Suppress warnings when building sqlite3.c & PSPDFThreadSafeMutableDictionary.m on iOS/macOS
+
+##### cordova-sqlite-legacy-core 1.0.2
+
+- Fix log in case of transaction waiting for open to finish; doc fixes
+- Windows 10 (UWP) build with /SAFESEH flag on Win32 (x86) target
+
+###### cordova-sqlite-legacy-express-core 1.0.2
+
+- Use PSPDFThreadSafeMutableDictionary for iOS/macOS to avoid threading issue ref: litehelpers/Cordova-sqlite-storage#716
+
+###### cordova-sqlite-legacy-express-core 1.0.1
+
+- Fix bug 666 workaround to trigger ROLLBACK in the next event tick (needed to support version with pre-populated database on Windows)
+
+## cordova-sqlite-evcore-common-free 0.7.5
+
+###### cordova-sqlite-legacy-express-core 1.0.0
+
+- Workaround solution to BUG litehelpers/Cordova-sqlite-storage#666 (hanging transaction in case of location reload/change)
+- selfTest simulate scenario & test solution to BUG litehelpers/Cordova-sqlite-storage#666 (also includes string test and test of effects of location reload/change in this version branch, along with another internal check)
+- Drop engine constraints in package.json & plugin.xml (in this version branch)
+- Remove Lawnchair adapter from this version branch
+- Support macOS platform with builtin libsqlite3.dylib framework in this version branch
+
+## cordova-sqlite-evcore-common-free 0.7.4
+
+- Minor doc fixes
+
+### cordova-sqlite-storage 1.5.4
+
+- Fix iOS/macOS version to report undefined insertId in case INSERT OR IGNORE is ignored
+- Fix FIRST_WORD check for android.sqlite.database implementation
+- Doc updates
+
+### cordova-sqlite-storage 1.5.3
+
+- Fix merges to prevent possible conflicts with other plugins (Windows)
+- Fix handling of undefined SQL argument values (Windows)
+- Signal error in case of a failure opening the database file (iOS/macOS)
+- Doc fixes and updates
+
+### cordova-sqlite-storage 1.5.2
+
+- Check transaction callback functions to avoid crash on Windows
+- Fix echoTest callback handling
+- Fix openDatabase/deleteDatabase exception messages
+- Move Lawnchair adapter to a separate project
+- Doc updates
+
+## cordova-sqlite-evcore-common-free 0.7.3
+
+- Use SQLite 3.15.2 for all platforms (no SQLITE_DEFAULT_PAGE_SIZE or SQLITE_DEFAULT_CACHE_SIZE defined in this version branch)
+- empty engines rule in package.json in this version branch
+
+### cordova-sqlite-storage 1.5.1
+
+- Add engines rule to package.json (...)
+
+### cordova-sqlite-storage 1.5.0
+
+- Build with sqlite 3.15.1, with the following settings:
+  - SQLITE_TEMP_STORE=2
+  - SQLITE_THREADSAFE=2
+  - FTS3, FTS4, and R-Tree enabled
+  - Not defined for Android: SQLITE_ENABLE_COLUMN_METADATA
+  - iOS/macOS ONLY: SQLITE_LOCKING_STYLE=1 SQLITE_OMIT_BUILTIN_TEST SQLITE_OMIT_LOAD_EXTENSION
+  - Windows ONLY: SQLITE_OS_WINRT
+- Drop support for Windows 8.1 & Windows Phone 8.1
+
+### cordova-sqlite-storage 1.4.9
+
+- Minor JavaScript fix (generated by CoffeeScript 1.11.1)
+- Update test due to issue with u2028/u2029 on cordova-android 6.0.0
+- doc fixes
+- Cleanup plugin.xml: remove old engine constraint that was already commented out
+- Fix LICENSE.md
+
+## cordova-sqlite-evcore-common-free 0.7.2
+
+- Quick fix for Android error mapping
+- Fix Android version to handle location reload/change properly
+- Fix Android-sqlite-evcore-native-driver-free (default Android implementation) to reject SQL with too many parameters
+
+### cordova-sqlite-storage 1.4.8
+
+- selfTest function add string test and test of effects of location reload/change
+- Support macOS ("osx" platform)
+- Signal an error in case of SQL with too many parameter argument values on iOS (in addition to Android & Windows)
+- Include proper SQL error code on Android (in certain cases)
+- Fix reporting of SQL statement execution errors in Windows version
+- Fix Windows version to report errors with a valid error code (0)
+- Some doc fixes
+
+### cordova-sqlite-storage 1.4.7
+
+- Minor JavaScript fixes to pass @brodybits/Cordova-sql-test-app
+
 ## cordova-sqlite-evcore-feature-android-db-location 0.7.2-dev1
 
 - Custom Android database file location

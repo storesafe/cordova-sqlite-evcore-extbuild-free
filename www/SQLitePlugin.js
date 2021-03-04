@@ -1,7 +1,6 @@
-
 /*
 License for this version: GPL v3 (http://www.gnu.org/licenses/gpl.txt) or commercial license.
-Contact for commercial license: info@litehelpers.net
+Contact for commercial license: sales@litehelpers.net
  */
 
 (function() {
@@ -112,7 +111,7 @@ Contact for commercial license: info@litehelpers.net
       this.startNextTransaction();
     } else {
       if (this.dbname in this.openDBs) {
-        console.log('new transaction is waiting for open operation');
+        console.log('new transaction is queued, waiting for open operation to finish');
       } else {
         console.log('database is closed, new transaction is [stuck] waiting until db is opened again!');
       }
@@ -172,7 +171,7 @@ Contact for commercial license: info@litehelpers.net
   };
 
   SQLitePlugin.prototype.open = function(success, error) {
-    var openerrorcb, opensuccesscb;
+    var openerrorcb, opensuccesscb, step2;
     if (this.dbname in this.openDBs) {
       console.log('database already open: ' + this.dbname);
       this.dbid = this.dbidmap[this.dbname];
@@ -221,7 +220,16 @@ Contact for commercial license: info@litehelpers.net
       this.openDBs[this.dbname] = DB_STATE_INIT;
       this.dbidmap[this.dbname] = this.dbid = null;
       this.fjmap[this.dbname] = false;
-      cordova.exec(opensuccesscb, openerrorcb, "SQLitePlugin", "open", [this.openargs]);
+      step2 = (function(_this) {
+        return function() {
+          cordova.exec(opensuccesscb, openerrorcb, "SQLitePlugin", "open", [_this.openargs]);
+        };
+      })(this);
+      cordova.exec(step2, step2, 'SQLitePlugin', 'close', [
+        {
+          path: this.dbname
+        }
+      ]);
     }
   };
 
@@ -335,7 +343,7 @@ Contact for commercial license: info@litehelpers.net
   };
 
   SQLitePluginTransaction.prototype.start = function() {
-    var err, error1;
+    var err;
     try {
       this.fn(this);
       this.run();
@@ -374,7 +382,7 @@ Contact for commercial license: info@litehelpers.net
       for (l = 0, len1 = values.length; l < len1; l++) {
         v = values[l];
         t = typeof v;
-        params.push((v === null || v === void 0 || t === 'number' || t === 'string' ? v : v.toString()));
+        params.push((v === null || v === void 0 ? null : t === 'number' || t === 'string' ? v : v.toString()));
       }
     }
     this.executes.push({
@@ -422,7 +430,7 @@ Contact for commercial license: info@litehelpers.net
     tx = this;
     handlerFor = function(index, didSucceed) {
       return function(response) {
-        var err, error1;
+        var err;
         if (!txFailure) {
           try {
             if (didSucceed) {
@@ -480,7 +488,7 @@ Contact for commercial license: info@litehelpers.net
     flatlist.push('extra');
     bl = batchExecutes.length;
     mycb = function(result) {
-      var c, changes, code, errormessage, insert_id, j, k, q, r, ri, rl, row, rows, sqliteCode, v;
+      var c, changes, code, errormessage, insert_id, j, k, q, r, ri, rl, row, rows, v;
       i = 0;
       ri = 0;
       rl = result.length;
@@ -543,14 +551,11 @@ Contact for commercial license: info@litehelpers.net
           ++ri;
         } else if (r === 'error') {
           code = result[ri++];
-          sqliteCode = result[ri++];
+          ++ri;
           errormessage = result[ri++];
           q.error({
-            result: {
-              code: code,
-              sqliteCode: sqliteCode,
-              message: errormessage
-            }
+            code: code,
+            message: errormessage
           });
         }
         ++i;
@@ -577,20 +582,17 @@ Contact for commercial license: info@litehelpers.net
       i++;
     }
     mycb = function(result) {
-      var q, r, res, reslength, type;
-      i = 0;
-      reslength = result.length;
-      while (i < reslength) {
-        r = result[i];
+      var l, q, r, ref, res, resultIndex, type;
+      for (resultIndex = l = 0, ref = result.length - 1; 0 <= ref ? l <= ref : l >= ref; resultIndex = 0 <= ref ? ++l : --l) {
+        r = result[resultIndex];
         type = r.type;
         res = r.result;
-        q = mycbmap[i];
+        q = mycbmap[resultIndex];
         if (q) {
           if (q[type]) {
             q[type](res);
           }
         }
-        ++i;
       }
     };
     cordova.exec(mycb, null, "SQLitePlugin", "backgroundExecuteSqlBatch", [
@@ -612,15 +614,15 @@ Contact for commercial license: info@litehelpers.net
     succeeded = function(tx) {
       txLocks[tx.db.dbname].inProgress = false;
       tx.db.startNextTransaction();
-      if (tx.error) {
+      if (tx.error && typeof tx.error === 'function') {
         tx.error(txFailure);
       }
     };
     failed = function(tx, err) {
       txLocks[tx.db.dbname].inProgress = false;
       tx.db.startNextTransaction();
-      if (tx.error) {
-        tx.error(newSQLError("error while trying to roll back: " + err.message, err.code));
+      if (tx.error && typeof tx.error === 'function') {
+        tx.error(newSQLError('error while trying to roll back: ' + err.message, err.code));
       }
     };
     this.finalized = true;
@@ -641,15 +643,15 @@ Contact for commercial license: info@litehelpers.net
     succeeded = function(tx) {
       txLocks[tx.db.dbname].inProgress = false;
       tx.db.startNextTransaction();
-      if (tx.success) {
+      if (tx.success && typeof tx.success === 'function') {
         tx.success();
       }
     };
     failed = function(tx, err) {
       txLocks[tx.db.dbname].inProgress = false;
       tx.db.startNextTransaction();
-      if (tx.error) {
-        tx.error(newSQLError("error while trying to commit: " + err.message, err.code));
+      if (tx.error && typeof tx.error === 'function') {
+        tx.error(newSQLError('error while trying to commit: ' + err.message, err.code));
       }
     };
     this.finalized = true;
@@ -699,7 +701,7 @@ Contact for commercial license: info@litehelpers.net
         throw newSQLError('Database location (or iosDatabaseLocation or androidDatabaseLocation) value is now mandatory in openDatabase call');
       }
       if (!!openargs.location && !!openargs.iosDatabaseLocation) {
-        throw newSQLError('AMBIGUOUS: both location or iosDatabaseLocation values are present in openDatabase call');
+        throw newSQLError('AMBIGUOUS: both location and iosDatabaseLocation settings are present in openDatabase call. Please use either setting, not both.');
       }
       if (!!openargs.location && !!openargs.androidDatabaseLocation) {
         throw newSQLError('AMBIGUOUS: both location or androidDatabaseLocation values are present in openDatabase call');
@@ -711,6 +713,15 @@ Contact for commercial license: info@litehelpers.net
       openargs.dblocation = dblocation;
       if (!!openargs.createFromLocation && openargs.createFromLocation === 1) {
         openargs.createFromResource = "1";
+      }
+      if (!!openargs.androidDatabaseProvider && !!openargs.androidDatabaseImplementation) {
+        throw newSQLError('AMBIGUOUS: both androidDatabaseProvider and deprecated androidDatabaseImplementation settings are present in openDatabase call. Please drop androidDatabaseImplementation in favor of androidDatabaseProvider.');
+      }
+      if (openargs.androidDatabaseProvider !== void 0 && openargs.androidDatabaseProvider !== 'default' && openargs.androidDatabaseProvider !== 'system') {
+        throw newSQLError("Incorrect androidDatabaseProvider value. Valid values are: 'default', 'system'");
+      }
+      if (!!openargs.androidDatabaseProvider && openargs.androidDatabaseProvider === 'system') {
+        openargs.androidOldDatabaseImplementation = 1;
       }
       if (!!openargs.androidDatabaseImplementation && openargs.androidDatabaseImplementation === 2) {
         openargs.androidOldDatabaseImplementation = 1;
@@ -747,7 +758,7 @@ Contact for commercial license: info@litehelpers.net
         throw newSQLError('Database location (or iosDatabaseLocation or androidDatabaseLocation) value is now mandatory in deleteDatabase call');
       }
       if (!!first.location && !!first.iosDatabaseLocation) {
-        throw newSQLError('AMBIGUOUS: both location or iosDatabaseLocation values are present in deleteDatabase call');
+        throw newSQLError('AMBIGUOUS: both location and iosDatabaseLocation settings are present in deleteDatabase call. Please use either setting value, not both.');
       }
       if (!!first.location && !!first.androidDatabaseLocation) {
         throw newSQLError('AMBIGUOUS: both location or androidDatabaseLocation values are present in deleteDatabase call');
@@ -770,17 +781,99 @@ Contact for commercial license: info@litehelpers.net
   SelfTest = {
     DBNAME: '___$$$___litehelpers___$$$___test___$$$___.db',
     start: function(successcb, errorcb) {
-      return SQLiteFactory.deleteDatabase({
+      SQLiteFactory.deleteDatabase({
         name: SelfTest.DBNAME,
         location: 'default'
       }, (function() {
-        return SelfTest.start2(successcb, errorcb);
+        return SelfTest.step1(successcb, errorcb);
       }), (function() {
-        return SelfTest.start2(successcb, errorcb);
+        return SelfTest.step1(successcb, errorcb);
       }));
     },
-    start2: function(successcb, errorcb) {
-      return SQLiteFactory.openDatabase({
+    step1: function(successcb, errorcb) {
+      SQLiteFactory.openDatabase({
+        name: SelfTest.DBNAME,
+        location: 'default'
+      }, function(db) {
+        var check1;
+        check1 = false;
+        db.transaction(function(tx) {
+          tx.executeSql('SELECT UPPER("Test") AS upperText', [], function(ignored, resutSet) {
+            if (!resutSet.rows) {
+              return SelfTest.finishWithError(errorcb, 'Missing resutSet.rows');
+            }
+            if (!resutSet.rows.length) {
+              return SelfTest.finishWithError(errorcb, 'Missing resutSet.rows.length');
+            }
+            if (resutSet.rows.length !== 1) {
+              return SelfTest.finishWithError(errorcb, "Incorrect resutSet.rows.length value: " + resutSet.rows.length + " (expected: 1)");
+            }
+            if (!resutSet.rows.item(0).upperText) {
+              return SelfTest.finishWithError(errorcb, 'Missing resutSet.rows.item(0).upperText');
+            }
+            if (resutSet.rows.item(0).upperText !== 'TEST') {
+              return SelfTest.finishWithError(errorcb, "Incorrect resutSet.rows.item(0).upperText value: " + (resutSet.rows.item(0).upperText) + " (expected: 'TEST')");
+            }
+            check1 = true;
+          }, function(ignored, tx_sql_err) {
+            return SelfTest.finishWithError(errorcb, "TX SQL error: " + tx_sql_err);
+          });
+        }, function(tx_err) {
+          return SelfTest.finishWithError(errorcb, "TRANSACTION error: " + tx_err);
+        }, function() {
+          if (!check1) {
+            return SelfTest.finishWithError(errorcb, 'Did not get expected upperText result data');
+          }
+          db.executeSql('BEGIN', null, function(ignored) {
+            return nextTick(function() {
+              delete db.openDBs[SelfTest.DBNAME];
+              delete txLocks[SelfTest.DBNAME];
+              nextTick(function() {
+                db.transaction(function(tx2) {
+                  tx2.executeSql('SELECT 1');
+                }, function(tx_err) {
+                  if (!tx_err) {
+                    return SelfTest.finishWithError(errorcb, 'Missing error object');
+                  }
+                  SelfTest.step2(successcb, errorcb);
+                }, function() {
+                  return SelfTest.finishWithError(errorcb, 'Missing error object');
+                });
+              });
+            });
+          });
+        });
+      }, function(open_err) {
+        return SelfTest.finishWithError(errorcb, "Open database error: " + open_err);
+      });
+    },
+    step2: function(successcb, errorcb) {
+      SQLiteFactory.openDatabase({
+        name: SelfTest.DBNAME,
+        location: 'default'
+      }, function(db) {
+        db.transaction(function(tx) {
+          tx.executeSql('SELECT ? AS myResult', [null], function(ignored, resutSet) {
+            if (!resutSet.rows) {
+              return SelfTest.finishWithError(errorcb, 'Missing resutSet.rows');
+            }
+            if (!resutSet.rows.length) {
+              return SelfTest.finishWithError(errorcb, 'Missing resutSet.rows.length');
+            }
+            if (resutSet.rows.length !== 1) {
+              return SelfTest.finishWithError(errorcb, "Incorrect resutSet.rows.length value: " + resutSet.rows.length + " (expected: 1)");
+            }
+            SelfTest.step3(successcb, errorcb);
+          });
+        }, function(txError) {
+          return SelfTest.finishWithError(errorcb, "UNEXPECTED TRANSACTION ERROR: " + txError);
+        });
+      }, function(open_err) {
+        return SelfTest.finishWithError(errorcb, "Open database error: " + open_err);
+      });
+    },
+    step3: function(successcb, errorcb) {
+      SQLiteFactory.openDatabase({
         name: SelfTest.DBNAME,
         location: 'default'
       }, function(db) {
@@ -892,15 +985,10 @@ Contact for commercial license: info@litehelpers.net
                       SelfTest.finishWithError(errorcb, 'second readTransaction did not finish');
                       return;
                     }
-                    return db.close(function() {
-                      return SQLiteFactory.deleteDatabase({
-                        name: SelfTest.DBNAME,
-                        location: 'default'
-                      }, successcb, function(cleanup_err) {
-                        return SelfTest.finishWithError(errorcb, "Cleanup error: " + cleanup_err);
-                      });
+                    db.close(function() {
+                      SelfTest.cleanupAndFinish(successcb, errorcb);
                     }, function(close_err) {
-                      return SelfTest.finishWithError(errorcb, "close error: " + close_err);
+                      SelfTest.finishWithError(errorcb, "close error: " + close_err);
                     });
                   });
                 });
@@ -916,14 +1004,24 @@ Contact for commercial license: info@litehelpers.net
         return SelfTest.finishWithError(errorcb, "Open database error: " + open_err);
       });
     },
+    cleanupAndFinish: function(successcb, errorcb) {
+      SQLiteFactory.deleteDatabase({
+        name: SelfTest.DBNAME,
+        location: 'default'
+      }, successcb, function(cleanup_err) {
+        SelfTest.finishWithError(errorcb, "CLEANUP DELETE ERROR: " + cleanup_err);
+      });
+    },
     finishWithError: function(errorcb, message) {
-      return SQLiteFactory.deleteDatabase({
+      console.log("selfTest ERROR with message: " + message);
+      SQLiteFactory.deleteDatabase({
         name: SelfTest.DBNAME,
         location: 'default'
       }, function() {
-        return errorcb(newSQLError(message));
+        errorcb(newSQLError(message));
       }, function(err2) {
-        return errorcb(newSQLError("Cleanup error: " + err2 + " for error: " + message));
+        console.log("selfTest CLEANUP DELETE ERROR " + err2);
+        errorcb(newSQLError("CLEANUP DELETE ERROR: " + err2 + " for error: " + message));
       });
     }
   };
@@ -944,7 +1042,7 @@ Contact for commercial license: info@litehelpers.net
       error = function(e) {
         return errorcb(e);
       };
-      return cordova.exec(okcb, errorcb, "SQLitePlugin", "echoStringValue", [
+      return cordova.exec(ok, error, "SQLitePlugin", "echoStringValue", [
         {
           value: 'test-string'
         }
