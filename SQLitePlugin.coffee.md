@@ -786,7 +786,7 @@
           throw newSQLError 'AMBIGUOUS: both location and iosDatabaseLocation settings are present in openDatabase call. Please use either setting, not both.'
 
         if !!openargs.location and !!openargs.androidDatabaseLocation
-          throw newSQLError 'AMBIGUOUS: both location and androidDatabaseLocation values are present in openDatabase call. Please use either setting, not both.'
+          throw newSQLError 'AMBIGUOUS: both location and androidDatabaseLocation settings are present in openDatabase call. Please use either setting, not both. But you *can* use androidDatabaseLocation and iosDatabaseLocation together.'
 
         dblocation =
           if !!openargs.location and openargs.location is 'default'
@@ -868,7 +868,7 @@
           throw newSQLError 'AMBIGUOUS: both location and iosDatabaseLocation settings are present in deleteDatabase call. Please use either setting value, not both.'
 
         if !!first.location and !!first.androidDatabaseLocation
-          throw newSQLError 'AMBIGUOUS: both location and androidDatabaseLocation values are present in deleteDatabase call. Please use either setting value, not both.'
+          throw newSQLError 'AMBIGUOUS: both location and androidDatabaseLocation settings are present in deleteDatabase call. Please use either setting, not both. But you *can* use androidDatabaseLocation and iosDatabaseLocation together.'
 
         dblocation =
           if !!first.location and first.location is 'default'

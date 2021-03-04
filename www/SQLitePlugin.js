@@ -704,7 +704,7 @@ Contact for commercial license: sales@litehelpers.net
         throw newSQLError('AMBIGUOUS: both location and iosDatabaseLocation settings are present in openDatabase call. Please use either setting, not both.');
       }
       if (!!openargs.location && !!openargs.androidDatabaseLocation) {
-        throw newSQLError('AMBIGUOUS: both location and androidDatabaseLocation values are present in openDatabase call. Please use either setting, not both.');
+        throw newSQLError('AMBIGUOUS: both location and androidDatabaseLocation settings are present in openDatabase call. Please use either setting, not both. But you *can* use androidDatabaseLocation and iosDatabaseLocation together.');
       }
       dblocation = !!openargs.location && openargs.location === 'default' ? iosLocationMap['default'] : !!openargs.iosDatabaseLocation ? iosLocationMap[openargs.iosDatabaseLocation] : !openargs.location && openargs.location !== 0 ? iosLocationMap['default'] : dblocations[openargs.location];
       if (!dblocation) {
@@ -761,7 +761,7 @@ Contact for commercial license: sales@litehelpers.net
         throw newSQLError('AMBIGUOUS: both location and iosDatabaseLocation settings are present in deleteDatabase call. Please use either setting value, not both.');
       }
       if (!!first.location && !!first.androidDatabaseLocation) {
-        throw newSQLError('AMBIGUOUS: both location and androidDatabaseLocation values are present in deleteDatabase call. Please use either setting value, not both.');
+        throw newSQLError('AMBIGUOUS: both location and androidDatabaseLocation settings are present in deleteDatabase call. Please use either setting, not both. But you *can* use androidDatabaseLocation and iosDatabaseLocation together.');
       }
       dblocation = !!first.location && first.location === 'default' ? iosLocationMap['default'] : !!first.iosDatabaseLocation ? iosLocationMap[first.iosDatabaseLocation] : !first.location && first.location !== 0 ? iosLocationMap['default'] : dblocations[first.location];
       if (!dblocation) {
