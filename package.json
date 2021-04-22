@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/tree/cordova-sqlite-evcore-common-free",
   "dependencies": {
-    "cordova-sqlite-evcore-free-dependencies": "0.9.3"
+    "cordova-sqlite-evcore-free-dependencies": "0.10.1"
   },
   "scripts": {
     "clean-spec": "rm -rf spec/[mnp]* && git cl spec/config.xml spec/package.json && git status --ignored",
