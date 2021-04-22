@@ -1836,6 +1836,8 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + "SELECT X'FFD1FFD2' [ERROR REPRODUCED on androidDatabaseImplementation: 2 & Windows; MISSING result data column on iOS/macOS; actual result value is IGNORED on (WebKit) Web SQL & plugin on other platforms]", function(done) {
+          if (!isWebSql && isAndroid && !isImpl2) pending('CRASH on Android with default evcore NDK implementation');
+
           var db = openDatabase("Inline-SELECT-BLOB-FFD1FFD2-result-test.db", "1.0", "Demo", DEFAULT_SIZE);
 
           db.transaction(function(tx) {
