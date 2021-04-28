@@ -2,6 +2,8 @@
 
 ### cordova-sqlite-evcore-commoncore-free 0.5.0-dev
 
+- update evcore NDK library - solution for Android 11 with target SDK 30, from cordova-sqlite-evcore-free-dependencies@0.11.0
+
 ### cordova-sqlite-evcore-commoncore-free 0.4.0
 
 - updates from cordova-sqlite-evcore-free-dependencies@0.10.1
