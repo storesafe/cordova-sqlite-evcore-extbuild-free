@@ -1,5 +1,7 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.14.0-dev
+
 # cordova-sqlite-evcore-extbuild-free 0.13.0
 
 - update libs from cordova-sqlite-evcore-free-dependencies@0.10.1
