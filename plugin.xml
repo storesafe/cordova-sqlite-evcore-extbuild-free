@@ -36,7 +36,7 @@
          -->
 
         <!-- JAR with NDK libs & Java JNI class -->
-        <lib-file src="node_modules/cordova-sqlite-evcore-free-dependencies/sqlc-evcore-ndk-driver.jar" />
+        <lib-file src="src/deps/android/sqlc-evcore-ndk-driver.jar" />
     </platform>
 
     <!-- iOS -->
