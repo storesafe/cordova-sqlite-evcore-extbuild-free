@@ -407,15 +407,17 @@ public class SQLitePlugin extends CordovaPlugin {
         @Override
         void open(File dbFile) throws Exception {
             if (!isNativeLibLoaded) {
-                System.loadLibrary("sqlc-evcore-native-driver");
+                System.loadLibrary("sqlc-evcore-ndk-driver");
                 isNativeLibLoaded = true;
             }
 
-            mydbhandle = EVCoreNativeDriver.sqlc_evcore_db_open(EVCoreNativeDriver.SQLC_EVCORE_API_VERSION,
+            long dboc = EVNDKDriver.sqlc_new_ev_dboc();
+            mydbhandle = EVNDKDriver.sqlc_ev_db_open(dboc,
               dbFile.getAbsolutePath(),
-              EVCoreNativeDriver.SQLC_OPEN_READWRITE | EVCoreNativeDriver.SQLC_OPEN_CREATE);
-
-            if (mydbhandle < 0) throw new SQLException("open error", "failed", -(int)mydbhandle);
+              EVNDKDriver.SQLC_OPEN_READWRITE | EVNDKDriver.SQLC_OPEN_CREATE);
+            int result = EVNDKDriver.sqlc_ev_db_open_result(dboc);
+            EVNDKDriver.sqlc_ev_dboc_finalize(dboc);
+            if (mydbhandle == EVNDKDriver.SQLC_NULL_HANDLE) throw new SQLException("open error", "failed", result);
         }
 
         /**
@@ -424,7 +426,7 @@ public class SQLitePlugin extends CordovaPlugin {
         @Override
         void closeDatabaseNow() {
             try {
-                if (mydbhandle > 0) EVCoreNativeDriver.sqlc_db_close(mydbhandle);
+                if (mydbhandle != EVNDKDriver.SQLC_NULL_HANDLE) EVNDKDriver.sqlc_db_close(mydbhandle);
             } catch (Exception e) {
                 Log.e(SQLitePlugin.class.getSimpleName(), "couldn't close database, ignoring", e);
             }
@@ -437,9 +439,9 @@ public class SQLitePlugin extends CordovaPlugin {
         void bugWorkaround() { }
 
         String flatBatchJSON(String batch_json, int ll) {
-            long ch = EVCoreNativeDriver.sqlc_evcore_db_new_qc(mydbhandle);
-            String jr = EVCoreNativeDriver.sqlc_evcore_qc_execute(ch, batch_json, ll);
-            EVCoreNativeDriver.sqlc_evcore_qc_finalize(ch);
+            long ch = EVNDKDriver.sqlc_evcore_db_new_qc(mydbhandle);
+            String jr = EVNDKDriver.sqlc_evcore_qc_execute(ch, batch_json, ll);
+            EVNDKDriver.sqlc_evcore_qc_finalize(ch);
             return jr;
         }
     }

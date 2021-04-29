@@ -2,6 +2,14 @@
 
 # cordova-sqlite-evcore-extbuild-free 0.14.0-dev
 
+# cordova-sqlite-evcore-ndk-build-free 0.1.0
+
+## cordova-sqlite-evcore-feat-android-db-location 0.9.0
+
+### cordova-sqlite-evcore-common-free 0.5.0
+
+- update evcore NDK library - solution for Android 11 with target SDK 30, from cordova-sqlite-evcore-free-dependencies@0.11.0
+
 # cordova-sqlite-evcore-extbuild-free 0.13.0
 
 - update libs from cordova-sqlite-evcore-free-dependencies@0.10.1

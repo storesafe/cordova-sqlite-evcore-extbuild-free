@@ -34,10 +34,8 @@
         <source-file src="src/android/io/sqlc/SQLiteConnectorDatabase.java" target-dir="src/io/sqlc"/>
          -->
 
-        <source-file src="src/android/io/sqlc/EVCoreNativeDriver.java" target-dir="src/io/sqlc"/>
-
-        <!-- Android-sqlite-evcore-native-driver [native libs in jar]: -->
-        <lib-file src="src/deps/android/evcore-native-driver.jar" />
+        <!-- JAR with NDK libs & Java JNI class -->
+        <lib-file src="src/deps/android/sqlc-evcore-ndk-driver.jar" />
     </platform>
 
     <!-- iOS -->

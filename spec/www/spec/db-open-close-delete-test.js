@@ -358,7 +358,9 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         it(suiteName + 'Open database with emoji \uD83D\uDE03 (UTF-8 4 bytes) & check internal database file name', function(done) {
-          if (!isWindows && isAndroid && !isImpl2) pending('TBD KNOWN ISSUE on Android (default evcore-native-driver database access implementation)');
+          // TODO needs testing on multiple Android emulators and devices ref:
+          // https://github.com/storesafe/cordova-sqlite-evcore-extbuild-free/issues/26
+          if (isAndroid && !isImpl2) pending('TBD SKIP FOR NOW on default Android (evcore NDK) database access implementation, pending further testing');
 
           var dbName = 'a\uD83D\uDE03.db';
 
