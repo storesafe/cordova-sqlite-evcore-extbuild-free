@@ -1,5 +1,7 @@
 # Changes
 
+# cordova-sqlite-evcore-ndk-build-free 0.1.0-dev
+
 ## cordova-sqlite-evcore-feat-android-db-location 0.9.0
 
 ### cordova-sqlite-evcore-common-free 0.5.0

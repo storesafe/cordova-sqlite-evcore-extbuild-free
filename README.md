@@ -391,7 +391,7 @@ Use of this plugin on the Windows platform is not always straightforward, due to
 Use the following command to install this plugin version using the Cordova CLI:
 
 ```shell
-cordova plugin add https://github.com/storesafe/cordova-sqlite-evcore-extbuild-free#cordova-sqlite-evcore-feat-android-db-location # --save option *recommended* for Cordova CLI pre-7.0
+cordova plugin add https://github.com/storesafe/cordova-sqlite-evcore-extbuild-free#cordova-sqlite-evcore-ndk-build-free # --save option *recommended* for Cordova CLI pre-7.0
 ```
 
 Add any desired platform(s) if not already present, for example:
@@ -1464,7 +1464,7 @@ Other resource (apparently for Ionic 1): <https://www.packtpub.com/books/content
 ## Easy installation with Cordova CLI tool
 
 ```shell
-cordova plugin add https://github.com/storesafe/cordova-sqlite-evcore-extbuild-free#cordova-sqlite-evcore-feat-android-db-location # --save option *recommended* for Cordova CLI pre-7.0
+cordova plugin add https://github.com/storesafe/cordova-sqlite-evcore-extbuild-free#cordova-sqlite-evcore-ndk-build-free # --save option *recommended* for Cordova CLI pre-7.0
 ```
 
 **Additional Cordova CLI NOTES:**
