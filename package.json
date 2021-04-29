@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/litehelpers/cordova-sqlite-evcore-legacy-ext-common-free.git"
+    "url": "https://github.com/storesafe/cordova-sqlite-evcore-extbuild-free.git"
   },
   "keywords": [
     "sqlite",
@@ -26,11 +26,11 @@
   "author": "various",
   "license": "GPL-3.0 OR Commercial",
   "bugs": {
-    "url": "https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/issues"
+    "url": "https://github.com/storesafe/cordova-sqlite-evcore-extbuild-free/issues"
   },
-  "homepage": "https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free/tree/cordova-sqlite-evcore-common-free",
+  "homepage": "https://github.com/storesafe/cordova-sqlite-evcore-extbuild-free",
   "dependencies": {
-    "cordova-sqlite-evcore-free-dependencies": "0.9.3"
+    "cordova-sqlite-evcore-free-dependencies": "0.11.0"
   },
   "scripts": {
     "clean-spec": "rm -rf spec/[mnp]* && git cl spec/config.xml spec/package.json && git status --ignored",
