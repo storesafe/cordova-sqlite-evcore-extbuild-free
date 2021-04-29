@@ -1,6 +1,6 @@
 {
   "name": "cordova-sqlite-evcore-feat-android-db-location",
-  "version": "0.9.0-dev",
+  "version": "0.9.0",
   "description": "Cordova/PhoneGap sqlite storage - free enterprise version with performance improvements for Android",
   "cordova": {
     "id": "cordova-sqlite-evcore-feat-android-db-location",
