@@ -1,5 +1,7 @@
 # Changes
 
+## cordova-sqlite-evcore-feat-android-db-location 0.9.0-dev
+
 ## cordova-sqlite-evcore-feat-android-db-location 0.8.0
 
 - refactor: update androidDatabaseLocation error messages
