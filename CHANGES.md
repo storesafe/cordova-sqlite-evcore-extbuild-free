@@ -1,5 +1,11 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.15.0
+
+### cordova-sqlite-evcore-common-free 0.6.0-dev
+
+- update Windows minimum & target platform versions - BREAKING CHANGE
+
 # cordova-sqlite-evcore-extbuild-free 0.14.0
 
 # cordova-sqlite-evcore-ndk-build-free 0.1.0
