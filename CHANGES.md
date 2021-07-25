@@ -1,5 +1,9 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.15.1
+
+- SQLite 3.36.0 update from cordova-sqlite-evcore-free-dependencies@0.11.1 - as needed to avoid an issue with SQLite 3.35.x: https://sqlite.org/src/info/c88f3036a2 "ALTER TABLE DROP COLUMN corrupts data"
+
 # cordova-sqlite-evcore-extbuild-free 0.15.0
 
 ### cordova-sqlite-evcore-common-free 0.6.0-dev
