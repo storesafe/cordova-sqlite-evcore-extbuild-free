@@ -202,7 +202,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation 
 - This plugin version includes the following extra (non-standard) features:
   - BASE64 integrated from [brodybits / sqlite3-base64](https://github.com/brodybits/sqlite3-base64), using [brodybits / libb64-encode](https://github.com/brodybits/libb64-encode) (based on <http://libb64.sourceforge.net/> by Chris Venter, public domain)
   - REGEXP for Android (default Android-sqlite-connector database implementation), iOS, and macOS using [brodybits / sqlite3-regexp-cached](https://github.com/brodybits/sqlite3-regexp-cached) (based on <http://git.altlinux.org/people/at/packages/?p=sqlite3-pcre.git> by Alexey Tourbin, public domain)
-- SQLite __`3.35.5`__ included when building (all platforms), with the following compile-time definitions:
+- SQLite __`3.36.0`__ included when building (all platforms), with the following compile-time definitions:
   - `SQLITE_THREADSAFE=1`
   - `SQLITE_DEFAULT_SYNCHRONOUS=3` (EXTRA DURABLE build setting) ref: [xpbrew/cordova-sqlite-storage#736](https://github.com/xpbrew/cordova-sqlite-storage/issues/736)
   - `SQLITE_LOCKING_STYLE=1` on iOS/macOS ONLY
@@ -237,6 +237,8 @@ See the [Sample section](#sample) for a sample with a more detailed explanation 
 - Windows platform version using a customized version of the performant [doo / SQLite3-WinRT](https://github.com/doo/SQLite3-WinRT) C++ component based on the [brodybits/SQLite3-WinRT sync-api-fix branch](https://github.com/brodybits/SQLite3-WinRT/tree/sync-api-fix), with the following known limitations:
   - This plugin version branch has dependency on platform toolset libraries included by Visual Studio 2017 ref: [xpbrew/cordova-sqlite-storage#580](https://github.com/xpbrew/cordova-sqlite-storage/issues/580). Visual Studio 2015 is now supported by [`brodybits/cordova-sqlite-legacy`](https://github.com/brodybits/cordova-sqlite-legacy) (permissive license terms, no performance enhancements for Android) and [`brodybits/cordova-sqlite-evcore-legacy-ext-common-free`](https://github.com/brodybits/cordova-sqlite-evcore-legacy-ext-common-free) (GPL or commercial license terms, with performance enhancements for Android). UNTESTED workaround for Visual Studio 2015: it *may* be possible to support this plugin version on Visual Studio 2015 Update 3 by installing platform toolset v141.)
   - Visual Studio components needed: Universal Windows Platform development, C++ Universal Windows Platform tools. A recent version of Visual Studio 2017 will offer to install any missing feature components.
+  - Target Windows version: `10.0.17763.0` (Windows 10 build 17763 aka October 2018 Update or version 1809) ref: <https://docs.microsoft.com/en-us/windows/uwp/whats-new/windows-10-build-17763>
+  - Minimum Windows version `10.0.15063.0` (Windows 10 build 15063 aka Creators Update or version 1703) ref: <https://docs.microsoft.com/en-us/windows/uwp/whats-new/windows-10-build-15063>
   - It is NOT possible to use this plugin with the default "Any CPU" target. A specific target CPU type MUST be specified when building an app with this plugin.
   - ARM target CPU for Windows Mobile is no longer supported.
   - The `SQLite3-WinRT` component in `src/windows/SQLite3-WinRT-sync` is based on [doo/SQLite3-WinRT commit f4b06e6](https://github.com/doo/SQLite3-WinRT/commit/f4b06e6a772a2688ee0575a8034b55401ea64049) from 2012, which is missing the asynchronous C++ API improvements. There is no background processing on the Windows platform.
