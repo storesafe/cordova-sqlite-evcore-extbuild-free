@@ -1,5 +1,7 @@
 # Changes
 
+### cordova-sqlite-evcore-common-free 0.6.2-dev
+
 ### cordova-sqlite-evcore-common-free 0.6.1-dev
 
 - SQLite 3.36.0 update from cordova-sqlite-evcore-free-dependencies@0.11.1
