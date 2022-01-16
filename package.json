@@ -6,6 +6,7 @@
     "id": "cordova-sqlite-evcore-common-free",
     "platforms": [
       "android",
+      "browser",
       "ios",
       "osx",
       "windows"
@@ -19,6 +20,7 @@
     "sqlite",
     "ecosystem:cordova",
     "cordova-android",
+    "cordova-browser",
     "cordova-ios",
     "cordova-osx",
     "cordova-windows"
@@ -33,13 +35,14 @@
     "cordova-sqlite-evcore-free-dependencies": "0.11.2"
   },
   "scripts": {
-    "clean-spec": "rm -rf spec/[mnp]* && git cl spec/config.xml spec/package.json && git status --ignored",
+    "clean-spec": "rimraf spec/[mnp]* && git checkout -- spec/config.xml spec/package.json && git status --ignored",
     "prepare-js": "coffee -p SQLitePlugin.coffee.md > www/SQLitePlugin.js",
     "prepare-spec": "node scripts/prepareSpec.js"
   },
   "devDependencies": {
     "coffeescript": "1",
     "cross-spawn": "^6.0.5",
-    "fs-extra": "^8.1.0"
+    "fs-extra": "^8.1.0",
+    "rimraf": "^3.0.2"
   }
 }

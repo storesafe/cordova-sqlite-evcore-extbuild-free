@@ -57,12 +57,13 @@ var pluginScenarioCount = isAndroid ? 2 : 1;
 var mytests = function() {
 
   describe('Open database parameter test(s)', function() {
-    // TBD skip plugin test on browser platform (not yet supported):
-    if (isBrowser) return;
 
     for (var i=0; i<pluginScenarioCount; ++i) {
 
       describe(pluginScenarioList[i] + ': open database file name test(s)', function() {
+        // TBD SKIP open database file name test(s) on browser platform for now:
+        if (isBrowser) return;
+
         var scenarioName = pluginScenarioList[i];
         var suiteName = scenarioName + ': ';
         var isImpl2 = (i === 1);
@@ -966,8 +967,6 @@ var mytests = function() {
 
 
   describe('Plugin - basic sqlitePlugin.deleteDatabase parameter check test(s)', function() {
-    // TBD skip plugin test on browser platform (not yet supported):
-    if (isBrowser) return;
 
     if (true) {
 
@@ -1205,8 +1204,6 @@ var mytests = function() {
   });
 
   describe('Plugin: db open-close-delete operation behavior test(s)', function() {
-    // TBD skip plugin test on browser platform (not yet supported):
-    if (isBrowser) return;
 
     for (var i=0; i<pluginScenarioCount; ++i) {
 
@@ -1453,6 +1450,7 @@ var mytests = function() {
         }, MYTIMEOUT);
 
         test_it(suiteName + ' database.close (immediately after open) calls its success callback', function () {
+          if (isBrowser) pending('TBD SKIP on browser');
           // TBD POSSIBLY BROKEN on iOS/macOS due to current background processing implementation:
           if (isAppleMobileOS || isMac) pending('TBD POSSIBLY BROKEN on iOS/macOS (background processing implementation)');
 
@@ -1791,6 +1789,7 @@ var mytests = function() {
         // XXX SEE BELOW: repeat scenario but wait for open callback before close/delete/reopen
         // (Was needed to test support for an enterprise application)
         test_it(suiteName + ' immediate close, then delete then re-open allows subsequent queries to run', function () {
+          if (isBrowser) pending('TBD SKIP on browser');
           if (isAppleMobileOS || isMac) pending('CURRENTLY BROKEN on iOS/macOS (background processing implementation)');
 
           var dbName = "Immediate-close-delete-Reopen.db";
@@ -1937,6 +1936,7 @@ var mytests = function() {
         });
 
         test_it(suiteName + ' repeatedly open and close database faster (5x)', function () {
+          if (isBrowser) pending('TBD SKIP on browser');
           // TBD CURRENTLY BROKEN on iOS/macOS due to current background processing implementation:
           if (isAppleMobileOS || isMac) pending('CURRENTLY BROKEN on iOS/macOS (background processing implementation)');
           // TBD ???:

@@ -39,8 +39,6 @@ var scenarioCount = (!!window.hasWebKitWebSQL) ? (isAndroid ? 3 : 2) : 1;
 var mytests = function() {
 
   for (var i=0; i<scenarioCount; ++i) {
-    // TBD skip plugin test on browser platform (not yet supported):
-    if (isBrowser && (i === 0)) continue;
 
     describe(scenarioList[i] + ': tx string test(s)', function() {
       var scenarioName = scenarioList[i];
@@ -523,10 +521,12 @@ var mytests = function() {
                     (/Android 5.1/.test(navigator.userAgent) && !(/Chrome.6/.test(navigator.userAgent))) ||
                     (/Android 6/.test(navigator.userAgent) && (/Chrome.[3-4]/.test(navigator.userAgent))))) ||
                   (isWebSql && !isAndroid && !isChromeBrowser) ||
+                  (!isWebSql && isBrowser) ||
                   (!isWebSql && isWindows) ||
                   (!isWebSql && !isWindows && isAndroid && isImpl2 &&
                     !(/Android 4/.test(navigator.userAgent)) &&
-                    !(/Android [8-9]/.test(navigator.userAgent))))
+                    !(/Android [8-9]/.test(navigator.userAgent)) &&
+                    !(/Android 1/.test(navigator.userAgent))))
                 expect(rs.rows.item(0).uppertext).toBe('A');
               else if (!isWebSql && !isWindows && isAndroid && !isImpl2) // XXX
                expect(rs.rows.item(0).uppertext).toBe('A0000CD'); // XXX
@@ -1094,7 +1094,7 @@ var mytests = function() {
               // - plugin with androidDatabaseImplementation: 2 on
               //   Android 4.4 & newer
               if ((isWebSql && isChromeBrowser) ||
-                  (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent)))))
+                  (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && !/Android [2-3]/.test(navigator.userAgent)))))
                 expect(resultRow1.myresult).toBe('AÉ');
               else
                 expect(resultRow1.myresult).toBe('Aé');
@@ -1112,7 +1112,7 @@ var mytests = function() {
                 // - plugin with androidDatabaseImplementation: 2 on
                 //   Android 4.4 & newer
                 if ((isWebSql && isChromeBrowser) ||
-                    (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent)))))
+                    (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && !/Android [2-3]/.test(navigator.userAgent)))))
                   expect(resultRow2.myresult).toBe('BÉ');
                 else
                   expect(resultRow2.myresult).toBe('Bé');
@@ -1150,7 +1150,7 @@ var mytests = function() {
               // - plugin with androidDatabaseImplementation: 2 on
               //   Android 4.4 & newer
               if ((isWebSql && isChromeBrowser) ||
-                  (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent)))))
+                  (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && !/Android [2-3]/.test(navigator.userAgent)))))
                 expect(resultRow1.myresult).toBe('aé');
               else
                 expect(resultRow1.myresult).toBe('aÉ');
@@ -1168,7 +1168,7 @@ var mytests = function() {
                 // - plugin with androidDatabaseImplementation: 2 on
                 //   Android 4.4 & newer
                 if ((isWebSql && isChromeBrowser) ||
-                    (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent)))))
+                    (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && !/Android [2-3]/.test(navigator.userAgent)))))
                   expect(resultRow2.myresult).toBe('bé');
                 else
                   expect(resultRow2.myresult).toBe('bÉ');
@@ -1206,7 +1206,7 @@ var mytests = function() {
               // - plugin with androidDatabaseImplementation: 2 on
               //   Android 4.4 & newer
               if ((isWebSql && isChromeBrowser) ||
-                  (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent)))))
+                  (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && !/Android [2-3]/.test(navigator.userAgent)))))
                 expect(resultRow1.myresult).toBe('STRASSE');
               else
                 expect(resultRow1.myresult).toBe('STRAßE');
@@ -1224,10 +1224,91 @@ var mytests = function() {
                 // - plugin with androidDatabaseImplementation: 2 on
                 //   Android 4.4 & newer
                 if ((isWebSql && isChromeBrowser) ||
-                    (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent)))))
+                    (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && !/Android [2-3]/.test(navigator.userAgent)))))
                   expect(resultRow2.myresult).toBe('STRASSE');
                 else
                   expect(resultRow2.myresult).toBe('STRAßE');
+
+                // Close (plugin only) & finish:
+                (isWebSql) ? done() : db.close(done, done);
+              });
+
+            });
+          }, function(error) {
+            // NOT EXPECTED:
+            expect(false).toBe(true);
+            expect(error.message).toBe('--');
+            // Close (plugin only) & finish:
+            (isWebSql) ? done() : db.close(done, done);
+          });
+        }, MYTIMEOUT);
+
+        // check UTF-8 2-byte EU stroke string character handling ref:
+        // - https://github.com/mobilexag/cordova-sqlite-evplus-ext-free/issues/34
+        // - https://github.com/brodybits/sqlite3-eu/pull/1
+        it(suiteName + 'string HEX value test with UTF-8 2-byte EU stroke character đ [Windows vs ...]', function(done) {
+          var db = openDatabase('UTF8-EU-stroke-hex-value-test.db');
+
+          db.transaction(function(tx) {
+
+            tx.executeSql('SELECT HEX(?) AS hexValue', ['đ'], function(ignored, rs1) {
+              expect(rs1).toBeDefined();
+              expect(rs1.rows).toBeDefined();
+              expect(rs1.rows.length).toBe(1);
+              if (isWindows)
+                expect(rs1.rows.item(0).hexValue).toBe('1101'); // (UTF-16le)
+              else
+                expect(rs1.rows.item(0).hexValue).toBe('C491'); // (UTF-8)
+
+              tx.executeSql("SELECT HEX('đ') AS hexValue", null, function(ignored, rs2) {
+                expect(rs2).toBeDefined();
+                expect(rs2.rows).toBeDefined();
+                expect(rs2.rows.length).toBe(1);
+                if (isWindows)
+                  expect(rs2.rows.item(0).hexValue).toBe('1101'); // (UTF-16le)
+                else
+                  expect(rs2.rows.item(0).hexValue).toBe('C491'); // (UTF-8)
+
+                // Close (plugin only) & finish:
+                (isWebSql) ? done() : db.close(done, done);
+
+              });
+
+            });
+          }, function(error) {
+            // NOT EXPECTED:
+            expect(false).toBe(true);
+            expect(error.message).toBe('--');
+            // Close (plugin only) & finish:
+            (isWebSql) ? done() : db.close(done, done);
+          });
+        }, MYTIMEOUT);
+
+        // check UTF-8 2-byte EU stroke string character handling ref:
+        // - https://github.com/mobilexag/cordova-sqlite-evplus-ext-free/issues/34
+        // - https://github.com/brodybits/sqlite3-eu/pull/1
+        it(suiteName + 'string UPPER test with UTF-8 2-byte EU stroke character đ [Windows vs (WebKit) Web SQL vs ...]', function(done) {
+          var db = openDatabase('UTF8-2-byte-EU stroke-UPPER-string-value-test.db');
+
+          db.transaction(function(tx) {
+
+            tx.executeSql('SELECT UPPER(?) AS upperValue', ['ađ'], function(ignored, rs1) {
+              expect(rs1).toBeDefined();
+              expect(rs1.rows).toBeDefined();
+              expect(rs1.rows.length).toBe(1);
+              if (isWebSql || (isAndroid && isImpl2))
+                expect(rs1.rows.item(0).upperValue).toBe('AĐ');
+              else
+                expect(rs1.rows.item(0).upperValue).toBe('Ađ');
+
+              tx.executeSql("SELECT UPPER('iđ') AS upperValue", null, function(ignored, rs2) {
+                expect(rs2).toBeDefined();
+                expect(rs2.rows).toBeDefined();
+                expect(rs2.rows.length).toBe(1);
+                if (isWebSql || (isAndroid && isImpl2))
+                  expect(rs2.rows.item(0).upperValue).toBe('IĐ');
+                else
+                  expect(rs2.rows.item(0).upperValue).toBe('Iđ');
 
                 // Close (plugin only) & finish:
                 (isWebSql) ? done() : db.close(done, done);
@@ -1434,7 +1515,7 @@ var mytests = function() {
               // - plugin with androidDatabaseImplementation: 2 on
               //   Android 4.4 & newer
               if ((isWebSql && isChromeBrowser) ||
-                  (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent)))))
+                  (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && !/Android [2-3]/.test(navigator.userAgent)))))
                 expect(resultRow1.myresult).toBe('straße');
               else
                 expect(resultRow1.myresult).toBe('straẞe');
@@ -1452,11 +1533,96 @@ var mytests = function() {
                 // - plugin with androidDatabaseImplementation: 2 on
                 //   Android 4.4 & newer
                 if ((isWebSql && isChromeBrowser) ||
-                    (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent)))))
+                    (isAndroid && ((isWebSql && isAndroid && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && !/Android [2-3]/.test(navigator.userAgent)))))
                   expect(resultRow2.myresult).toBe('straße');
                 else
                   expect(resultRow2.myresult).toBe('straẞe');
 
+
+                // Close (plugin only) & finish:
+                (isWebSql) ? done() : db.close(done, done);
+              });
+
+            });
+          }, function(error) {
+            // NOT EXPECTED:
+            expect(false).toBe(true);
+            expect(error.message).toBe('--');
+            // Close (plugin only) & finish:
+            (isWebSql) ? done() : db.close(done, done);
+          });
+        }, MYTIMEOUT);
+
+        // check Tamil string character handling - UTF-8 3-byte ref:
+        // - https://en.wikipedia.org/wiki/Tamil_script
+        // - https://www.unicode.org/charts/PDF/U0B80.pdf
+        // - https://github.com/storesafe/cordova-sqlite-evcore-extbuild-free/issues/54
+        it(suiteName + 'string HEX value test with UTF-8 3-byte Tamil எ (0x0B8E) - [TBD vs Windows vs ...]', function(done) {
+          var db = openDatabase('UTF8-Tamil-0B8E-hex-value-test.db');
+
+          db.transaction(function(tx) {
+
+            tx.executeSql('SELECT HEX(?) AS hexValue', ['எ'], function(ignored, rs1) {
+              expect(rs1).toBeDefined();
+              expect(rs1.rows).toBeDefined();
+              expect(rs1.rows.length).toBe(1);
+              if (isWindows)
+                expect(rs1.rows.item(0).hexValue).toBe('8E0B'); // (UTF-16le)
+              else
+                expect(rs1.rows.item(0).hexValue).toBe('E0AE8E'); // (UTF-8)
+
+              tx.executeSql("SELECT HEX('எ') AS hexValue", null, function(ignored, rs2) {
+                expect(rs2).toBeDefined();
+                expect(rs2.rows).toBeDefined();
+                expect(rs2.rows.length).toBe(1);
+                if (isWindows)
+                  expect(rs2.rows.item(0).hexValue).toBe('8E0B'); // (UTF-16le)
+                else
+                  expect(rs2.rows.item(0).hexValue).toBe('E0AE8E'); // (UTF-8)
+
+                // Close (plugin only) & finish:
+                (isWebSql) ? done() : db.close(done, done);
+
+              });
+
+            });
+          }, function(error) {
+            // NOT EXPECTED:
+            expect(false).toBe(true);
+            expect(error.message).toBe('--');
+            // Close (plugin only) & finish:
+            (isWebSql) ? done() : db.close(done, done);
+          });
+        }, MYTIMEOUT);
+
+        // check Tamil string character handling - UTF-8 3-byte ref:
+        // - https://en.wikipedia.org/wiki/Tamil_script
+        // - https://www.unicode.org/charts/PDF/U0B80.pdf
+        // - https://github.com/storesafe/cordova-sqlite-evcore-extbuild-free/issues/54
+        it(suiteName + 'string UPPER test with UTF-8 3-byte Tamil எ (0x0B8E)', function(done) {
+          var db = openDatabase('UTF8-3-byte-Tamil-UPPER-string-value-test.db');
+
+          db.transaction(function(tx) {
+
+            tx.executeSql('SELECT UPPER(?) AS upperValue', ['aஎ'], function(ignored, rs1) {
+              expect(rs1).toBeDefined();
+              expect(rs1.rows).toBeDefined();
+              expect(rs1.rows.length).toBe(1);
+
+              var resultRow1 = rs1.rows.item(0);
+              expect(resultRow1).toBeDefined();
+              expect(resultRow1.upperValue).toBeDefined();
+              expect(rs1.rows.item(0).upperValue).toBe('Aஎ');
+
+              tx.executeSql("SELECT UPPER('iஎ') AS upperValue", null, function(ignored, rs2) {
+                expect(rs2).toBeDefined();
+                expect(rs2.rows).toBeDefined();
+                expect(rs2.rows.length).toBe(1);
+                var resultRow2 = rs2.rows.item(0);
+
+                expect(resultRow2).toBeDefined();
+                expect(resultRow2.upperValue).toBeDefined();
+                expect(rs2.rows.item(0).upperValue).toBe('Iஎ');
 
                 // Close (plugin only) & finish:
                 (isWebSql) ? done() : db.close(done, done);
@@ -1596,6 +1762,95 @@ var mytests = function() {
           });
         }, MYTIMEOUT);
 
+        // check Tamil string character handling - UTF-8 4-byte ref:
+        // - https://en.wikipedia.org/wiki/Tamil_script
+        // - https://www.unicode.org/charts/PDF/U11FC0.pdf
+        // - https://github.com/storesafe/cordova-sqlite-evcore-extbuild-free/issues/54
+        it(suiteName + 'string HEX value test with UTF-8 4-byte Tamil 𑿀  (U+11FC0) - [Android 5 vs Windows vs ...]', function(done) {
+          var db = openDatabase('UTF8-4-byte-Tamil-hex-value-test.db');
+
+          db.transaction(function(tx) {
+
+            tx.executeSql('SELECT HEX(?) AS hexValue', ['\ud807\udfc0'], function(ignored, rs1) {
+              expect(rs1).toBeDefined();
+              expect(rs1.rows).toBeDefined();
+              expect(rs1.rows.length).toBe(1);
+              if (isWindows)
+                expect(rs1.rows.item(0).hexValue).toBe('07D8C0DF'); // (UTF-16le)
+              else if (!isWebSql && isAndroid && !isImpl2 && (/Android 5/.test(navigator.userAgent)))
+                expect(rs1.rows.item(0).hexValue).toBe('EDA087EDBF80'); // [TBD] encoding on Android 5 with default NDK native driver
+              else
+                expect(rs1.rows.item(0).hexValue).toBe('F091BF80'); // (UTF-8)
+
+              tx.executeSql("SELECT HEX('\ud807\udfc0') AS hexValue", null, function(ignored, rs2) {
+                expect(rs2).toBeDefined();
+                expect(rs2.rows).toBeDefined();
+                expect(rs2.rows.length).toBe(1);
+                if (isWindows)
+                  expect(rs2.rows.item(0).hexValue).toBe('07D8C0DF'); // (UTF-16le)
+                else if (!isWebSql && isAndroid && !isImpl2 && (/Android 5/.test(navigator.userAgent)))
+                  expect(rs2.rows.item(0).hexValue).toBe('EDA087EDBF80'); // [TBD] encoding on Android 5 with default NDK native driver
+                else
+                  expect(rs2.rows.item(0).hexValue).toBe('F091BF80'); // (UTF-8)
+
+                // Close (plugin only) & finish:
+                (isWebSql) ? done() : db.close(done, done);
+
+              });
+
+            });
+          }, function(error) {
+            // NOT EXPECTED:
+            expect(false).toBe(true);
+            expect(error.message).toBe('--');
+            // Close (plugin only) & finish:
+            (isWebSql) ? done() : db.close(done, done);
+          });
+        }, MYTIMEOUT);
+
+        // check Tamil string character handling - UTF-8 4-byte ref:
+        // - https://en.wikipedia.org/wiki/Tamil_script
+        // - https://www.unicode.org/charts/PDF/U11FC0.pdf
+        // - https://github.com/storesafe/cordova-sqlite-evcore-extbuild-free/issues/54
+        it(suiteName + 'string UPPER test with UTF-8 4-byte Tamil 𑿀  (U+11FC0)', function(done) {
+          var db = openDatabase('UTF8-4-byte-Tamil-UPPER-string-value-test.db');
+
+          db.transaction(function(tx) {
+
+            tx.executeSql('SELECT UPPER(?) AS upperValue', ['a\ud807\udfc0'], function(ignored, rs1) {
+              expect(rs1).toBeDefined();
+              expect(rs1.rows).toBeDefined();
+              expect(rs1.rows.length).toBe(1);
+
+              var resultRow1 = rs1.rows.item(0);
+              expect(resultRow1).toBeDefined();
+              expect(resultRow1.upperValue).toBeDefined();
+              expect(rs1.rows.item(0).upperValue).toBe('A𑿀');
+
+              tx.executeSql("SELECT UPPER('i\ud807\udfc0') AS upperValue", null, function(ignored, rs2) {
+                expect(rs2).toBeDefined();
+                expect(rs2.rows).toBeDefined();
+                expect(rs2.rows.length).toBe(1);
+                var resultRow2 = rs2.rows.item(0);
+
+                expect(resultRow2).toBeDefined();
+                expect(resultRow2.upperValue).toBeDefined();
+                expect(rs2.rows.item(0).upperValue).toBe('I𑿀');
+
+                // Close (plugin only) & finish:
+                (isWebSql) ? done() : db.close(done, done);
+              });
+
+            });
+          }, function(error) {
+            // NOT EXPECTED:
+            expect(false).toBe(true);
+            expect(error.message).toBe('--');
+            // Close (plugin only) & finish:
+            (isWebSql) ? done() : db.close(done, done);
+          });
+        }, MYTIMEOUT);
+
         it(suiteName + "SELECT LOWER(X'41EDA080EDBCB1') - result column value is '\\uED41\u80A0\\uBCED' ('\uED41\u80A0\uBCED') on Android 4.1-4.3 (WebKit) Web SQL & Windows (UTF-16le), 'a\uD800\uDF31' (non-standard encoding) on Android with default Android NDK provider on all Android versions & androidDatabaseProvider: 'system' on Android 4.x, MISSING on iOS/macOS plugin, 'a\\uFFFD\\uFFFD' ('a\uFFFD\uFFFD') on Android with androidDatabaseProvider: 'system' on Android post-4.x & (WebKit) Web SQL (Android post-4.3/iOS/Browser)", function(done) {
           // ref:
           // - litehelpers/Cordova-sqlite-evcore-extbuild-free#44
@@ -1612,7 +1867,7 @@ var mytests = function() {
                 expect(rs.rows.item(0).lowertext).toBe('\uED41\u80A0\uBCED');
               else if (isMac || (!isWebSql && isAppleMobileOS))
                 expect(rs.rows.item(0).lowertext).not.toBeDefined();
-              else if (!isWebSql && isAndroid && (!isImpl2 || (/Android 4/.test(navigator.userAgent))))
+              else if (!isWebSql && (isBrowser || isAndroid && (!isImpl2 || (/Android 4/.test(navigator.userAgent)))))
                 expect(rs.rows.item(0).lowertext).toBe('a\uD800\uDF31'); // 'a𐌱' (non-standard encoding)
               else
                 expect(rs.rows.item(0).lowertext).toBe('a\uFFFD\uFFFD'); // 'a��'
@@ -1802,7 +2057,7 @@ var mytests = function() {
                        (isAndroid &&
                         (isImpl2 && !(/Android 4/.test(navigator.userAgent)))))
                 expect(rs.rows.item(0).lowertext).toBe('a\uFFFD\uFFFD!'); // 'a��!'
-              else if (!isWebSql && isAndroid) // (other conditions checked above)
+              else if (!isWebSql && (isBrowser || isAndroid)) // (other conditions checked above for Android)
                 expect(rs.rows.item(0).lowertext).toBe('a\uD83D\uDE03!');
               else if (!isWebSql && (isAppleMobileOS || isMac))
                 expect(rs.rows.item(0).lowertext).not.toBeDefined();
@@ -2011,6 +2266,35 @@ var mytests = function() {
 
       describe(suiteName + 'additional (extra) multi-byte UTF-8 character string binding & manipulation tests', function() {
 
+        // check multiple UTF-8 2-byte EU stroke string character handling ref:
+        // - https://github.com/mobilexag/cordova-sqlite-evplus-ext-free/issues/34
+        // - https://github.com/brodybits/sqlite3-eu/pull/1
+        it(suiteName + 'string parameter manipulation test with multiple UTF-8 2-byte EU stroke characters ("Test đ ď ð") [(WebKit) Web SQL vs ...]', function(done) {
+          var db = openDatabase('Multi-UTF-8-EU-stroke-UPPER-test.db');
+
+          db.transaction(function(tx) {
+
+            tx.executeSql('SELECT UPPER(?) AS upperValue', ['Test đ ď ð'], function(ignored, rs) {
+              expect(rs).toBeDefined();
+              expect(rs.rows).toBeDefined();
+              expect(rs.rows.length).toBe(1);
+              if (isWebSql || (isAndroid && isImpl2))
+                expect(rs.rows.item(0).upperValue).toBe('TEST Đ Ď Ð');
+              else
+                expect(rs.rows.item(0).upperValue).toBe('TEST đ ď ð');
+
+              // Close (plugin only) & finish:
+              (isWebSql) ? done() : db.close(done, done);
+            });
+          }, function(error) {
+            // NOT EXPECTED:
+            expect(false).toBe(true);
+            expect(error.message).toBe('--');
+            // Close (plugin only) & finish:
+            (isWebSql) ? done() : db.close(done, done);
+          });
+        }, MYTIMEOUT);
+
         it(suiteName + 'Inline string manipulation test with a combination of UTF-8 2-byte & 3-byte characters', function(done) {
           // ref: litehelpers/Cordova-sqlite-evcore-extbuild-free#19
           var db = openDatabase('Inline-UTF8-combo-string-manipulation-test.db');
@@ -2026,7 +2310,7 @@ var mytests = function() {
               // - plugin with androidDatabaseImplementation: 2 on
               //   Android 4.4 & newer
               if ((isWebSql && isChromeBrowser) ||
-                  (isAndroid && ((isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent)))))
+                  (isAndroid && ((isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && !/Android [2-3]/.test(navigator.userAgent)))))
                 expect(rs.rows.item(0).upper_result).toBe('TEST ¢ É €');
               else
                 expect(rs.rows.item(0).upper_result).toBe('TEST ¢ é €');
@@ -2058,7 +2342,7 @@ var mytests = function() {
               // - plugin with androidDatabaseImplementation: 2 on
               //   Android 4.4 & newer
               if ((isWebSql && isChromeBrowser) ||
-                  (isAndroid && ((isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && /Android [5-9]/.test(navigator.userAgent)))))
+                  (isAndroid && ((isWebSql && !(/Android 4.[1-3]/.test(navigator.userAgent))) || (isImpl2 && !/Android [2-3]/.test(navigator.userAgent)))))
                 expect(rs.rows.item(0).upper_result).toBe('TEST ¢ É €');
               else
                 expect(rs.rows.item(0).upper_result).toBe('TEST ¢ é €');

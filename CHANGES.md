@@ -1,5 +1,6 @@
 # Changes
 
+<<<<<<< HEAD
 ### cordova-sqlite-evcore-common-free 0.6.2-dev
 
 - SQLite 3.37.2 update from cordova-sqlite-evcore-free-dependencies@0.11.2 - with resolution for a very rare & unlikely corruption issue from SQLite 3.35.0 ref: https://sqlite.org/forum/forumpost/ac381d64d8
@@ -32,12 +33,23 @@ NOTE: "ALTER TABLE DROP COLUMN corrupts data" issue seems to have been resolved 
 ### cordova-sqlite-evcore-commoncore-free 0.3.0
 
 ### cordova-sqlite-ext-common 4.0.0
+=======
+#### cordova-sqlite-storage 6.0.1-dev
+
+#### cordova-sqlite-storage 6.0.0
+
+- use cordova-sqlite-storage-dependencies@4.0.0 with Android JARs built from android-sqlite-native-ndk-connector and android-sqlite-ndk-native-driver, with enhancements by Luis Silva of OutSystems needed for some Android 11 devices, drops support for Android pre-5.1
+>>>>>>> cdfeb05094ea27182de8dcca9243b1240b3b9857
 
 ### cordova-sqlite-storage-commoncore 2.0.0
 
 - refactor: clean up imports for Android
 - Fix plugin param name for macOS ("osx") - *tested* with Cordova 9 and cordova-osx@5
 - Drop support for Windows on ARM (Windows Mobile)
+
+#### cordova-sqlite-storage 5.1.0
+
+- Add browser platform support using sql-asm-memory-growth.js from sql.js, with some limitations as documented
 
 #### cordova-sqlite-storage 5.0.1
 
