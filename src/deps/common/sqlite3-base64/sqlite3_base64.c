@@ -2,6 +2,8 @@
 
 #include "cencode.h"
 
+#include "cdecode.h"
+
 #include <string.h>
 #include <stdint.h>
 
@@ -11,7 +13,7 @@ void sqlite3_base64(sqlite3_context * context, int argc, sqlite3_value ** argv) 
     sqlite3_result_null(context);
   } else {
     // THANKS FOR GUIDANCE:
-    // http://www.sqlite.org/cgi/src/artifact/43916c1d8e6da5d1
+    // https://www.sqlite.org/cgi/src/artifact/43916c1d8e6da5d1
     // (src/func.c:hexFunc)
     sqlite3_value * first = argv[0];
 
@@ -33,7 +35,40 @@ void sqlite3_base64(sqlite3_context * context, int argc, sqlite3_value ** argv) 
   }
 }
 
+static
+void sqlite3_blobfrombase64(
+  sqlite3_context * context,
+  int argc,
+  sqlite3_value ** argv
+) {
+  // Base64 value is WANTED in TEXT format
+  // It *may* be possible to get Base64 from INTEGER, does not seem interesting.
+  if (argc < 1 || sqlite3_value_type(argv[0]) != SQLITE_TEXT) {
+    sqlite3_result_null(context);
+  } else {
+    // get the info
+    sqlite3_value * first = argv[0];
+    const uint8_t * base64 = sqlite3_value_text(first);
+
+    const int base64_length = sqlite3_value_bytes(first);
+
+    // overestimating length needed is **much** better than underestimating !!
+    const uint8_t * blob = sqlite3_malloc(base64_length);
+
+    base64_decodestate ds;
+    base64_init_decodestate(&ds);
+
+    {
+      const int len = base64_decode_block(base64, base64_length, blob, &ds);
+
+      sqlite3_result_blob(context, blob, len, sqlite3_free);
+    }
+  }
+}
+
 int sqlite3_base64_init(sqlite3 * db)
 {
-    return sqlite3_create_function_v2(db, "BASE64", 1, SQLITE_ANY | SQLITE_DETERMINISTIC, NULL, sqlite3_base64, NULL, NULL, NULL);
+  sqlite3_create_function_v2(db, "BASE64", 1, SQLITE_ANY | SQLITE_DETERMINISTIC, NULL, sqlite3_base64, NULL, NULL, NULL);
+  sqlite3_create_function_v2(db, "BLOBFROMBASE64", 1, SQLITE_ANY | SQLITE_DETERMINISTIC, NULL, sqlite3_blobfrombase64, NULL, NULL, NULL);
+  return 0;
 }

@@ -59,8 +59,10 @@
         <header-file src="src/deps/common/sqlite3-base64/sqlite3_base64.h" />
         <source-file src="src/deps/common/sqlite3-base64/sqlite3_base64.c" />
 
-        <header-file src="src/deps/common/libb64-encode/cencode.h" />
-        <source-file src="src/deps/common/libb64-encode/cencode.c" />
+        <header-file src="src/deps/common/libb64-core/cencode.h" />
+        <source-file src="src/deps/common/libb64-core/cencode.c" />
+        <header-file src="src/deps/common/libb64-core/cdecode.h" />
+        <source-file src="src/deps/common/libb64-core/cdecode.c" />
 
         <header-file src="src/deps/common/sqlite3.h" />
         <source-file src="src/deps/common/sqlite3.c"
@@ -90,8 +92,10 @@
         <header-file src="src/deps/common/sqlite3-base64/sqlite3_base64.h" />
         <source-file src="src/deps/common/sqlite3-base64/sqlite3_base64.c" />
 
-        <header-file src="src/deps/common/libb64-encode/cencode.h" />
-        <source-file src="src/deps/common/libb64-encode/cencode.c" />
+        <header-file src="src/deps/common/libb64-core/cencode.h" />
+        <source-file src="src/deps/common/libb64-core/cencode.c" />
+        <header-file src="src/deps/common/libb64-core/cdecode.h" />
+        <source-file src="src/deps/common/libb64-core/cdecode.c" />
 
         <header-file src="src/deps/common/sqlite3.h" />
         <source-file src="src/deps/common/sqlite3.c"
