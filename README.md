@@ -52,7 +52,7 @@ under consideration:
 
 ## About this plugin version
 
-Free enterprise version with performance improvements for Android - evcore common version branch with limited extra features _including REGEXP & BASE64_ (missing pre-populated database support), using the `before_plugin_install` hook to fetch the sqlite3 component dependencies from `cordova-sqlite-evcore-free-dependencies` via npm.
+Free enterprise version with performance improvements for Android - evcore common version branch with limited extra features _including REGEXP, BASE64 & BLOBFROMBASE64_ (missing pre-populated database support), using the `before_plugin_install` hook to fetch the sqlite3 component dependencies from `cordova-sqlite-evcore-free-dependencies` via npm.
 
 <!-- FUTURE TBD critical bug notices for this plugin version -->
 
@@ -200,7 +200,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation 
 - This plugin version uses a `before_plugin_install` hook to fetch and install `cordova-sqlite-evcore-free-dependencies` (with SQLite3 and `android-sqlite-evcore-ndk-driver-free` libraries) from npm.
 - Use of other systems such as Cordova Plugman, PhoneGap CLI, PhoneGap Build, and Intel XDK is no longer supported by this plugin version since they do not honor the `before_plugin_install` hook. The supported solution is to use [litehelpers / Cordova-sqlite-evcore-extbuild-free](https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free) (GPL or commercial license terms); deprecated alternative with permissive license terms is available at: [brodybits / cordova-sqlite-legacy-build-support](https://github.com/brodybits/cordova-sqlite-legacy-build-support) (very limited testing, very limited updates).
 - This plugin version includes the following extra (non-standard) features:
-  - BASE64 integrated from [brodybits / sqlite3-base64](https://github.com/brodybits/sqlite3-base64), using [brodybits / libb64-encode](https://github.com/brodybits/libb64-encode) (based on <http://libb64.sourceforge.net/> by Chris Venter, public domain)
+  - BASE64 integrated from [brodybits / sqlite3-base64](https://github.com/brodybits/sqlite3-base64), using <https://github.com/brodybits/libb64-core> (based on <http://libb64.sourceforge.net/> by Chris Venter, public domain)
   - REGEXP for Android (default Android-sqlite-connector database implementation), iOS, and macOS using [brodybits / sqlite3-regexp-cached](https://github.com/brodybits/sqlite3-regexp-cached) (based on <http://git.altlinux.org/people/at/packages/?p=sqlite3-pcre.git> by Alexey Tourbin, public domain)
 - SQLite __`3.37.2`__ included when building (all platforms), with the following compile-time definitions:
   - `SQLITE_THREADSAFE=1`
