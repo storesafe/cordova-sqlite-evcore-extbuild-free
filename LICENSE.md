@@ -16,7 +16,7 @@ sqlite3-regexp-cached - adapted by @brodybits (Christopher J. Brody), based on s
 
 sqlite3-base64 by @brodybits (Christopher J. Brody), Unlicense (http://unlicense.org/ - public domain)
 
-libb64-encode - based on libb64 (http://libb64.sourceforge.net/) by Chris Venter, public domain
+libb64-core - based on libb64 (http://libb64.sourceforge.net/) by Chris Venter, public domain
 
 MIT or Apache 2.0
 
@@ -34,7 +34,7 @@ Based on <http://git.altlinux.org/people/at/packages/?p=sqlite3-pcre.git> by Ale
 
 Unlicense (public domain)
 
-### libb64-encode
+### libb64-core
 
 Based on <http://libb64.sourceforge.net/> by Chris Venter, public domain)
 

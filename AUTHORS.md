@@ -7,14 +7,17 @@
 - Translated to Coffee-Script using js2coffee tool by @brodybits (Chris Brody)
 - API changes by @brodybits (Chris Brody)
 - Transaction timing fixes to support PouchDB by @nolanlawson
+- Enterprise version optimizations by @brodybits (Chris Brody)
 
 ## Android version
 
 - Extracted from DroidGap by @brodybits (Chris Brody)
 - Transaction batch processing of Android version by @marcucio
+- Updated for Android 11 by @brodybits (Chris Brody)
 - Maintained by @brodybits (Chris Brody)
 - Fixes to support old Android versions by @nolanlawson
 - Thanks to Mark Oppenheim <mark.oppenheim@mnetics.co.uk> for fixes to open/close callbacks and repeated open/close/delete operations
+- Enterprise version optimizations by @brodybits (Chris Brody)
 
 ## iOS/macOS version
 
