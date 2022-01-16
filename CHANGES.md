@@ -1,5 +1,7 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.16.0-dev
+
 # cordova-sqlite-evcore-extbuild-free 0.15.2
 
 - SQLite 3.37.2 update from cordova-sqlite-evcore-free-dependencies@0.11.2 - with resolution for a very rare & unlikely corruption issue from SQLite 3.35.0 ref: https://sqlite.org/forum/forumpost/ac381d64d8
