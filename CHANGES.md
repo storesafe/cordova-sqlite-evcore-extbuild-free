@@ -1,6 +1,6 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.16.0-dev
+# cordova-sqlite-evcore-extbuild-free 0.16.0
 
 - include BLOBFROMBASE64 support from cordova-sqlite-evcore-free-dependencies@0.12.0
 
