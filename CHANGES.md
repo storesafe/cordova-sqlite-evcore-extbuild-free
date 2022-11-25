@@ -2,6 +2,10 @@
 
 # cordova-sqlite-evcore-extbuild-free 0.17.0-dev
 
+- add back LIMITED support for Windows ARM CPU
+
+# cordova-sqlite-evcore-extbuild-free 0.16.0
+
 - include BLOBFROMBASE64 support from cordova-sqlite-evcore-free-dependencies@0.12.0
 
 # cordova-sqlite-evcore-extbuild-free 0.15.2
