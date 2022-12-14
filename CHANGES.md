@@ -1,6 +1,6 @@
 # Changes
 
-# cordova-sqlite-evcore-extbuild-free 0.18.0-dev
+# cordova-sqlite-evcore-extbuild-free 0.18.0
 
 - SQLite 3.40.0 update
 - remove Windows ARM support again
