@@ -2,6 +2,8 @@
 
 # cordova-sqlite-evcore-extbuild-free 0.18.0-dev
 
+- remove Windows ARM support again
+
 # cordova-sqlite-evcore-extbuild-free 0.17.0
 
 - add back LIMITED support for Windows ARM CPU

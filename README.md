@@ -4,7 +4,7 @@ Native SQLite component with API based on HTML5/[Web SQL (DRAFT) API](http://www
 - Android
 - iOS
 - macOS ("osx" platform)
-- Windows 10 (UWP) _DESKTOP ONLY, with limited ARM CPU support_ (see below for major limitations)
+- Windows 10 (UWP) _DESKTOP ONLY, with ARM CPU support removed again from this plugin version_ (see below for major limitations)
 
 <!-- [TBD] HIDE browser usage notes for now (at least):
 Browser platform is currently supported with some limitations as described in [browser platform usage notes](#browser-platform-usage-notes) section below, will be supported with more features such as numbered parameters and SQL batch API in the near future.
@@ -239,7 +239,7 @@ See the [Sample section](#sample) for a sample with a more detailed explanation 
   - Target Windows version: `10.0.17763.0` (Windows 10 build 17763 aka October 2018 Update or version 1809) ref: <https://docs.microsoft.com/en-us/windows/uwp/whats-new/windows-10-build-17763>
   - Minimum Windows version `10.0.15063.0` (Windows 10 build 15063 aka Creators Update or version 1703) ref: <https://docs.microsoft.com/en-us/windows/uwp/whats-new/windows-10-build-15063>
   - It is NOT possible to use this plugin with the default "Any CPU" target. A specific target CPU type MUST be specified when building an app with this plugin.
-  - Limited support for ARM target CPU (32-bit ONLY, was supported for Windows Mobile)
+  - _ARM target CPU support removed again from this plugin version_
   - The `SQLite3-WinRT` component in `src/windows/SQLite3-WinRT-sync` is based on [doo/SQLite3-WinRT commit f4b06e6](https://github.com/doo/SQLite3-WinRT/commit/f4b06e6a772a2688ee0575a8034b55401ea64049) from 2012, which is missing the asynchronous C++ API improvements. There is no background processing on the Windows platform.
   - Truncation issue with UNICODE `\u0000` character (same as `\0`)
   - INCONSISTENT error code (0) and INCORRECT error message (missing actual error info) in error callbacks ref: [xpbrew/cordova-sqlite-storage#539](https://github.com/xpbrew/cordova-sqlite-storage/issues/539)
