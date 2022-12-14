@@ -1,5 +1,7 @@
 # Changes
 
+### cordova-sqlite-evcore-common-free 0.7.1-dev
+
 ### cordova-sqlite-evcore-common-free 0.7.0-dev
 
 - use cordova-sqlite-evcore-free-dependencies@0.12.0 with BLOBFROMBASE64
