@@ -1,5 +1,7 @@
 # Changes
 
+### cordova-sqlite-evcore-common-free 0.7.2-dev
+
 ### cordova-sqlite-evcore-common-free 0.7.1-dev
 
 - use cordova-sqlite-evcore-free-dependencies@0.12.1
