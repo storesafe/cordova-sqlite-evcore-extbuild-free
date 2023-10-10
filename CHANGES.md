@@ -2,6 +2,8 @@
 
 ### cordova-sqlite-evcore-common-free 0.7.3-dev
 
+- enable SQLite3 math functions for Windows (and update test case)
+
 ### cordova-sqlite-evcore-common-free 0.7.2-dev
 
 - enable SQLite3 math functions for iOS (only), with new test case feature ref: https://www.sqlite.org/lang_mathfunc.html

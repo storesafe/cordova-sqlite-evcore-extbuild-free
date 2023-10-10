@@ -366,7 +366,6 @@ var mytests = function() {
           if (isWebSql) pending('SKIP for (WebKit) Web SQL');
           if (isAndroid) pending('NOT IMPLEMENTED for Android');
           if (isMac) pending('NOT SUPPORTED for macOS');
-          if (isWindows) pending('NOT IMPLEMENTED for Windows');
 
           var db = openDatabase('math-functions-test.db');
           expect(db).toBeDefined();
