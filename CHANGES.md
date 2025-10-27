@@ -1,5 +1,9 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.19.0
+
+- support new Android page size with rebuild using NDK r29
+
 # cordova-sqlite-evcore-extbuild-free 0.18.0
 
 - SQLite 3.40.0 update
