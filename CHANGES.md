@@ -1,5 +1,9 @@
 # Changes
 
+# cordova-sqlite-evcore-extbuild-free 0.19.1
+
+- rebuild Android JAR with JDK 17
+
 # cordova-sqlite-evcore-extbuild-free 0.19.0
 
 - support new Android page size with rebuild using NDK r29
